@@ -1,45 +1,34 @@
 import React from 'react';
-// import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 import { Button } from './components/button/Button';
-import Enzyme, { shallow } from 'enzyme';
-import EnzymeAdapter from 'enzyme-adapter-react-16';
+import userEvent from '@testing-library/user-event';
 
-Enzyme.configure({ adapter: new EnzymeAdapter() });
-
-const setup = (component: any) => shallow(component);
-
-const findByTestAttr = (wrapper: any, val: string | number) =>
-  wrapper.find(`[data-test='${val}']`);
-
-test('renders without error', () => {
-  const wrapper = setup(<App />);
-  const appComponent = findByTestAttr(wrapper, 'component-app');
-  expect(appComponent.length).toBe(1);
+describe('App', () => {
+  it('renders App component', () => {
+    render(<App />);
+    screen.debug();
+    expect(screen.getByText(/Welcome to project/i)).toBeInTheDocument();
+  });
 });
 
-test('renders button', () => {
-  const wrapper = setup(<Button />);
-  const button = findByTestAttr(wrapper, 'component-button');
-  expect(button.length).toBe(1);
+describe('Button', () => {
+  it('renders Button', () => {
+    render(<Button />);
+    screen.debug();
+    expect(screen.getByText(/Большая зеленая кнопка/i)).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
 });
 
-test('renders counter display', () => {
-  const wrapper = setup(<Button />);
-  const display = findByTestAttr(wrapper, 'counter-display');
-  expect(display.length).toBe(1);
-});
-
-test('counter starts at 0', () => {
-  const wrapper = setup(<Button />);
-  const count = findByTestAttr(wrapper, 'count').text();
-  expect(count).toBe('0');
-});
-
-test('clicking button increments display', () => {
-  const wrapper = setup(<Button />);
-  const button = findByTestAttr(wrapper, 'increment-button');
-  button.simulate('click');
-  const count = findByTestAttr(wrapper, 'count').text();
-  expect(count).toBe('1');
+describe('Counter', () => {
+  it('renders counter and it starts from 0', () => {
+    render(<Button />);
+    expect(screen.getByText('0')).toBeInTheDocument();
+  });
+  it('clicks counter', () => {
+    render(<Button />);
+    userEvent.click(screen.getByText(/Большая зеленая кнопка/i));
+    expect(screen.getByText('1')).toBeInTheDocument();
+  });
 });
