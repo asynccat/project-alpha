@@ -25,6 +25,8 @@ Update pip inside the virtual environment and install project requirements:
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+Make sure the virtual environment is active (`source venv/bin/activate`) before running any `python manage.py` command.
+
 Run migrations:
 ```
 python manage.py migrate
