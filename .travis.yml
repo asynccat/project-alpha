@@ -16,3 +16,5 @@ jobs:
         - npm i
       stage: frontend-unit-test
         - npm run test
+notifications:
+  slack: asynccat:XAELxG84KqcQ0qMlOqM2Mfio
