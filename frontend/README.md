@@ -4,9 +4,9 @@ To get the project up and running, and view components in the browser, complete 
 
 Download and install Node: https://nodejs.org/
 Clone this repo: git clone https://github.com/asynccat/project-alpha
-Go to "frontend" folder in cmd
-Install project dependencies: npm install
-Start the development environment: npm start
+Go to `frontend` folder in cmd
+Install project dependencies: `npm install`
+Start the development environment: `npm start`
 Open your browser and visit http://localhost:3000
 
-to start testing - run 'npm test' in separate terminal
+to start testing - run `npm test` in separate terminal
