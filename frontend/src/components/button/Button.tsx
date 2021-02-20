@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import Button from '@material-ui/core/Button';
 
-export const Button: React.FC = () => {
+export const BlueButton: React.FC = () => {
   const [count, setCount] = useState(0);
 
   return (
     <div>
-      <button
+      <Button
+        variant="contained"
+        size="large"
+        color="primary"
         onClick={() => setCount(count + 1)}
-        className="waves-effect waves-light btn-large"
       >
-        Большая зеленая кнопка
-      </button>
+        Большая синяя кнопка
+      </Button>
       <h1 className="counter">
         <span> {count}</span>
       </h1>
