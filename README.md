@@ -1,6 +1,6 @@
 # project-alpha
 
-# Installation
+## Installation
 
 Create a new directory to work in, and cd into it:
 ```
@@ -11,6 +11,7 @@ Clone the project:
 ```
 git clone https://github.com/asynccat/project-alpha.git .
 ```
+### Backend (Django)
 Create and activate a virtual environment:
 ```
 python3 -m venv venv
@@ -35,3 +36,15 @@ Run dev-server:
 ```
 python manage.py runserver
 ```
+
+### Frontend
+
+To get the project up and running, and view components in the browser, complete the following steps:
+
+* Download and install Node: [nodejs.org](https://nodejs.org/)
+* Go to "frontend" folder
+* Install project dependencies: `npm install`
+* Start the development environment: `npm start`
+* Open your browser and visit http://localhost:3000
+
+* To start testing - run `npm test` in separate terminal
