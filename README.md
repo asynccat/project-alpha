@@ -48,3 +48,24 @@ To get the project up and running, and view components in the browser, complete 
 * Open your browser and visit http://localhost:3000
 
 * To start testing - run `npm test` in separate terminal
+
+## Config manager
+We are using the [Dynaconf](https://github.com/rochacbruno/dynaconf) configuration manager
+### Directory Structure
+```bash
+├── backend
+│   ├── config
+│       ├── dev.yaml        # develpment settings
+│       ├── prod.yaml       # production settings
+│       ├── test.yaml       # test setting
+│       ├── .secrets.yaml   # (required!)store sensitive data such as tokens and passwords
+│       ├── dev.local.yaml  # (optional)local development settings. should be in .gitignore
+│       ├── .env            # (optional)store ENV variables locally. should be in .gitignore
+```
+Create a `.secrets.yaml` file in a `config` folder and write Django `SECRET_KEY` value.
+
+For example:
+```
+default:
+  SECRET_KEY: 'some_secret_string'
+```

@@ -17,5 +17,8 @@ jobs:
           pip install -r requirements.txt
       - name: Run Tests
         working-directory: ./backend
+        env:
+          DJANGO_ENV: DEVELOPMENT
+          SECRET_KEY: '4vjtf_9%ltt*pi7'
         run: |
           python manage.py test
