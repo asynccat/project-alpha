@@ -1,0 +1,4 @@
+prod:
+  DEBUG: False
+  ALLOWED_HOSTS:
+    - '*'
