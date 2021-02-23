@@ -7,7 +7,6 @@ import userEvent from '@testing-library/user-event';
 describe('App', () => {
   it('renders App component', () => {
     render(<App />);
-    screen.debug();
     expect(screen.getByText(/Welcome to project/i)).toBeInTheDocument();
   });
 });
@@ -15,7 +14,6 @@ describe('App', () => {
 describe('Button', () => {
   it('renders Button', () => {
     render(<BlueButton />);
-    screen.debug();
     expect(screen.getByText(/Большая синяя кнопка/i)).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
