@@ -43,11 +43,14 @@ To get the project up and running, and view components in the browser, complete 
 
 * Download and install Node: [nodejs.org](https://nodejs.org/)
 * Go to "frontend" folder
+* Copy `.env.sample` to `.env`
 * Install project dependencies: `npm install`
-* Start the development environment: `npm start`
-* Open your browser and visit http://localhost:3000
 
-* To start testing - run `npm test` in separate terminal
+* To start using the dev-server run: `npm start`
+* To build frontend once to use it with django(backend): `npm run build`
+* Please, don't forget to rebuild frontend after any FE-changes.
+
+* Test: `npm test`
 
 ## Config manager
 We are using the [Dynaconf](https://github.com/rochacbruno/dynaconf) configuration manager
