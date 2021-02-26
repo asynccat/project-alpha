@@ -1,9 +1,0 @@
-.idea
-venv
-__pycache__
-db.sqlite3
-
-# dynoconf
-*.local.yaml
-*.secrets.yaml
-*.env
