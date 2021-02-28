@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
-import { increaseCount, decreaseCount } from '../../actions/Counter';
-import { CounterState } from '../../actions';
+import React, { Component } from 'react'
+import Button from '@material-ui/core/Button'
+import { connect } from 'react-redux'
+import { Dispatch, bindActionCreators } from 'redux'
+
+import { decreaseCount, increaseCount } from '../../actions/Counter'
+import { CounterState} from '../../actions'
 
 interface CounterProps {
-  readonly increaseCount: () => void;
-  readonly decreaseCount: () => void;
-  readonly count: number;
+  readonly increaseCount: () => void
+  readonly decreaseCount: () => void
+  readonly count: number
 }
 
 class Counter extends Component<CounterProps> {
-  static mapStateToProps = (state: CounterState) => {
+  static mapStateToProps = (state: CounterState): {count: number} => {
     return {
       count: state.count,
-    };
+    }
   };
 
   static mapDispatchToProps = (dispatch: Dispatch) => {
@@ -25,18 +26,18 @@ class Counter extends Component<CounterProps> {
         decreaseCount,
       },
       dispatch
-    );
+    )
   };
 
   render() {
-    const { increaseCount, decreaseCount } = this.props;
+    const { increaseCount: increase, decreaseCount: decrease } = this.props
     return (
       <div>
         <Button
           variant="contained"
           size="large"
           color="primary"
-          onClick={increaseCount}
+          onClick={increase}
         >
           +
         </Button>
@@ -45,7 +46,7 @@ class Counter extends Component<CounterProps> {
           variant="contained"
           size="large"
           color="primary"
-          onClick={decreaseCount}
+          onClick={decrease}
         >
           -
         </Button>
@@ -53,10 +54,10 @@ class Counter extends Component<CounterProps> {
           <span>{this.props.count}</span>
         </h1>
       </div>
-    );
+    )
   }
 }
 export default connect(
   Counter.mapStateToProps,
   Counter.mapDispatchToProps
-)(Counter);
+)(Counter)

@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { Action } from 'redux'
 
 export enum CounterTypes {
   INCREASE_COUNT = 'INCREASE_COUNT',
@@ -6,15 +6,15 @@ export enum CounterTypes {
 }
 
 export interface CounterState {
-  count: number;
+  count: number
 }
 
 export interface IncrementAction extends Action {
-  type: CounterTypes.INCREASE_COUNT;
+  type: CounterTypes.INCREASE_COUNT
 }
 
 export interface DecrementAction extends Action {
-  type: CounterTypes.DECREASE_COUNT;
+  type: CounterTypes.DECREASE_COUNT
 }
 
 export type CounterActions = IncrementAction | DecrementAction;

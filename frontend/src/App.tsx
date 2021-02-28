@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import Counter from './components/counter/Counter';
-import counterReducer from '../src/reducers/counterReducer';
-const store = createStore(counterReducer);
+import React, {useEffect} from 'react'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import Counter from './components/counter/Counter'
+import counterReducer from '../src/reducers/counterReducer'
+const store = createStore(counterReducer)
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -17,7 +17,7 @@ const App: React.FC = () => {
         <Counter />
       </Provider>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
