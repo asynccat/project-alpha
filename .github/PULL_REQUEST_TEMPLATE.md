@@ -11,7 +11,7 @@ Delete this section if not relevant -->
 
 ## PR Checklist
 
-<!-- Change [ ] tp [X] to check boxes -->
+<!-- Change [ ] to [X] to check boxes -->
 Please check if your PR fulfills the following requirements:
  - [ ] I tested my code
  
