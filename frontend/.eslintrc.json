@@ -1,0 +1,66 @@
+{
+  "env": {
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "curly": "error",
+    "dot-notation": "error",
+    "dot-location": ["error", "property"],
+    "eqeqeq": "error",
+    "strict": "off",
+    "consistent-return": "error",
+    "complexity": ["error", 3],
+    "max-classes-per-file": ["error", 1],
+    "grouped-accessor-pairs": "error",
+    "no-else-return": "error",
+    "no-empty-pattern": "error",
+    "no-eq-null": "error",
+    "no-eval": "error",
+    "no-lone-blocks": "error",
+    "no-magic-numbers": ["error", { "ignore": [0, 1, -1] }],
+    "no-param-reassign": "error",
+    "no-return-assign": "error",
+    "no-self-compare": "error",
+    "no-sequences": "error",
+    "no-unmodified-loop-condition": "error",
+    "no-unused-expressions": "error",
+    "radix": "error",
+    "require-await": "error",
+    "no-undefined": "error",
+    "no-labels": "error",
+    "array-bracket-spacing": ["error", "never"],
+    "max-len": ["error", { "code": 120 }],
+    "max-lines": ["error", 800],
+    "max-lines-per-function": ["error", 300],
+    "max-nested-callbacks": ["error", 2],
+    "new-cap": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-destructuring": "error",
+    "prefer-template": "error",
+    "semi": ["error", "never"],
+
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/adjacent-overload-signatures": "error",
+    "@typescript-eslint/array-type": ["error", {
+      "default": "array"
+    }],
+    "@typescript-eslint/explicit-module-boundary-types":  "error",
+    "@typescript-eslint/member-delimiter-style": ["error", {
+      "multiline": {
+        "delimiter": "none"
+      }
+    }]
+  }
+}
