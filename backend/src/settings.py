@@ -6,6 +6,7 @@ import dynaconf
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH_USER_MODEL = 'web.User'
 
 ALLOWED_HOSTS = []
 
@@ -22,6 +23,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     # project apps
     'api.apps.ApiConfig',
+    'web.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +122,11 @@ WEBPACK_LOADER = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 settings = dynaconf.DjangoDynaconf(
     __name__,
