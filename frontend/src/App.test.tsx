@@ -4,9 +4,7 @@ import App from './App'
 import Counter from './components/counter/Counter'
 import userEvent from '@testing-library/user-event'
 import {createStore, Store} from 'redux'
-import { Provider } from 'react-redux'
-import counterReducer from './reducers/counterReducer'
-import { CounterState } from './actions'
+import '@testing-library/jest-dom'
 
 describe('App', () => {
   it('renders App component', () => {
