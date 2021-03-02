@@ -13,5 +13,7 @@ jobs:
           node-version: '14.x'
       - run: npm i
         working-directory: ./frontend
+      - run: npm run lint
+        working-directory: ./frontend
       - run: npm test
         working-directory: ./frontend

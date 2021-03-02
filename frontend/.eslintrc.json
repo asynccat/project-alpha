@@ -11,8 +11,15 @@
     "ecmaVersion": 2018
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "react",
+    "react-hooks"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "curly": "error",
     "dot-notation": "error",
@@ -61,6 +68,36 @@
       "multiline": {
         "delimiter": "none"
       }
-    }]
+    }],
+
+    "react/boolean-prop-naming": ["error", { "propTypeNames": ["bool", "mutuallyExclusiveTrueProps"] }],
+    "react/button-has-type": ["error", {
+      "button": true,
+      "submit": true,
+      "reset": true
+    }
+    ],
+    "react/destructuring-assignment": "error",
+    "react/no-access-state-in-setstate": "error",
+    "react/no-array-index-key": "error",
+    "react/no-danger": "error",
+    "react/no-danger-with-children": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-typos": "error",
+    "react/no-unescaped-entities": "error",
+    "react/no-unused-state": "error",
+    "react/no-unused-prop-types": "error",
+    "react/jsx-closing-tag-location": "error",
+    "react/jsx-curly-spacing": "error",
+    "react/jsx-equals-spacing": "error",
+    "react/jsx-handler-names": "error",
+    "react/jsx-key": "error",
+    "react/jsx-no-bind": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-no-target-blank": "error",
+    "react/jsx-sort-props": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

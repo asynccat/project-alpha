@@ -30,28 +30,28 @@ class Counter extends Component<CounterProps> {
   };
 
   render() {
-    const { increaseCount: increase, decreaseCount: decrease } = this.props
+    const { increaseCount: increase, decreaseCount: decrease, count } = this.props
     return (
       <div>
         <Button
-          variant="contained"
-          size="large"
           color="primary"
           onClick={increase}
+          size="large"
+          variant="contained"
         >
           +
         </Button>
         &nbsp; &nbsp;
         <Button
-          variant="contained"
-          size="large"
           color="primary"
           onClick={decrease}
+          size="large"
+          variant="contained"
         >
           -
         </Button>
         <h1>
-          <span>{this.props.count}</span>
+          <span>{count}</span>
         </h1>
       </div>
     )
