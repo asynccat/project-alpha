@@ -15,6 +15,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Run linter
+        working-directory: ./backend
+        run: |
+          ./pylint.sh
       - name: Run Tests
         working-directory: ./backend
         env:
