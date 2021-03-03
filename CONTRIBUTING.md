@@ -81,7 +81,7 @@ Use the summary field to provide a succinct description of the change:
 
 ## <a name="rules"></a> Coding rules
 
-To be defined. We're expecting to have:
- - Eslint and prettier for typescript
- - Stylelint for styles
- - PEP8 for python
+We are using linter for typescript and python. They are integrated into CI
+so you have to follow rules that provided by this linters.
+ - TypeScript linter runs automatically on build
+ - Python linter you must run manually 
