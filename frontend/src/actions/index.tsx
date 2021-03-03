@@ -17,4 +17,4 @@ export interface DecrementAction extends Action {
   type: CounterTypes.DECREASE_COUNT
 }
 
-export type CounterActions = IncrementAction | DecrementAction;
+export type CounterActions = IncrementAction | DecrementAction
