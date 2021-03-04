@@ -1,8 +1,8 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable react/jsx-no-bind */
 import React, {useState } from 'react'
-import axiosInstance from '../../axios'
-import { useHistory } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {signUserUp} from '../../actions/userActions'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -61,8 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function SignUpSide() :React.ReactElement {
-	const history = useHistory()
+export function SignUpSide() :React.ReactElement {
 	const initialFormData = Object.freeze({
 		email: '',
 		username: '',
@@ -80,21 +79,7 @@ export default function SignUpSide() :React.ReactElement {
 
 	const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault()
-		console.log(formData)
-
-		axiosInstance
-			.post(`/sign-up/`, {
-				email: formData.email,
-				user_name: formData.username,
-				password: formData.password,
-			})
-			.then((res) => {
-				history.push('/login')
-				console.log(res)
-				console.log(res.data)
-			})
-	}
-
+    signUserUp(formData)
 
   const classes = useStyles()
 
@@ -192,3 +177,13 @@ export default function SignUpSide() :React.ReactElement {
     </Grid>
   )
 }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      signUserUp: (formData) => dispatch(signUserUp(formData))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SignUpSide)
