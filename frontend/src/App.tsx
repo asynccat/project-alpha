@@ -1,25 +1,32 @@
 import React, {useEffect} from 'react'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import Counter from './components/counter/Counter'
-import counterReducer from '../src/reducers/counterReducer'
-import Counter from '../src/components/counter/Counter'
-import { routing } from './routes'
-const store = createStore(counterReducer)
+import {useSelector, useDispatch} from 'react-redux'
+import {autoLogin} from './actions/userActions'
+import SignInSide from './components/authentication/SignIn'
+import SignUpSide from './components/authentication/SignUp'
 
 const App: React.FC = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_DJANGO_SERVER}/api/v1/hello/`)
   })
-  const routes = routing()
+  useEffect(() => {
+    dispatch(autoLogin())
+  }, [])
+
+  const userReducer = useSelector(state => state.userReducer)
+  const dispatch = useDispatch()
 
   return (
-    <div className="container page">
+    <div >
+
       <h1>Welcome to Project-alpha!</h1>
-      <h3>Redux-counter</h3>
-      <Provider store={store}>
-        <Counter />
-      </Provider>
+      <div className="container page">
+      {
+          !userReducer.loggedIn ? <h1>Sign Up or Login!</h1> : <h1>Welcome, {userReducer.user.username}</h1>
+        }
+        <SignInSide/>
+        <SignUpSide/>
+
+      </div>
     </div>
   )
 }
