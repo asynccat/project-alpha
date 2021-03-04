@@ -1,8 +1,7 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable react/jsx-no-bind */
 import React, {useState } from 'react'
-import axiosInstance from '../../axios'
-import { useHistory } from 'react-router-dom'
+import {connect} from 'react-redux'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -16,6 +15,7 @@ import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import { fetchUser } from '../../actions/userActions'
 
 
 function Copyright() :React.ReactElement {
@@ -62,8 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function SignInSide() :React.ReactElement {
-  const history = useHistory()
+export function SignInSide() :React.ReactElement {
 	const initialFormData = Object.freeze({
 		email: '',
 		password: '',
@@ -81,22 +80,8 @@ export default function SignInSide() :React.ReactElement {
 	const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault()
 		console.log(formData)
+    fetchUser(formData)
 
-		axiosInstance
-			.post(`/token/`, {
-				email: formData.email,
-				password: formData.password,
-			})
-			.then((res) => {
-				localStorage.setItem('access_token', res.data.access)
-				localStorage.setItem('refresh_token', res.data.refresh)
-				axiosInstance.defaults.headers.Authorization =
-					`JWT ${  localStorage.getItem('access_token')}`
-				history.push('/me')
-				console.log(res)
-				console.log(res.data)
-			})
-	}
 
   const classes = useStyles()
 
@@ -155,7 +140,6 @@ export default function SignInSide() :React.ReactElement {
               className={classes.submit}
               color="primary"
               fullWidth
-              onClick={handleSubmit}
               type="submit"
               variant="contained"
             >
@@ -182,3 +166,12 @@ export default function SignInSide() :React.ReactElement {
     </Grid>
   )
 }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      fetchUser: (formData) => dispatch(fetchUser(formData))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SignInSide)
