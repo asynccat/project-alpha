@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import SignInSide from '../src/components/authentication/SignIn'
 import SignUpSide from '../src/components/authentication/SignUp'
-import Personal from './components/personal/Personal'
+import Welcome from './components/personal/Personalpage'
 
 
 
@@ -15,8 +15,8 @@ export const routing = ():React.ReactElement => {
         <Route exact path="/sign-up">
           <SignUpSide />
         </Route>
-        <Route exact path="/me">
-          <Personal />
+        <Route exact path="/welcome">
+          <Welcome />
         </Route>
         <Redirect to="/" />
       </Switch>

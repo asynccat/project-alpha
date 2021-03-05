@@ -1,28 +1,13 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import {Dispatch} from 'redux'
+import {SET_USER, LOG_OUT, fetchUserAction, loggedoutUser, UserDetailsOnRegister, UserDetailsOnLogin} from './index'
 
 const baseURL = 'http://127.0.0.1:8000/api/v1'
 
-const setUser = (payload:string) => ({ type: "SET_USER", payload})
+export const logUserOut = () => (dispatch:Dispatch<loggedoutUser>) => dispatch({type: LOG_OUT, payload: null})
 
-export const logUserOut = () => ({type: "LOG_OUT"})
-
-
-export const fetchUser = (userInfo) => dispatch => {
-    fetch(`${baseURL}/token/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(userInfo)
-    })
-    .then(res => res.json())
-    .then(data => {
-        localStorage.setItem("token", data.token)
-        dispatch(setUser(data.user))
-    })
-}
-
-export const signUserUp = (userInfo) => dispatch => {
+// eslint-disable-next-line max-len
+export const fetchUser = (userInfo: UserDetailsOnRegister | UserDetailsOnLogin) => (dispatch:Dispatch<fetchUserAction>) => {
     fetch(`${baseURL}/sign-up/`, {
         method: "POST",
         headers: {
@@ -34,12 +19,28 @@ export const signUserUp = (userInfo) => dispatch => {
     .then(res => res.json())
     .then(data => {
         localStorage.setItem("token", data.token)
-        dispatch(setUser(data.user))
+        dispatch({ type: SET_USER, payload: data.user})
     })
 }
 
-export const autoLogin = () => dispatch => {
-    fetch(`${baseURL}/refresh`, {
+export const signUserUp = (userInfo: UserDetailsOnRegister ) => (dispatch:Dispatch<fetchUserAction>) => {
+    fetch(`${baseURL}/sign-up/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(userInfo)
+    })
+    .then(res => res.json())
+    .then(data => {
+        localStorage.setItem("token", data.token)
+        dispatch({ type: SET_USER, payload: data.user})
+    })   
+}
+
+export const autoLogin = () => (dispatch:Dispatch<fetchUserAction>) => {
+    fetch(`${baseURL}/login`, {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -49,6 +50,6 @@ export const autoLogin = () => dispatch => {
     .then(res => res.json())
     .then(data => {
         localStorage.setItem("token", data.token)
-        dispatch(setUser(data.user))
+        dispatch({ type: SET_USER, payload: data.user})
     })
 }
