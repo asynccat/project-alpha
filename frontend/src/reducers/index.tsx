@@ -1,10 +1,5 @@
 import userReducer from './userReducer'
-import commentReducer from './commentReducer'
-import {combineReducers} from 'redux'
 
-const rootReducer = combineReducers({
-    userReducer,
-    commentReducer
-})
+export const rootReducer = userReducer
 
-export default rootReducer
+export type RootState = ReturnType<typeof rootReducer>

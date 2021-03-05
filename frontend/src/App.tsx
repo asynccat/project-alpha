@@ -1,31 +1,27 @@
 import React, {useEffect} from 'react'
-import {useSelector, useDispatch} from 'react-redux'
-import {autoLogin} from './actions/userActions'
-import SignInSide from './components/authentication/SignIn'
-import SignUpSide from './components/authentication/SignUp'
+import { useSelector} from 'react-redux'
 
+import SignUpSide from './components/authentication/SignUp'
+import {AppStateType} from "./index"
+import Welcome from './components/personal/Personalpage'
+
+
+// eslint-disable-next-line complexity
 const App: React.FC = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_DJANGO_SERVER}/api/v1/hello/`)
   })
-  useEffect(() => {
-    dispatch(autoLogin())
-  }, [])
-
-  const userReducer = useSelector(state => state.userReducer)
-  const dispatch = useDispatch()
+    
+  const isAuth = useSelector<AppStateType >(state => state.loggedIn)
+  
 
   return (
     <div >
-
       <h1>Welcome to Project-alpha!</h1>
       <div className="container page">
       {
-          !userReducer.loggedIn ? <h1>Sign Up or Login!</h1> : <h1>Welcome, {userReducer.user.username}</h1>
+         isAuth  ? <SignUpSide/> : <Welcome />
         }
-        <SignInSide/>
-        <SignUpSide/>
-
       </div>
     </div>
   )
