@@ -27,7 +27,6 @@
     "eqeqeq": "error",
     "strict": "off",
     "consistent-return": "error",
-    "complexity": ["error", 3],
     "max-classes-per-file": ["error", 1],
     "grouped-accessor-pairs": "error",
     "no-else-return": "error",
@@ -57,6 +56,9 @@
     "prefer-destructuring": "error",
     "prefer-template": "error",
     "semi": ["error", "never"],
+    "quotes": ["error", "single"],
+    "quote-props": ["error", "as-needed"],
+    "jsx-quotes": ["error", "prefer-double"],
 
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/adjacent-overload-signatures": "error",
