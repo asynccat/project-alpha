@@ -9,32 +9,32 @@ export const logUserOut = () => (dispatch:Dispatch<loggedoutUser>) => dispatch({
 // eslint-disable-next-line max-len
 export const fetchUser = (userInfo: UserDetailsOnRegister | UserDetailsOnLogin) => (dispatch:Dispatch<fetchUserAction>) => {
     fetch(`${baseURL}/sign-up/`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
         },
         body: JSON.stringify(userInfo)
     })
     .then(res => res.json())
     .then(data => {
-        localStorage.setItem("token", data.token)
+        localStorage.setItem('token', data.token)
         dispatch({ type: SET_USER, payload: data.user})
     })
 }
 
 export const signUserUp = (userInfo: UserDetailsOnRegister ) => (dispatch:Dispatch<fetchUserAction>) => {
     fetch(`${baseURL}/sign-up/`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
         },
         body: JSON.stringify(userInfo)
     })
     .then(res => res.json())
     .then(data => {
-        localStorage.setItem("token", data.token)
+        localStorage.setItem('token', data.token)
         dispatch({ type: SET_USER, payload: data.user})
     })   
 }
@@ -42,14 +42,14 @@ export const signUserUp = (userInfo: UserDetailsOnRegister ) => (dispatch:Dispat
 export const autoLogin = () => (dispatch:Dispatch<fetchUserAction>) => {
     fetch(`${baseURL}/login`, {
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
         }
     })
     .then(res => res.json())
     .then(data => {
-        localStorage.setItem("token", data.token)
+        localStorage.setItem('token', data.token)
         dispatch({ type: SET_USER, payload: data.user})
     })
 }
