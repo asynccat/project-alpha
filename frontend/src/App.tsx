@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { useSelector} from 'react-redux'
 
 import SignUpSide from './components/authentication/SignUp'
-import {AppStateType} from "./index"
+import {AppStateType} from './index'
 import Welcome from './components/personal/Personalpage'
 
 
@@ -14,13 +14,12 @@ const App: React.FC = () => {
     
   const isAuth = useSelector<AppStateType >(state => state.loggedIn)
   
-
   return (
     <div >
       <h1>Welcome to Project-alpha!</h1>
       <div className="container page">
       {
-         isAuth  ? <SignUpSide/> : <Welcome />
+         !isAuth  ? <SignUpSide/> : <Welcome />
         }
       </div>
     </div>

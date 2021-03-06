@@ -4,7 +4,6 @@
 import React, {useState } from 'react'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
-import {useHistory} from 'react-router-dom'
 
 import {signUserUp} from '../../actions/userActions'
 import { fetchUserAction, UserDetailsOnRegister } from '../../actions'
@@ -15,7 +14,6 @@ import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Gri
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 function SignUpSide() :React.ReactElement {
-  const history = useHistory()
 	const initialFormData = Object.freeze({
 		email: '',
 		username: '',
@@ -34,7 +32,6 @@ function SignUpSide() :React.ReactElement {
 	const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault()
     signUserUp(formData)
-    history.push('/login')
    
   }
   const classes = useStyles()
@@ -119,7 +116,7 @@ function SignUpSide() :React.ReactElement {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
