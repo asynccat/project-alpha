@@ -3,7 +3,7 @@
 
 import {SET_USER, LOG_OUT, ActionsOfUser} from '../actions/index'
 
-const defaultState = {
+export const defaultState = {
     loggedIn: false,
     user: {}
 }

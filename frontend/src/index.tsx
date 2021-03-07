@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {rootReducer} from './reducers/index'
 
-const store = createStore(rootReducer, applyMiddleware(thunk))
+export const store = createStore(rootReducer, applyMiddleware(thunk))
 type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>
 
@@ -16,5 +16,5 @@ ReactDOM.render(
     <App />
   </Provider>
   ,
-  document.getElementById('root')
+  document.getElementById('root') || document.createElement('div') // for testing purposes
 )
