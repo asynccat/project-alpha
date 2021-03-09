@@ -6,7 +6,7 @@ import {AppStateType} from './index'
 import Welcome from './components/personal/PersonalPage'
 
 
-// eslint-disable-next-line complexity
+
 const App: React.FC = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_DJANGO_SERVER}/api/v1/hello/`)
