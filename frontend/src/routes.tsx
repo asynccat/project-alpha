@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import SignInSide from '../src/components/authentication/SignIn'
 import SignUpSide from '../src/components/authentication/SignUp'
-import Welcome from './components/personal/Personalpage'
+import Welcome from './components/personal/PersonalPage'
 
 
 

@@ -3,7 +3,7 @@ import { useSelector} from 'react-redux'
 
 import SignUpSide from './components/authentication/SignUp'
 import {AppStateType} from './index'
-import Welcome from './components/personal/Personalpage'
+import Welcome from './components/personal/PersonalPage'
 
 
 // eslint-disable-next-line complexity

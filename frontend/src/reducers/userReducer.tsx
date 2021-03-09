@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
-import {SET_USER, LOG_OUT, ActionsOfUser} from '../actions/index'
+import {AuthActionType, ActionsOfUser} from '../actions/authActions'
 
 export const defaultState = {
     loggedIn: false,
@@ -10,12 +10,12 @@ export const defaultState = {
 
 const userReducer = (state = defaultState, action: ActionsOfUser) => {
     switch(action.type){
-        case SET_USER:
+        case AuthActionType.SET_USER:
             return {
                 loggedIn: true,
                 user: {...action.payload}
             }
-        case LOG_OUT:
+        case AuthActionType.LOG_OUT:
             localStorage.clear()
             return {
                 loggedIn: false,

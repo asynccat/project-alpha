@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Dispatch, bindActionCreators } from 'redux'
 
 import { decreaseCount, increaseCount } from '../../actions/Counter'
-import { CounterState} from '../../actions'
+import { CounterState} from '../../actions/authActions'
 
 interface CounterProps {
   readonly increaseCount: () => void

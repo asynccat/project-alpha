@@ -19,27 +19,24 @@ export interface DecrementAction extends Action {
 
 export type CounterActions = IncrementAction | DecrementAction
 
-export const SET_USER = 'SET_USER'
-export const LOG_OUT = 'LOG_OUT'
-
-export interface UserDetailsOnRegister {
-  email: string
-  username: string
-  password: string
+export enum AuthActionType {
+  LOG_OUT = 'auth/LOG_OUT',
+  SET_USER = 'auth/SET_USER'
 }
 
-export interface UserDetailsOnLogin {
+export interface IUserDetails{
   email: string
   password: string
 }
+
 
 export interface fetchUserAction {
-  type: typeof SET_USER
-  payload: UserDetailsOnRegister | UserDetailsOnLogin
+  type: typeof AuthActionType.SET_USER
+  payload: IUserDetails
 }
 
 export interface loggedoutUser {
-  type: typeof LOG_OUT
+  type: typeof AuthActionType.LOG_OUT
   payload: null
 }
 
