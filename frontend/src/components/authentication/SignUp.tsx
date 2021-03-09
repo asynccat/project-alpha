@@ -6,19 +6,19 @@ import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
 import {signUserUp} from '../../actions/userActions'
-import { fetchUserAction, UserDetailsOnRegister } from '../../actions'
+import { fetchUserAction, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignUpStyles'
 
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
+const initialFormData = Object.freeze({
+  email: '',
+  password: '',
+})
+
 function SignUpSide() :React.ReactElement {
-	const initialFormData = Object.freeze({
-		email: '',
-		username: '',
-		password: '',
-	})
 
 	const [formData, updateFormData] = useState(initialFormData)
 
@@ -60,18 +60,6 @@ function SignUpSide() :React.ReactElement {
                 onChange={handleChange}
                 required
                 variant="outlined"
-              />
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <TextField
-                autoComplete="username"
-								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								onChange={handleChange}
-								required
-								variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
@@ -130,7 +118,7 @@ function SignUpSide() :React.ReactElement {
 
 const mapDispatchToProps = (dispatch:Dispatch<fetchUserAction>) => {
   return {
-      signUserUp: (formData: UserDetailsOnRegister) => dispatch<any>(signUserUp(formData))
+      signUserUp: (formData: IUserDetails) => dispatch<any>(signUserUp(formData))
 }
 }
 
