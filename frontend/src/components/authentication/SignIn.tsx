@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable react/jsx-no-bind */
+import {CssBaseline, TextField} from '@material-ui/core'
+import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+
 import React, {useState } from 'react'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
-import { fetchUser } from '../../actions/userActions'
-import { AuthActions, IUserDetails } from '../../actions/authActions'
+import { login, AuthActions, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignInStyles'
 
-import {CssBaseline, TextField} from '@material-ui/core'
-import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 const initialFormData = Object.freeze({
   email: '',
   password: '',
 })
 
-export function SignInSide() :React.ReactElement {
+export function SignInSide(): React.ReactElement {
 
 	const [formData, updateFormData] = useState(initialFormData)
 
@@ -32,7 +32,7 @@ export function SignInSide() :React.ReactElement {
 	const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault()
 		console.log(formData)
-    fetchUser(formData)
+    login(formData)
   }
 
   const classes = useStyles()
@@ -118,7 +118,7 @@ export function SignInSide() :React.ReactElement {
 
 const mapDispatchToProps = (dispatch:Dispatch<AuthActions>) => {
   return {
-      fetchUser: (formData: IUserDetails) => dispatch<any>(fetchUser(formData))
+    login: (formData: IUserDetails) => dispatch<any>(login(formData))
   }
 }
 

@@ -1,4 +1,4 @@
-export type Action<ActionType extends string, PayloadType = void> = {
+export type Action<ActionType, PayloadType = void> = {
   type: ActionType
   payload: PayloadType
 }

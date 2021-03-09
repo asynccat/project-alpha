@@ -5,8 +5,7 @@ import React, {useState } from 'react'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
-import {signUserUp} from '../../actions/userActions'
-import { fetchUserAction, IUserDetails } from '../../actions/authActions'
+import { signUserUp, fetchUserAction, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignUpStyles'
 
 import {CssBaseline, TextField} from '@material-ui/core'
