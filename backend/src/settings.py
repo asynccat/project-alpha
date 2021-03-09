@@ -21,9 +21,12 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'webpack_loader',
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
     # project apps
-    'api.apps.ApiConfig',
-    'web.apps.UsersConfig',
+    'api',
+    'web',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +53,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -124,9 +129,28 @@ WEBPACK_LOADER = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
+    ),
 }
+
+AUTHENTICATION_BACKENDS = (
+    # VK
+    'social_core.backends.vk.VKOAuth2',
+    # Google OAuth2
+    'social_core.backends.google.GoogleOAuth2',
+    # django-rest-framework-social-oauth2
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+    # Django
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+]
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = [
+    'email',
+]
 
 settings = dynaconf.DjangoDynaconf(
     __name__,
