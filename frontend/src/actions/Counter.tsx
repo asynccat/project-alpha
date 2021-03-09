@@ -1,4 +1,4 @@
-import {CounterActions, CounterTypes} from './index'
+import {CounterActions, CounterTypes} from './authActions'
 
 export const increaseCount = (): CounterActions => ({
   type: CounterTypes.INCREASE_COUNT,

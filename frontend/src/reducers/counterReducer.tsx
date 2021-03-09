@@ -1,4 +1,4 @@
-import { CounterActions, CounterState, CounterTypes } from '../actions'
+import { CounterActions, CounterState, CounterTypes } from '../actions/authActions'
 import { Action } from 'redux'
 
 const initialState: CounterState = {

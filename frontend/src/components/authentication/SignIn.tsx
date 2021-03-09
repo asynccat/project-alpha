@@ -6,18 +6,19 @@ import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
 import { fetchUser } from '../../actions/userActions'
-import { ActionsOfUser, UserDetailsOnLogin } from '../../actions'
+import { ActionsOfUser, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignInStyles'
 
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
+const initialFormData = Object.freeze({
+  email: '',
+  password: '',
+})
+
 export function SignInSide() :React.ReactElement {
-	const initialFormData = Object.freeze({
-		email: '',
-		password: '',
-	})
 
 	const [formData, updateFormData] = useState(initialFormData)
 
@@ -104,7 +105,7 @@ export function SignInSide() :React.ReactElement {
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {'Don\'t have an account? Sign Up'}
+                  Don&apos;t have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
@@ -117,7 +118,7 @@ export function SignInSide() :React.ReactElement {
 
 const mapDispatchToProps = (dispatch:Dispatch<ActionsOfUser>) => {
   return {
-      fetchUser: (formData: UserDetailsOnLogin) => dispatch<any>(fetchUser(formData))
+      fetchUser: (formData: IUserDetails) => dispatch<any>(fetchUser(formData))
   }
 }
 
