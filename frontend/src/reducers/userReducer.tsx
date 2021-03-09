@@ -1,14 +1,19 @@
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
 import {AuthActionType, AuthActions} from '../actions/authActions'
 
-export const defaultState = {
+interface AuthInitState {
+    loggedIn: boolean
+    // Here we use any becase type don't specified yet
+    // eslint-disable-next-line
+    user: any
+}
+
+export const initialState = {
     loggedIn: false,
     user: {}
 }
 
-const userReducer = (state = defaultState, action: AuthActions) => {
+const userReducer = (state: AuthInitState = initialState, action: AuthActions): AuthInitState => {
     switch(action.type){
         case AuthActionType.SET_USER:
             return {
@@ -16,7 +21,6 @@ const userReducer = (state = defaultState, action: AuthActions) => {
                 user: {...action.payload}
             }
         case AuthActionType.LOG_OUT:
-            localStorage.clear()
             return {
                 loggedIn: false,
                 user: false
