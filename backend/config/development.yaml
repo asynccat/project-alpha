@@ -9,3 +9,7 @@ development:
     - 'http://127.0.0.1:8000'
     - 'http://localhost:3000'
     - 'http://127.0.0.1:3000'
+  SOCIAL_AUTH_GOOGLE_OAUTH2_KEY: '172952687211-u1a8hlv7eeprjmfnjfgbc4jfj5phmu3g.apps.googleusercontent.com'
+  SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET: 'x5tKtbh2SPRJ2AA3EuyiDuE8'
+  SOCIAL_AUTH_VK_OAUTH2_KEY: '7786791'
+  SOCIAL_AUTH_VK_OAUTH2_SECRET: 'WxFi0verm3tvAXeEU8u7'

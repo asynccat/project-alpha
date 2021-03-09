@@ -1,5 +1,7 @@
 from django.apps import AppConfig
 
 
-class UsersConfig(AppConfig):
+class WebConfig(AppConfig):
     name = 'web'
+    verbose_name = 'Web'
+
