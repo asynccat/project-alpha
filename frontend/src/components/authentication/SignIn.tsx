@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
 import { fetchUser } from '../../actions/userActions'
-import { ActionsOfUser, IUserDetails } from '../../actions/authActions'
+import { AuthActions, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignInStyles'
 
 import {CssBaseline, TextField} from '@material-ui/core'
@@ -116,7 +116,7 @@ export function SignInSide() :React.ReactElement {
   )
 }
 
-const mapDispatchToProps = (dispatch:Dispatch<ActionsOfUser>) => {
+const mapDispatchToProps = (dispatch:Dispatch<AuthActions>) => {
   return {
       fetchUser: (formData: IUserDetails) => dispatch<any>(fetchUser(formData))
   }
