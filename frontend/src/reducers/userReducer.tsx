@@ -1,14 +1,14 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
-import {AuthActionType, ActionsOfUser} from '../actions/authActions'
+import {AuthActionType, AuthActions} from '../actions/authActions'
 
 export const defaultState = {
     loggedIn: false,
     user: {}
 }
 
-const userReducer = (state = defaultState, action: ActionsOfUser) => {
+const userReducer = (state = defaultState, action: AuthActions) => {
     switch(action.type){
         case AuthActionType.SET_USER:
             return {

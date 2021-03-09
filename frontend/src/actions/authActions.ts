@@ -1,4 +1,4 @@
-import { Action } from 'redux'
+import {Action} from '../types/action'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -11,14 +11,7 @@ export interface IUserDetails{
 }
 
 
-export interface fetchUserAction {
-  type: typeof AuthActionType.SET_USER
-  payload: IUserDetails
-}
+export type fetchUserAction = Action<AuthActionType.SET_USER, IUserDetails>
+export type logoutUserAction = Action<AuthActionType.LOG_OUT>
 
-export interface loggedoutUser {
-  type: typeof AuthActionType.LOG_OUT
-  payload: null
-}
-
-export type ActionsOfUser = fetchUserAction | loggedoutUser
+export type AuthActions = fetchUserAction | logoutUserAction
