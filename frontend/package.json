@@ -129,9 +129,15 @@
   "jest": {
     "automock": false,
     "moduleDirectories": [
+<<<<<<< HEAD
       "node_modules",
       "src"
     ],
+=======
+        "node_modules",
+        "src"
+      ],
+>>>>>>> 4b42cf8... refactor(pa-30): change SignIn component
     "roots": [
       "<rootDir>/src"
     ],

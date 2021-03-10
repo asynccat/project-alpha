@@ -30,7 +30,8 @@ describe('user reducer', () => {
         loggedIn: true,
         user: {
           password: '1234',
-          email: 'test@email.com'
+          email: 'test@email.com',
+          history: '/welcome'
         }
       }
     )
