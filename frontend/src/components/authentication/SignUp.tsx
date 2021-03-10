@@ -38,8 +38,10 @@ export default function SignUpSide(): React.ReactElement {
 
   const classes = useStyles()
 
-  return (
-    <Grid className={classes.root} component="main" container>
+  classes = Page.styles
+
+  render() {
+    <Grid className={this.classes.root} component="main" container>
       <CssBaseline />
       <Grid className={classes.image} item md={gridSize.SEVEN} sm={gridSize.FOUR} xs={false} />
       <Grid component={Paper}
@@ -56,7 +58,7 @@ export default function SignUpSide(): React.ReactElement {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={this.classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -93,7 +95,7 @@ export default function SignUpSide(): React.ReactElement {
             </Grid>
           </Grid>
           <Button
-            className={classes.submit}
+            className={this.classes.submit}
             color="primary"
             fullWidth
             onClick={signUp}
@@ -103,7 +105,7 @@ export default function SignUpSide(): React.ReactElement {
             Sign Up
           </Button>
           <Button
-            className={classes.submit}
+            className={this.classes.submit}
             color="primary"
             fullWidth
             onClick={signUp}
@@ -123,5 +125,5 @@ export default function SignUpSide(): React.ReactElement {
       </div>
       </Grid>
     </Grid>
-  )
+  }
 }
