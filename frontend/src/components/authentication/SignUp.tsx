@@ -1,53 +1,67 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-magic-numbers */
 /* eslint-disable react/jsx-no-bind */
+import {CssBaseline, TextField} from '@material-ui/core'
+import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+
 import React, {useState } from 'react'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
 import { signUserUp, fetchUserAction, IUserDetails } from '../../actions/authActions'
-import {useStyles} from './SignUpStyles'
+import {useStyles} from './SignUpSignIn.styles'
+import {Five, Six, Seven, Twelve, Eight, Four} from './MagicNumbersToConst'
 
-import {CssBaseline, TextField} from '@material-ui/core'
-import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
-const initialFormData = Object.freeze({
-  email: '',
-  password: '',
-})
+// const initialFormData = ({
+//   email: '',
+//   password: '',
+// })
 
-function SignUpSide() :React.ReactElement {
 
-	const [formData, updateFormData] = useState(initialFormData)
+const Page = () => {
+  const styles = useStyles()
+  return styles
+}
 
-	const handleChange = (e:React.SyntheticEvent) => {
-		updateFormData({
-			...formData,
-			[(e.target as HTMLTextAreaElement).name]: ((e.target as HTMLTextAreaElement)).value.trim(),
-		})
-	}
+class SignUpSide extends React.Component {
+  constructor(props:IUserDetails) {
+    super(props)
 
-	const handleSubmit = (e:React.SyntheticEvent) => {
-		e.preventDefault()
-    signUserUp(formData)
-   
+    this.state = {
+      email: '',
+      password: '',
+    }
   }
-  const classes = useStyles()
 
-  return (
-    <Grid className={classes.root} component="main" container>
+  handleChange(e:React.SyntheticEvent) {
+    this.setState({
+      [(e.target as HTMLTextAreaElement).name]: (e.target as HTMLTextAreaElement).value.trim()
+    })
+  }
+
+	handleSubmit = (e:React.SyntheticEvent) => {
+		e.preventDefault()
+    this.props.signUserUp(this.state)
+    console.log('done')
+  }
+
+  classes = Page.styles
+
+  render() {
+    <Grid className={this.classes.root} component="main" container>
       <CssBaseline />
-      <Grid className={classes.image} item md={7} sm={4} xs={false} />
-      <Grid component={Paper} elevation={6} item md={5} sm={8} square xs={12}>
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+      <Grid className={this.classes.image} item md={Seven} sm={Four} xs={false} />
+      <Grid component={Paper} elevation={Six} item md={Five} sm={Eight} square xs={Twelve}>
+      <div className={this.classes.paper}>
+        <Avatar className={this.classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={this.classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -56,8 +70,9 @@ function SignUpSide() :React.ReactElement {
                 id="email"
                 label="Email Address"
                 name="email"
-                onChange={handleChange}
+                onChange={this.handleChange}
                 required
+                value={this.state.email}
                 variant="outlined"
               />
             </Grid>
@@ -68,9 +83,10 @@ function SignUpSide() :React.ReactElement {
                 id="password"
                 label="Password"
                 name="password"
-                onChange={handleChange}
+                onChange={this.handleChange}
                 required
                 type="password"
+                value={this.state.password}
                 variant="outlined"
               />
             </Grid>
@@ -82,17 +98,17 @@ function SignUpSide() :React.ReactElement {
             </Grid>
           </Grid>
           <Button
-            className={classes.submit}
+            className={this.classes.submit}
             color="primary"
             fullWidth
-            onClick={handleSubmit}
+            onClick={this.handleSubmit}
             type="submit"
             variant="contained"
           >
             Sign Up
           </Button>
           <Button
-            className={classes.submit}
+            className={this.classes.submit}
             color="primary"
             fullWidth
           
@@ -112,12 +128,12 @@ function SignUpSide() :React.ReactElement {
       </div>
       </Grid>
     </Grid>
-  )
+  }
 }
 
 const mapDispatchToProps = (dispatch:Dispatch<fetchUserAction>) => {
   return {
-      signUserUp: (formData: IUserDetails) => dispatch<any>(signUserUp(formData))
+      signUserUp: (userInfo: IUserDetails) => dispatch<any>(signUserUp(userInfo))
 }
 }
 
