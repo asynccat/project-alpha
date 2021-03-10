@@ -18,14 +18,14 @@ export default function SignInSide(): React.ReactElement {
 
 	const [formData, updateFormData] = useState(initialFormData)
 
-	const handleChange = (e:React.SyntheticEvent) => {
+	function handleChange(e:React.SyntheticEvent) {
 		updateFormData({
 			...formData,
       [(e.target as HTMLTextAreaElement).name]: ((e.target as HTMLTextAreaElement)).value.trim(),
 		})
 	}
 
-	const handleSubmit = (e:React.SyntheticEvent) => {
+	function handleSubmit(e:React.SyntheticEvent) {
 		e.preventDefault()
 		console.log(formData)
     login(formData)
@@ -36,8 +36,19 @@ export default function SignInSide(): React.ReactElement {
   return (
     <Grid className={classes.root} component="main" container>
       <CssBaseline />
-      <Grid className={classes.image} item md={gridSize.SEVEN} sm={gridSize.FOUR} xs={false} />
-      <Grid component={Paper} elevation={SHADOW_DEPTH_SIX} item md={gridSize.FIVE} sm={gridSize.EIGHT} square xs={gridSize.TWELVE}>
+      <Grid
+        className={classes.image}
+        item
+        md={gridSize.SEVEN}
+        sm={gridSize.FOUR}
+        xs={false} />
+      <Grid component={Paper}
+            elevation={SHADOW_DEPTH_SIX}
+            item
+            md={gridSize.FIVE}
+            sm={gridSize.EIGHT}
+            square
+            xs={gridSize.TWELVE}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
