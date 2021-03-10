@@ -1,22 +1,17 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-no-bind */
+import React, {useCallback, useState} from 'react'
+import {useDispatch} from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
-import React, {useCallback, useState} from 'react'
-import {connect, useDispatch} from 'react-redux'
-import {Dispatch} from 'redux'
-
-import { signUserUp, fetchUserAction, IUserDetails } from '../../actions/authActions'
-import {useStyles} from './SignUpSignIn.styles'
-
+import { signUserUp } from '../../actions/authActions'
 import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
 
+import { useStyles } from './SignUpSignIn.styles'
 
-function SignUpSide(): React.ReactElement {
+export default function SignUpSide(): React.ReactElement {
 
   const [email, setEmail] = useState('')
   const onChangeEmail = useCallback((e) => {
@@ -30,11 +25,14 @@ function SignUpSide(): React.ReactElement {
   }, [setPassword])
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const signUp = useCallback((e) => {
     e.preventDefault()
-    dispatch(signUserUp({email, password}))
-  }, [dispatch, email, password])
+    // eslint-disable-next-line
+    // @ts-ignore
+    dispatch(signUserUp({email, password, history}))
+  }, [dispatch, email, password, history])
 
   const classes = useStyles()
 
@@ -106,7 +104,7 @@ function SignUpSide(): React.ReactElement {
             className={classes.submit}
             color="primary"
             fullWidth
-            onClick={() => null}
+            onClick={signUp}
             type="submit"
             variant="contained"
           >
@@ -125,11 +123,3 @@ function SignUpSide(): React.ReactElement {
     </Grid>
   )
 }
-
-const mapDispatchToProps = (dispatch:Dispatch<fetchUserAction>) => {
-  return {
-      signUserUp: (userInfo: IUserDetails) => dispatch<any>(signUserUp(userInfo))
-}
-}
-
-export default connect(null, mapDispatchToProps)(SignUpSide)
