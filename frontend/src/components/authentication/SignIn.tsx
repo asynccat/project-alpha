@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-magic-numbers */
 /* eslint-disable react/jsx-no-bind */
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
@@ -10,10 +9,10 @@ import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 
 import { login, AuthActions, IUserDetails } from '../../actions/authActions'
-import {useStyles} from './SignInStyles'
+import {useStyles} from './SignUpSignIn.styles'
+import {Five, Six, Seven, Twelve, Eight, Four} from './MagicNumbersToConst'
 
-
-const initialFormData = Object.freeze({
+const initialFormData = ({
   email: '',
   password: '',
 })
@@ -40,8 +39,8 @@ export function SignInSide(): React.ReactElement {
   return (
     <Grid className={classes.root} component="main" container>
       <CssBaseline />
-      <Grid className={classes.image} item md={7} sm={4} xs={false} />
-      <Grid component={Paper} elevation={6} item md={5} sm={8} square xs={12}>
+      <Grid className={classes.image} item md={Seven} sm={Four} xs={false} />
+      <Grid component={Paper} elevation={Six} item md={Five} sm={Eight} square xs={Twelve}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />

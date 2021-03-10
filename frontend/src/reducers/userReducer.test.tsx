@@ -2,8 +2,7 @@ import * as React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import reducer, {initialState} from './userReducer'
 import {AuthActionType} from '../actions/authActions'
-
-
+import '@types/jest'
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
