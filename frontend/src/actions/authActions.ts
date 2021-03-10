@@ -56,15 +56,12 @@ export const signUserUp = (payload: UserDetailsWithHistory) =>
   }
 }
 
-export const login = (userInfo: IUserDetails) => async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
+export const login = (payload: UserDetailsWithHistory) => 
+async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
+  const {history, password, email} = payload
   try {
-    const response = await fetch(`${baseURL}/token/`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(userInfo),
-    })
+    history.push('/welcome')
+    const response = await authRequest('token', {email, password})
     const result = await response.json()
     localStorage.setItem('token', result.token)
     dispatch(setUserAction(result.user))

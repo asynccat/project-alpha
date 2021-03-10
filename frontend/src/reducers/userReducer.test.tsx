@@ -1,5 +1,6 @@
 import reducer, {initialState} from './userReducer'
 import {AuthActionType} from '../actions/authActions'
+import '@testing-library/jest-dom/'
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
@@ -21,7 +22,8 @@ describe('user reducer', () => {
         type: AuthActionType.SET_USER,
         payload: {
           password: '1234',
-          email: 'test@email.com'
+          email: 'test@email.com',
+          history: '/welcome'
         },
       })
     ).toEqual(
@@ -29,7 +31,8 @@ describe('user reducer', () => {
         loggedIn: true,
         user: {
           password: '1234',
-          email: 'test@email.com'
+          email: 'test@email.com',
+          history: '/welcome'
         }
       }
     )
