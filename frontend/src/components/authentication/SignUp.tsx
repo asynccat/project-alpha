@@ -11,7 +11,9 @@ import {Dispatch} from 'redux'
 
 import { signUserUp, fetchUserAction, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignUpSignIn.styles'
-import {Five, Six, Seven, Twelve, Eight, Four} from './MagicNumbersToConst'
+
+import * as gridSize from '../../constants/styles.values'
+import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
 
 
 function SignUpSide(): React.ReactElement {
@@ -39,8 +41,14 @@ function SignUpSide(): React.ReactElement {
   return (
     <Grid className={classes.root} component="main" container>
       <CssBaseline />
-      <Grid className={classes.image} item md={Seven} sm={Four} xs={false} />
-      <Grid component={Paper} elevation={Six} item md={Five} sm={Eight} square xs={Twelve}>
+      <Grid className={classes.image} item md={gridSize.SEVEN} sm={gridSize.FOUR} xs={false} />
+      <Grid component={Paper}
+            elevation={SHADOW_DEPTH_SIX}
+            item md={gridSize.FIVE}
+            sm={gridSize.EIGHT}
+            square
+            xs={gridSize.TWELVE}
+            >
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
