@@ -5,14 +5,21 @@ import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
+<<<<<<< HEAD
 import { signUserUp } from '../../actions/authActions'
 import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
+=======
+import React, {useCallback, useState} from 'react'
+import {connect, useDispatch} from 'react-redux'
+import {Dispatch} from 'redux'
+>>>>>>> a78aa88... refactoring(PA-30): fix tests and sign up refactoring
 
 import { useStyles } from './SignUpSignIn.styles'
 
 export default function SignUpSide(): React.ReactElement {
 
+<<<<<<< HEAD
   const [email, setEmail] = useState('')
   const onChangeEmail = useCallback((e) => {
     console.log('typing', e.target.value)
@@ -37,12 +44,34 @@ export default function SignUpSide(): React.ReactElement {
   }, [dispatch, email, password, history])
 
   const classes = useStyles()
+=======
+function SignUpSide(): React.ReactElement {
 
-  classes = Page.styles
+  const [email, setEmail] = useState('')
+  const onChangeEmail = useCallback((e) => {
+    console.log('typing', e.target.value)
+    setEmail(e.target.value)
+  }, [setEmail])
 
-  render() {
-    <Grid className={this.classes.root} component="main" container>
+  const [password, setPassword] = useState('')
+  const onChangePassword = useCallback((e) => {
+    setPassword(e.target.value)
+  }, [setPassword])
+
+  const dispatch = useDispatch()
+
+  const signUp = useCallback((e) => {
+    e.preventDefault()
+    dispatch(signUserUp({email, password}))
+  }, [dispatch, email, password])
+>>>>>>> a78aa88... refactoring(PA-30): fix tests and sign up refactoring
+
+  const classes = useStyles()
+
+  return (
+    <Grid className={classes.root} component="main" container>
       <CssBaseline />
+<<<<<<< HEAD
       <Grid className={classes.image} item md={gridSize.SEVEN} sm={gridSize.FOUR} xs={false} />
       <Grid component={Paper}
             elevation={SHADOW_DEPTH_SIX}
@@ -51,6 +80,10 @@ export default function SignUpSide(): React.ReactElement {
             square
             xs={gridSize.TWELVE}
             >
+=======
+      <Grid className={classes.image} item md={Seven} sm={Four} xs={false} />
+      <Grid component={Paper} elevation={Six} item md={Five} sm={Eight} square xs={Twelve}>
+>>>>>>> a78aa88... refactoring(PA-30): fix tests and sign up refactoring
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -58,7 +91,7 @@ export default function SignUpSide(): React.ReactElement {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={this.classes.form} noValidate>
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -95,7 +128,7 @@ export default function SignUpSide(): React.ReactElement {
             </Grid>
           </Grid>
           <Button
-            className={this.classes.submit}
+            className={classes.submit}
             color="primary"
             fullWidth
             onClick={signUp}
@@ -105,10 +138,14 @@ export default function SignUpSide(): React.ReactElement {
             Sign Up
           </Button>
           <Button
-            className={this.classes.submit}
+            className={classes.submit}
             color="primary"
             fullWidth
+<<<<<<< HEAD
             onClick={signUp}
+=======
+            onClick={() => null}
+>>>>>>> a78aa88... refactoring(PA-30): fix tests and sign up refactoring
             type="submit"
             variant="contained"
           >
@@ -125,5 +162,5 @@ export default function SignUpSide(): React.ReactElement {
       </div>
       </Grid>
     </Grid>
-  }
+  )
 }
