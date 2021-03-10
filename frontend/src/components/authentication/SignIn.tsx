@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-no-bind */
+import React, { useState } from 'react'
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
-import React, {useState } from 'react'
-import {connect} from 'react-redux'
-import {Dispatch} from 'redux'
+import * as gridSize from '../../constants/styles.values'
+import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
+import { login } from '../../actions/authActions'
 
-import { login, AuthActions, IUserDetails } from '../../actions/authActions'
 import {useStyles} from './SignUpSignIn.styles'
-import {Five, Six, Seven, Twelve, Eight, Four} from './MagicNumbersToConst'
 
 const initialFormData = ({
   email: '',
   password: '',
 })
 
-export function SignInSide(): React.ReactElement {
+export default function SignInSide(): React.ReactElement {
 
 	const [formData, updateFormData] = useState(initialFormData)
 
@@ -39,8 +36,8 @@ export function SignInSide(): React.ReactElement {
   return (
     <Grid className={classes.root} component="main" container>
       <CssBaseline />
-      <Grid className={classes.image} item md={Seven} sm={Four} xs={false} />
-      <Grid component={Paper} elevation={Six} item md={Five} sm={Eight} square xs={Twelve}>
+      <Grid className={classes.image} item md={gridSize.SEVEN} sm={gridSize.FOUR} xs={false} />
+      <Grid component={Paper} elevation={SHADOW_DEPTH_SIX} item md={gridSize.FIVE} sm={gridSize.EIGHT} square xs={gridSize.TWELVE}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -114,11 +111,3 @@ export function SignInSide(): React.ReactElement {
     </Grid>
   )
 }
-
-const mapDispatchToProps = (dispatch:Dispatch<AuthActions>) => {
-  return {
-    login: (formData: IUserDetails) => dispatch<any>(login(formData))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(SignInSide)
