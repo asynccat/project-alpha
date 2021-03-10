@@ -127,6 +127,10 @@
   },
   "jest": {
     "automock": false,
+    "moduleDirectories": [
+        "node_modules",
+        "src"
+      ],
     "roots": [
       "<rootDir>/src"
     ],

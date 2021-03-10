@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
+import {useDispatch} from 'react-redux'
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -9,27 +11,28 @@ import { login } from '../../actions/authActions'
 
 import {useStyles} from './SignUpSignIn.styles'
 
-const initialFormData = ({
-  email: '',
-  password: '',
-})
-
 export default function SignInSide(): React.ReactElement {
 
-	const [formData, updateFormData] = useState(initialFormData)
+  const [email, setEmail] = useState('')
+  const onChangeEmail = useCallback((e) => {
+    console.log('typing', e.target.value)
+    setEmail(e.target.value)
+  }, [setEmail])
 
-	function handleChange(e:React.SyntheticEvent) {
-		updateFormData({
-			...formData,
-      [(e.target as HTMLTextAreaElement).name]: ((e.target as HTMLTextAreaElement)).value.trim(),
-		})
-	}
+  const [password, setPassword] = useState('')
+  const onChangePassword = useCallback((e) => {
+    setPassword(e.target.value)
+  }, [setPassword])
 
-	function handleSubmit(e:React.SyntheticEvent) {
-		e.preventDefault()
-		console.log(formData)
-    login(formData)
-  }
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const signIn = useCallback((e) => {
+    e.preventDefault()
+    // eslint-disable-next-line
+    // @ts-ignore
+    dispatch(login({email, password, history}))
+  }, [dispatch, email, password, history])
 
   const classes = useStyles()
 
@@ -65,7 +68,7 @@ export default function SignInSide(): React.ReactElement {
               label="Email Address"
               margin="normal"
               name="email"
-              onChange={handleChange}
+              onChange={onChangeEmail}
               required
               variant="outlined"
             />
@@ -76,7 +79,7 @@ export default function SignInSide(): React.ReactElement {
               label="Password"
               margin="normal"
               name="password"
-              onChange={handleChange}
+              onChange={onChangePassword}
               required
               type="password"
               variant="outlined"
@@ -89,7 +92,7 @@ export default function SignInSide(): React.ReactElement {
               className={classes.submit}
               color="primary"
               fullWidth
-              onClick={handleSubmit}
+              onClick={signIn}
               type="submit"
               variant="contained"
             >

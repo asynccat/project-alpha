@@ -1,7 +1,8 @@
 import * as React from 'react'
 import {render, screen} from '@testing-library/react'
 import { Provider } from 'react-redux'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
+// import '@types/jest'
 
 import App from './App'
 import {store} from './index'
