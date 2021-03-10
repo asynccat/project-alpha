@@ -5,8 +5,8 @@ import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
-import React, {useState } from 'react'
-import {connect} from 'react-redux'
+import React, {useCallback, useState} from 'react'
+import {connect, useDispatch} from 'react-redux'
 import {Dispatch} from 'redux'
 
 import { signUserUp, fetchUserAction, IUserDetails } from '../../actions/authActions'
@@ -14,54 +14,41 @@ import {useStyles} from './SignUpSignIn.styles'
 import {Five, Six, Seven, Twelve, Eight, Four} from './MagicNumbersToConst'
 
 
-// const initialFormData = ({
-//   email: '',
-//   password: '',
-// })
+function SignUpSide(): React.ReactElement {
 
+  const [email, setEmail] = useState('')
+  const onChangeEmail = useCallback((e) => {
+    console.log('typing', e.target.value)
+    setEmail(e.target.value)
+  }, [setEmail])
 
-const Page = () => {
-  const styles = useStyles()
-  return styles
-}
+  const [password, setPassword] = useState('')
+  const onChangePassword = useCallback((e) => {
+    setPassword(e.target.value)
+  }, [setPassword])
 
-class SignUpSide extends React.Component {
-  constructor(props:IUserDetails) {
-    super(props)
+  const dispatch = useDispatch()
 
-    this.state = {
-      email: '',
-      password: '',
-    }
-  }
+  const signUp = useCallback((e) => {
+    e.preventDefault()
+    dispatch(signUserUp({email, password}))
+  }, [dispatch, email, password])
 
-  handleChange(e:React.SyntheticEvent) {
-    this.setState({
-      [(e.target as HTMLTextAreaElement).name]: (e.target as HTMLTextAreaElement).value.trim()
-    })
-  }
+  const classes = useStyles()
 
-	handleSubmit = (e:React.SyntheticEvent) => {
-		e.preventDefault()
-    this.props.signUserUp(this.state)
-    console.log('done')
-  }
-
-  classes = Page.styles
-
-  render() {
-    <Grid className={this.classes.root} component="main" container>
+  return (
+    <Grid className={classes.root} component="main" container>
       <CssBaseline />
-      <Grid className={this.classes.image} item md={Seven} sm={Four} xs={false} />
+      <Grid className={classes.image} item md={Seven} sm={Four} xs={false} />
       <Grid component={Paper} elevation={Six} item md={Five} sm={Eight} square xs={Twelve}>
-      <div className={this.classes.paper}>
-        <Avatar className={this.classes.avatar}>
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={this.classes.form} noValidate>
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -70,9 +57,9 @@ class SignUpSide extends React.Component {
                 id="email"
                 label="Email Address"
                 name="email"
-                onChange={this.handleChange}
+                onChange={onChangeEmail}
                 required
-                value={this.state.email}
+                value={email}
                 variant="outlined"
               />
             </Grid>
@@ -83,10 +70,10 @@ class SignUpSide extends React.Component {
                 id="password"
                 label="Password"
                 name="password"
-                onChange={this.handleChange}
+                onChange={onChangePassword}
                 required
                 type="password"
-                value={this.state.password}
+                value={password}
                 variant="outlined"
               />
             </Grid>
@@ -98,20 +85,20 @@ class SignUpSide extends React.Component {
             </Grid>
           </Grid>
           <Button
-            className={this.classes.submit}
+            className={classes.submit}
             color="primary"
             fullWidth
-            onClick={this.handleSubmit}
+            onClick={signUp}
             type="submit"
             variant="contained"
           >
             Sign Up
           </Button>
           <Button
-            className={this.classes.submit}
+            className={classes.submit}
             color="primary"
             fullWidth
-          
+            onClick={() => null}
             type="submit"
             variant="contained"
           >
@@ -128,7 +115,7 @@ class SignUpSide extends React.Component {
       </div>
       </Grid>
     </Grid>
-  }
+  )
 }
 
 const mapDispatchToProps = (dispatch:Dispatch<fetchUserAction>) => {
