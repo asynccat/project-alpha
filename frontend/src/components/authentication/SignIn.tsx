@@ -31,7 +31,8 @@ export default function SignInSide(): React.ReactElement {
     e.preventDefault()
     // eslint-disable-next-line
     // @ts-ignore
-    dispatch(login({email, password, history}))
+    dispatch(login({email, password}))
+    history.push('/welcome')
   }, [dispatch, email, password, history])
 
   const classes = useStyles()
@@ -114,7 +115,7 @@ export default function SignInSide(): React.ReactElement {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/sign-up" variant="body2">
                   Don&apos;t have an account? Sign Up
                 </Link>
               </Grid>
