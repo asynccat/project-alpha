@@ -16,14 +16,13 @@ describe('user reducer', () => {
     )
   })
 
-  it('should handle user signing up', () => {
+  it('should handle user signing up', () => { 
     expect(
       reducer(initialState, {
         type: AuthActionType.SET_USER,
         payload: {
           password: '1234',
           email: 'test@email.com',
-          history: '/welcome'
         },
       })
     ).toEqual(
@@ -31,10 +30,10 @@ describe('user reducer', () => {
         loggedIn: true,
         user: {
           password: '1234',
-          email: 'test@email.com',
-          history: '/welcome'
+          email: 'test@email.com'
         }
       }
     )
 })
 })
+
