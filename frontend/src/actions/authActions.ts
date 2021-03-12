@@ -1,8 +1,7 @@
 import {Dispatch} from 'redux'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
-import {config} from '../config'
-import {IWithHistory} from '../types/router'
+import {authRequest} from '../api/authRequest'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -14,39 +13,20 @@ export interface IUserDetails {
   password: string
 }
 
-type UserDetailsWithHistory = IUserDetails & IWithHistory
-
-export type fetchUserAction = Action<AuthActionType.SET_USER, UserDetailsWithHistory>
+export type fetchUserAction = Action<AuthActionType.SET_USER, IUserDetails>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
 
 export type AuthActions = fetchUserAction | logoutUserAction
 
-
-const baseURL = `${config.baseUrl}${config.apiV1}`
-
-export const setUserAction = actionCreator<AuthActionType.SET_USER, UserDetailsWithHistory>(AuthActionType.SET_USER)
+export const setUserAction = actionCreator<AuthActionType.SET_USER, IUserDetails>(AuthActionType.SET_USER)
 
 // TODO: localStorage.clear()
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
-function authRequest(url: string, userInfo: IUserDetails) {
-  return fetch(`${baseURL}/${url}/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(userInfo),
-  })
-}
-
-
-export const signUserUp = (payload: UserDetailsWithHistory) =>
+export const signUserUp = (payload: IUserDetails) =>
   async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
-  const {history, password, email} = payload
   try {
-    history.push('/welcome')
-    const response = await authRequest('sign-up', {email, password})
+    const response = await authRequest('sign-up', 'POST', payload)
     const result = await response.json()
     localStorage.setItem('token', result.token)
     dispatch(setUserAction(result.user))
@@ -56,12 +36,10 @@ export const signUserUp = (payload: UserDetailsWithHistory) =>
   }
 }
 
-export const login = (payload: UserDetailsWithHistory) => 
+export const login = (payload: IUserDetails) => 
 async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
-  const {history, password, email} = payload
   try {
-    history.push('/welcome')
-    const response = await authRequest('token', {email, password})
+    const response = await authRequest('token', 'POST', payload)
     const result = await response.json()
     localStorage.setItem('token', result.token)
     dispatch(setUserAction(result.user))
