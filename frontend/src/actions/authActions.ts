@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import {Dispatch} from 'redux'
 
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
@@ -40,7 +41,6 @@ async dispatch => {
     console.log(result)
     localStorage.setItem('token', result.token)
     dispatch(setUserAction(result.user))
-
   } catch (e) {
     console.log('Error:', e)
   }
