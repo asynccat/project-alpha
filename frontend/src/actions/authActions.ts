@@ -1,3 +1,5 @@
+import {Dispatch} from 'redux'
+
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
 import {AuthApiClient } from '../api/authRequest'
@@ -12,6 +14,11 @@ export interface IUserDetails {
   password: string
 }
 
+export interface IReq {
+  token:string 
+  user: string
+}
+
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUserDetails>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
 
@@ -22,17 +29,25 @@ export const setUserAction = actionCreator<AuthActionType.SET_USER, IUserDetails
 // TODO: localStorage.clear()
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
-export const signUserUp = (payload: IUserDetails): Promise<void>  => {
+export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetchUserAction>): Promise<IReq>  => {
+  const authApiClient = new AuthApiClient()
+
   try {
-    AuthApiClient.register(payload)
+    const result = await authApiClient.register(payload)
+    localStorage.setItem('token', result.token)
+    dispatch(setUserAction(result.user))
   } catch (e) {
     console.log('Error:', e)
   }
 }
 
-export const login = (payload: IUserDetails): Promise<void> => {
+export const login = async (payload: IUserDetails, dispatch:Dispatch<fetchUserAction>): Promise<IReq> => {
+  const authApiClient = new AuthApiClient()
+
   try {
-    AuthApiClient.login(payload)
+    const result = await authApiClient.login(payload)
+    localStorage.setItem('token', result.token)
+    dispatch(setUserAction(result.user))
   } catch (e) {
     console.log('Error:', e)
   }
