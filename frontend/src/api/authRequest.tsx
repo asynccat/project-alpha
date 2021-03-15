@@ -1,19 +1,19 @@
-import { IUserDetails} from '../actions/authActions'
+import {IUserAuthApiResponse, IUserDetails} from '../actions/authActions'
 import { HttpClient} from './HttpClient'
 
 
 export interface IAuthApiClient {
-    register: (payload: IUserDetails) => Promise<Response>
-    login: (payload: IUserDetails) => Promise<Response>
+    register: (payload: IUserDetails) => Promise<IUserAuthApiResponse>
+    login: (payload: IUserDetails) => Promise<IUserAuthApiResponse>
 }
 
 
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
-      register(payload: IUserDetails): Promise<Response> {
-        return this.post('sign-up', payload)
+      async register(payload: IUserDetails): Promise<IUserAuthApiResponse> {
+        return await this.post('sign-up', payload) as IUserAuthApiResponse
   }
 
-      login(payload: IUserDetails): Promise<Response>{
-        return this.post('token', payload)
+      async login(payload: IUserDetails): Promise<IUserAuthApiResponse>{
+        return await this.post('token', payload) as IUserAuthApiResponse
     }
 }
