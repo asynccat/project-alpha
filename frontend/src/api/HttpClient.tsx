@@ -14,7 +14,7 @@ export class HttpClient {
           body: JSON.stringify(payload)
         })
         return await response.json()
-        }
+    }
     /*
     * We're using Promise<any> here, to avoid extra code
     * for casting from 'unknown' to required type.
