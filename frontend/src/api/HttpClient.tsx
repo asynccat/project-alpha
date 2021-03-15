@@ -1,18 +1,11 @@
-import {Dispatch} from 'redux'
-
-import { IUserDetails, fetchUserAction} from '../actions/authActions'
+import { IUserDetails} from '../actions/authActions'
 import {config} from '../config'
 
-const baseURL = `${config.baseUrl}${config.apiV1}`
-
-export interface IAuthApiClient {
-    register: (payload: IUserDetails,  dispatch:Dispatch<fetchUserAction>) => Promise<void>
-    login: (userData: IUserDetails,  dispatch:Dispatch<fetchUserAction>) => Promise<void>
-  }
+const baseURL = config.baseUrl
 
 export class HttpClient {
     private async execute (url:string, payload: IUserDetails, method:string) {
-        return await fetch(`${baseURL}/${url}/`, {
+        const response = await fetch(`${baseURL}/${url}/`, {
           method: method,
           headers: {
             'Content-Type': 'application/json',
@@ -20,15 +13,20 @@ export class HttpClient {
           },
           body: JSON.stringify(payload),
         })
-    }
-
-    protected async post(url:string, payload: IUserDetails):Promise<Response> {
-      const response = await this.execute(url, payload, 'POST')
-      return await response.json()
-    }
-
-    protected async get(url:string, payload: IUserDetails):Promise<Response> {
-        const response = await this.execute(url, payload, 'GET')
         return await response.json()
+    }
+    /*
+    * We're using Promise<any> here, to avoid extra code
+    * for casting from 'unknown' to required type.
+    * */
+
+    // eslint-disable-next-line
+    protected async post(url:string, payload: IUserDetails): Promise<any> {
+      return await this.execute(url, payload, 'POST')
+    }
+
+    // eslint-disable-next-line
+    protected async get(url:string, payload: IUserDetails):Promise<any> {
+        return await this.execute(url, payload, 'GET')
     }
 }

@@ -3,6 +3,7 @@ import {Dispatch} from 'redux'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
 import {AuthApiClient } from '../api/authRequest'
+import {IUser} from '../models/user'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -14,26 +15,26 @@ export interface IUserDetails {
   password: string
 }
 
-export interface IReq {
-  token:string 
-  user: string
+export interface IUserAuthApiResponse {
+  token: string
+  user: IUser
 }
 
-export type fetchUserAction = Action<AuthActionType.SET_USER, IUserDetails>
+export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
 
 export type AuthActions = fetchUserAction | logoutUserAction
 
-export const setUserAction = actionCreator<AuthActionType.SET_USER, IUserDetails>(AuthActionType.SET_USER)
+export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthActionType.SET_USER)
 
 // TODO: localStorage.clear()
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
-export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetchUserAction>): Promise<IReq>  => {
+export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetchUserAction>): Promise<void> => {
   const authApiClient = new AuthApiClient()
 
   try {
-    const result = await authApiClient.register(payload)
+    const result: IUserAuthApiResponse = await authApiClient.register(payload)
     localStorage.setItem('token', result.token)
     dispatch(setUserAction(result.user))
   } catch (e) {
@@ -41,7 +42,7 @@ export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetch
   }
 }
 
-export const login = async (payload: IUserDetails, dispatch:Dispatch<fetchUserAction>): Promise<IReq> => {
+export const login = async (payload: IUserDetails, dispatch:Dispatch<fetchUserAction>): Promise<void> => {
   const authApiClient = new AuthApiClient()
 
   try {
