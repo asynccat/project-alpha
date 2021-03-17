@@ -11,7 +11,7 @@ export class HttpClient {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payload)
         })
         return await response.json()
         }
@@ -26,7 +26,7 @@ export class HttpClient {
     }
 
     // eslint-disable-next-line
-    protected async get(url:string, payload: IUserDetails): Promise<any> {
+    protected async get(url:string, payload: IUserDetails ): Promise<any> {
         return await this.execute(url, payload, 'GET')
     }
 }

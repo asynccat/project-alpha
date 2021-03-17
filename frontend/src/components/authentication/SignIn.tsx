@@ -15,7 +15,6 @@ export default function SignInSide(): React.ReactElement {
 
   const [email, setEmail] = useState('')
   const onChangeEmail = useCallback((e) => {
-    console.log('typing', e.target.value)
     setEmail(e.target.value)
   }, [setEmail])
 
@@ -29,9 +28,10 @@ export default function SignInSide(): React.ReactElement {
 
   const signIn = useCallback((e) => {
     e.preventDefault()
+    const payload = {email, password}
     // eslint-disable-next-line
     // @ts-ignore
-    dispatch(login({email, password}))
+    dispatch(login(payload))
     history.push('/welcome')
   }, [dispatch, email, password, history])
 

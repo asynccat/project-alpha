@@ -13,6 +13,6 @@ export class AuthApiClient extends HttpClient implements IAuthApiClient {
   }
 
       async login(payload: IUserDetails): Promise<IUserAuthApiResponse>{
-        return await this.post('token', payload) as IUserAuthApiResponse
+        return await this.post('token', payload ) as IUserAuthApiResponse
     }
 }
