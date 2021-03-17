@@ -29,9 +29,10 @@ export default function SignUpSide(): React.ReactElement {
 
   const signUp = useCallback((e) => {
     e.preventDefault()
+    const payload = {email, password}
     // eslint-disable-next-line
     // @ts-ignore
-    dispatch(signUserUp({email, password}))
+    dispatch(signUserUp(payload))
     history.push('/welcome')
   }, [dispatch, email, password, history])
 
