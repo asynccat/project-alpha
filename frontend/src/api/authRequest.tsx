@@ -7,7 +7,6 @@ export interface IAuthApiClient {
     login: (payload: IUserDetails) => Promise<IUserAuthApiResponse>
 }
 
-
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
       async register(payload: IUserDetails): Promise<IUserAuthApiResponse> {
         return await this.post('sign-up', payload) as IUserAuthApiResponse
