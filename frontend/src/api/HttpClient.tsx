@@ -1,7 +1,7 @@
 import { IUserDetails} from '../actions/authActions'
 import {config} from '../config'
 
-const baseURL = config.baseUrl
+const baseURL = config.baseUrl+ config.apiV1
 
 export class HttpClient {
     private async execute (url:string, payload: IUserDetails, method:string) {
@@ -14,7 +14,7 @@ export class HttpClient {
           body: JSON.stringify(payload),
         })
         return await response.json()
-    }
+        }
     /*
     * We're using Promise<any> here, to avoid extra code
     * for casting from 'unknown' to required type.
@@ -26,7 +26,7 @@ export class HttpClient {
     }
 
     // eslint-disable-next-line
-    protected async get(url:string, payload: IUserDetails):Promise<any> {
+    protected async get(url:string, payload: IUserDetails): Promise<any> {
         return await this.execute(url, payload, 'GET')
     }
 }
