@@ -32,11 +32,7 @@ export default function SignUpSide(): React.ReactElement {
     const payload = {email, password}
     // eslint-disable-next-line
     // @ts-ignore
-<<<<<<< HEAD
     dispatch(signUserUp(payload))
-=======
-    dispatch(signUserUp({email, password}))
->>>>>>> d09bd35... feat(pa-31): add api client + refactor history push
     history.push('/welcome')
   }, [dispatch, email, password, history])
 
