@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {Dispatch} from 'redux'
 
 import {actionCreator} from '../redux-utils/actionCreator'
@@ -42,7 +43,9 @@ export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetch
   }
 }
 
-export const login = async (payload: IUserDetails, dispatch:Dispatch<fetchUserAction>): Promise<void> => {
+export const login = (payload: IUserDetails): Promise<void> => 
+// @ts-ignore
+async dispatch => {
   const authApiClient = new AuthApiClient()
 
   try {
