@@ -31,7 +31,9 @@ export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthA
 // TODO: localStorage.clear()
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
-export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetchUserAction>): Promise<void> => {
+export const signUserUp = (payload: IUserDetails): Promise<void> => 
+// @ts-ignore
+async (dispatch:Dispatch<fetchUserAction>) => {
   const authApiClient = new AuthApiClient()
 
   try {
@@ -45,7 +47,7 @@ export const signUserUp = async (payload: IUserDetails,  dispatch:Dispatch<fetch
 
 export const login = (payload: IUserDetails): Promise<void> => 
 // @ts-ignore
-async dispatch => {
+async (dispatch:Dispatch<fetchUserAction>) => {
   const authApiClient = new AuthApiClient()
 
   try {
