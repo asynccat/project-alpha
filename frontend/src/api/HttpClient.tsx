@@ -1,7 +1,7 @@
 import { IUserDetails} from '../actions/authActions'
 import {config} from '../config'
 
-const baseURL = config.baseUrl
+const baseURL = config.baseUrl+config.apiV1
 
 export class HttpClient {
     private async execute (url:string, payload: IUserDetails, method:string) {
@@ -21,7 +21,7 @@ export class HttpClient {
     * */
 
     // eslint-disable-next-line
-    protected async post(url:string, payload: IUserDetails): Promise<any> {
+    async post(url:string, payload: IUserDetails): Promise<any> {
       return await this.execute(url, payload, 'POST')
     }
 
