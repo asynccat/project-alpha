@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {Dispatch} from 'redux'
 
 import {actionCreator} from '../redux-utils/actionCreator'
@@ -31,9 +30,7 @@ export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthA
 // TODO: localStorage.clear()
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
-export const signUserUp = (payload: IUserDetails): Promise<void> => 
-// @ts-ignore
-async (dispatch:Dispatch<fetchUserAction>) => {
+export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
   const authApiClient = new AuthApiClient()
 
   try {
@@ -45,9 +42,7 @@ async (dispatch:Dispatch<fetchUserAction>) => {
   }
 }
 
-export const login = (payload: IUserDetails): Promise<void> => 
-// @ts-ignore
-async (dispatch:Dispatch<fetchUserAction>) => {
+export const login = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
   const authApiClient = new AuthApiClient()
 
   try {
