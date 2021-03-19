@@ -37,7 +37,7 @@ async (dispatch:Dispatch<fetchUserAction>) => {
   const authApiClient = new AuthApiClient()
 
   try {
-    const result: IUserAuthApiResponse = await authApiClient.register(payload)
+    const result = await authApiClient.register(payload)
     localStorage.setItem('token', result.token)
     dispatch(setUserAction(result.user))
   } catch (e) {
