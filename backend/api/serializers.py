@@ -17,3 +17,17 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_token(self, obj):
         return get_tokens_for_user(obj)
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=False)
+
+    class Meta:
+        model = User
+        fields = ('email', 'nickname', 'avatar')
+
+
+class UserPreferencesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'nickname', 'avatar')
