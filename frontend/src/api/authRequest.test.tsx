@@ -1,29 +1,24 @@
 /* eslint-disable max-nested-callbacks */
 import {AuthApiClient} from './authRequest'
-// import '@types/jest'
+import { HttpClient } from './HttpClient'
 
-describe('AuthApiClient', () => {
-  test('make a login request', async () => {
-    const expected = [
-      { email: 'test@example.com', password: '123456' }
-    ]
+jest.mock('./HttpClient')
 
-    jest.spyOn(window, 'fetch').mockImplementation(() => {
-      const fetchResponse = {
-        ok: true,
-        json: () => Promise.resolve(expected)
-      }
-      return Promise.resolve(fetchResponse)
-    })
-
-    const payload = {email: 'test@example.com', password: '123456'}
-    const authClient = new AuthApiClient()
-    const json = await authClient.login('token', payload)
-
-    expect(json).toMatchObject(expected)
-    expect(window.fetch).toHaveBeenCalledTimes(1)
-    expect(json).toMatchObject(expected)
+describe('use of AuthApiClient', () => {
+  beforeEach(() => {
+    HttpClient.mockClear()
   })
+  
+  it('We can check if authClient called the class constructor', () => {
+    const authClient = new AuthApiClient()
+    expect(HttpClient).toHaveBeenCalledTimes(1)
+  })
+
+  it('AuthClent should be able to call new() on HttpClient', () => {
+    const authClient = new AuthApiClient()
+    expect(authClient).toBeTruthy()
+  })
+
 })
 
 
