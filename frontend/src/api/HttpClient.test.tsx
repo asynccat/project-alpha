@@ -1,6 +1,5 @@
 /* eslint-disable max-nested-callbacks */
 import { HttpClient } from './HttpClient'
-// import '@types/jest'
 
 describe('httpClient', () => {
     test('make an api call', async () => {
