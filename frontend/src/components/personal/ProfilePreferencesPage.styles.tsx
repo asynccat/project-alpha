@@ -24,5 +24,8 @@ export const useStyles = makeStyles({
     contactButton: {
       display: 'flex',
       justifyContent: 'center',
+    },
+    textfields: {
+      margin: 15,
     }
   })

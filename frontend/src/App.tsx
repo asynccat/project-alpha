@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 
 import {AppStateType} from './index'
 import SignUpSide from '../src/components/authentication/SignUp'
-import Welcome from './components/personal/PersonalPage'
+import ProfilePage from './components/personal/ProfilePage'
 import SignInSide from './components/authentication/SignIn'
+import PreferencesPage from './components/personal/PreferencesPage'
 
 const App: React.FC = () => {
   // const isAuth = useSelector<AppStateType >(state => state.loggedIn)
@@ -22,10 +23,13 @@ const App: React.FC = () => {
             <Route exact path="/sign-up">
               <SignUpSide />
             </Route>
-            <Route exact path="/users/me">
-              <Welcome />
+            <Route exact path="/users/:id">
+              <ProfilePage />
             </Route>
-            <Redirect to="/sign-up" />
+            <Route exact path="/me">
+              <PreferencesPage />
+            </Route>
+            <Redirect to="/login" />
           </Switch>
         </div>
       </div>

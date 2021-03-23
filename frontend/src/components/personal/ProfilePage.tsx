@@ -2,10 +2,10 @@ import * as React from 'react'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
   Typography, Avatar, Box } from '@material-ui/core'
 
-import {useStyles} from './PersonalPage.styles'
+import {useStyles} from './ProfilePreferencesPage.styles'
 import cat from './images/cat.gif'
 
-export default function Welcome (): React.ReactElement {
+export default function ProfilePage (): React.ReactElement {
   const classes = useStyles()
 
   return (

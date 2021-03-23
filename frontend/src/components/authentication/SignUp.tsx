@@ -32,7 +32,7 @@ export default function SignUpSide(): React.ReactElement {
     // eslint-disable-next-line
     // @ts-ignore
     dispatch(signUserUp({email, password}))
-    history.push('/users/me')
+    history.push('/me')
   }, [dispatch, email, password, history])
 
   const classes = useStyles()

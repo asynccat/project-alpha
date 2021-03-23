@@ -31,7 +31,7 @@ export default function SignInSide(): React.ReactElement {
     // eslint-disable-next-line
     // @ts-ignore
     dispatch(login({email, password}))
-    history.push('/users/me')
+    history.push('/me')
   }, [dispatch, email, password, history])
 
   const classes = useStyles()
