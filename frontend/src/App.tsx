@@ -22,7 +22,7 @@ const App: React.FC = () => {
             <Route exact path="/sign-up">
               <SignUpSide />
             </Route>
-            <Route exact path="/welcome">
+            <Route exact path="/users/me">
               <Welcome />
             </Route>
             <Redirect to="/sign-up" />
