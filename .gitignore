@@ -9,5 +9,7 @@ db.sqlite3
 *.local.yaml
 *.secrets.yaml
 *.env
+# flake8 and isort
+*/setup.cfg
 
 .vscode
