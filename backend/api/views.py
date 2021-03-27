@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from backend.web.utils.nickname_generator import generate_unique_nickname
 
 from .serializers import (
     UserSerializer,
@@ -21,6 +24,12 @@ class UserCreateAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
+
+    def perform_create(self, serializer):
+        nickname = generate_unique_nickname(User)
+        raw_password = serializer.validated_data.get('password')
+        hashed_password = make_password(raw_password)
+        serializer.save(nickname=nickname, password=hashed_password)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):
