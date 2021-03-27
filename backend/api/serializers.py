@@ -9,9 +9,11 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
 
+    nickname = serializers.CharField(required=False)
+
     class Meta:
         model = User
-        fields = ('email', 'password', 'token')
+        fields = ('email', 'password', 'token', 'nickname')
         read_only_fields = ('token',)
         extra_kwargs = {'password': {'write_only': True}}
 
