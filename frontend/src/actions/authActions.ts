@@ -17,6 +17,7 @@ export interface IUserDetails {
 
 export interface IUserAuthApiResponse {
   token: string
+  access: string
   user: IUser
 }
 
@@ -35,10 +36,12 @@ export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fe
 
   try {
     const result = await authApiClient.register(payload)
-    localStorage.setItem('token', result.token)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    localStorage.setItem('token', result.token.access)
     dispatch(setUserAction(result.user))
   } catch (e) {
-    console.log('Error:', e)
+    alert(e.message)
   }
 }
 
@@ -47,10 +50,10 @@ export const login = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUs
 
   try {
     const result = await authApiClient.login(payload)
-    localStorage.setItem('token', result.token)
+    localStorage.setItem('token', result.access)
     dispatch(setUserAction(result.user))
   } catch (e) {
-    console.log('Error:', e)
+    alert(e.message)
   }
 }
 
