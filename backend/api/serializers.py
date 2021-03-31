@@ -1,11 +1,19 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from .utils import get_tokens_for_user
+
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    token = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'token')
+        read_only_fields = ('token',)
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get_token(self, obj):
+        return get_tokens_for_user(obj)
