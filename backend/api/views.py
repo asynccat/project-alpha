@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from rest_framework import generics
@@ -5,12 +7,15 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from backend.web.utils.nickname_generator import generate_unique_nickname
+from web.models import UserSettings
+from web.utils.nickname_generator import generate_unique_nickname
 
+from .permissions import IsOwner
 from .serializers import (
     UserSerializer,
     UserProfileSerializer,
     UserPreferencesSerializer,
+    UpdateNicknameSerializer,
 )
 
 
@@ -27,9 +32,24 @@ class UserCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         nickname = generate_unique_nickname(User)
-        raw_password = serializer.validated_data.get('password')
-        hashed_password = make_password(raw_password)
-        serializer.save(nickname=nickname, password=hashed_password)
+        nickname_updated = datetime.now()
+        hashed_password = make_password(serializer.validated_data.get('password'))
+
+        user = serializer.save()
+        user.nickname = nickname
+        user.password = hashed_password
+        user.save()
+
+        user_settings = UserSettings(user=user, nickname_updated=nickname_updated)
+        user_settings.save()
+
+
+class UpdateNicknameAPIView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateNicknameSerializer
+    lookup_field = 'nickname'
+    lookup_url_kwarg = 'nickname'
+    permission_classes = (IsOwner,)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):

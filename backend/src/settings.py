@@ -131,6 +131,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
+NICKNAME_CHANGE_LOCK_PERIOD = 30  # in days
+
 settings = dynaconf.DjangoDynaconf(
     __name__,
     settings_files=[
