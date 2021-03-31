@@ -59,3 +59,9 @@ class User(AbstractUser):
 
     class Meta:
         app_label = 'web'
+
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(User, related_name='settings', on_delete=models.CASCADE)
+    nickname_updated = models.DateTimeField(_('nickname updated'), blank=True, null=True)
+    is_first_nickname_update = models.BooleanField(default=True)
