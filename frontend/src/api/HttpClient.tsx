@@ -13,8 +13,12 @@ export class HttpClient {
           },
           body: JSON.stringify(payload),
         })
-        return await response.json()
-    }
+        if (response.ok) {
+          return await response.json()
+        }
+        const e = await response.text()
+        throw new Error(e)
+      }
     /*
     * We're using Promise<any> here, to avoid extra code
     * for casting from 'unknown' to required type.
