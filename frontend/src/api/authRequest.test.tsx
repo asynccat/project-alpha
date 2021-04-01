@@ -10,7 +10,7 @@ describe('use of AuthApiClient', () => {
   })
   
   it('We can check if authClient called the class constructor', () => {
-    const authClient = new AuthApiClient()
+    new AuthApiClient()
     expect(HttpClient).toHaveBeenCalledTimes(1)
   })
 
