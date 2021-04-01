@@ -28,7 +28,6 @@ export type AuthActions = fetchUserAction | logoutUserAction
 
 export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthActionType.SET_USER)
 
-// TODO: localStorage.clear()
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
 export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {

@@ -1,14 +1,11 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
-import {AppStateType} from './index'
 import SignUpSide from '../src/components/authentication/SignUp'
 import Welcome from './components/personal/PersonalPage'
 import SignInSide from './components/authentication/SignIn'
 
 const App: React.FC = () => {
-  // const isAuth = useSelector<AppStateType >(state => state.loggedIn)
   
   return (
     <Router>
