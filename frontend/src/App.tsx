@@ -2,7 +2,9 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 import SignUpSide from '../src/components/authentication/SignUp'
-import Welcome from './components/personal/PersonalPage'
+import ProfilePage from '../src/components/personal/ProfilePage'
+import PreferencesPage from '../src/components/personal/PreferencesPage'
+
 import SignInSide from './components/authentication/SignIn'
 
 const App: React.FC = () => {
@@ -20,9 +22,12 @@ const App: React.FC = () => {
               <SignUpSide />
             </Route>
             <Route exact path="/welcome">
-              <Welcome />
+              <PreferencesPage />
             </Route>
-            <Redirect to="/sign-up" />
+            <Route exact path="/user/:id">
+              <ProfilePage />
+            </Route>
+            <Redirect to="/login" />
           </Switch>
         </div>
       </div>
