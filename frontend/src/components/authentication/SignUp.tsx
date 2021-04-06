@@ -15,7 +15,6 @@ export default function SignUpSide(): React.ReactElement {
 
   const [email, setEmail] = useState('')
   const onChangeEmail = useCallback((e) => {
-    console.log('typing', e.target.value)
     setEmail(e.target.value)
   }, [setEmail])
 

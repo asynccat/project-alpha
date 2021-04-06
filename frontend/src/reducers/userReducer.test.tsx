@@ -11,7 +11,7 @@ describe('user reducer', () => {
     expect(reducer(initialState, {})).toEqual(
       {
         loggedIn: false,
-        user: {},
+        email: '',
       }
     )
   })
@@ -21,17 +21,13 @@ describe('user reducer', () => {
       reducer(initialState, {
         type: AuthActionType.SET_USER,
         payload: {
-          password: '1234',
           email: 'test@email.com',
         },
       })
     ).toEqual(
       {
         loggedIn: true,
-        user: {
-          password: '1234',
-          email: 'test@email.com'
-        }
+        email: 'test@email.com'
       }
     )
 })

@@ -5,15 +5,11 @@ const baseURL = config.baseUrl+config.apiV1
 
 export class HttpClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async execute (url:string, method:string, payload?: IUserDetails) {
-    const token = localStorage.getItem('token')
+  private async execute (url:string, method:string, header: any, payload?: IUserDetails) {
+    
         const response = await fetch(`${baseURL}/${url}/`, {
           method: method,
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json', 
-            Authorization: `Bearer ${token}`
-          },
+          headers: header,
           body: JSON.stringify(payload),
         })
         if (response.ok) {
@@ -28,12 +24,12 @@ export class HttpClient {
     * */
 
     // eslint-disable-next-line
-    async post(url:string, payload: any): Promise<any> {
-      return await this.execute(url, 'POST', payload)
+    async post(url:string, payload: any, header: any): Promise<any> {
+      return await this.execute(url, 'POST', header, payload)
     }
 
     // eslint-disable-next-line
-    protected async get(url:string):Promise<any> {
-        return await this.execute(url, 'GET')
+    protected async get(url:string, header: any):Promise<any> {
+        return await this.execute(url, 'GET', header)
     }
 }

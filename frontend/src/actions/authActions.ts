@@ -4,6 +4,7 @@ import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
 import {AuthApiClient } from '../api/authRequest'
 import {IUser} from '../models/user'
+import {headersNoAuth} from '../constants/headers'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -34,11 +35,11 @@ export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fe
   const authApiClient = new AuthApiClient()
 
   try {
-    const result = await authApiClient.register(payload)
+    const result = await authApiClient.register(payload, headersNoAuth)
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     localStorage.setItem('token', result.token.access)
-     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     dispatch(setUserAction(result.email))
   } catch (e) {
@@ -50,7 +51,7 @@ export const login = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUs
   const authApiClient = new AuthApiClient()
 
   try {
-    const result = await authApiClient.login(payload)
+    const result = await authApiClient.login(payload, headersNoAuth)
     localStorage.setItem('token', result.access)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

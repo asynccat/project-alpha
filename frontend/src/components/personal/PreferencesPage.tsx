@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-magic-numbers */
+
 import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
@@ -10,15 +11,14 @@ import {RootState} from '../../reducers/index'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
+
   
   useEffect(() => {
-      dispatch(getMyData())
-  }, [dispatch])
+        dispatch(getMyData())
+    }, [dispatch])  
 
-// @ts-ignore
-const umail = useSelector((state: RootState) => state.email)
-// @ts-ignore
-const nick = useSelector((state: RootState) => state.nickname)
+  const umail = useSelector((state: RootState) => state.changeMyDataReducer.email)
+  const nick = useSelector((state: RootState) => state.changeMyDataReducer.nickname)
 
   const [nickname, setNickname] = useState('')
   const onChangeNickname = useCallback((e) => {
