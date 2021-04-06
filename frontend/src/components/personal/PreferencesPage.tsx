@@ -1,41 +1,43 @@
-import React, { useState, useCallback } from 'react'
-import {useDispatch} from 'react-redux'
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import React, { useState, useCallback, useEffect } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
   Typography, Avatar, Box, TextField } from '@material-ui/core'
 
-import {changeMyData} from '../../actions/prefAndProfileActions'
+import {changeMyData, getMyData} from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
+import {RootState} from '../../reducers/index'
 
 export default function PreferencesPage (): React.ReactElement {
-  const [username, setUsername] = useState('')
-  const onChangeUsername = useCallback((e) => {
-    setUsername(e.target.value)
-  }, [setUsername])
-
-  const [address, setAddress] = useState('')
-  const onChangeAddress = useCallback((e) => {
-    setAddress(e.target.value)
-  }, [setAddress])
-
-  const [job, setJob] = useState('')
-  const onChangeJob = useCallback((e) => {
-    setJob(e.target.value)
-  }, [setJob])
-  
-  const [company, setCompany] = useState('')
-  const onChangeCompany = useCallback((e) => {
-    setCompany(e.target.value)
-  }, [setCompany])
-
   const dispatch = useDispatch()
+  
+  useEffect(() => {
+      dispatch(getMyData())
+  }, [dispatch])
+
+// @ts-ignore
+const umail = useSelector((state: RootState) => state.email)
+// @ts-ignore
+const nick = useSelector((state: RootState) => state.nickname)
+
+  const [nickname, setNickname] = useState('')
+  const onChangeNickname = useCallback((e) => {
+    setNickname(e.target.value)
+  }, [setNickname])
+
+  const [email, setEmail] = useState('')
+
+  const onChangeEmail = useCallback((e) => {
+    setEmail(e.target.value)
+  }, [setEmail])
+
 
   const saveChanges = useCallback((e) => {
     e.preventDefault()
     // eslint-disable-next-line
     // @ts-ignore
-    dispatch(changeMyData({username, address, job, company}))
-  }, [dispatch, username, address, job, company])
-
+    dispatch(changeMyData({nickname, email}))
+  }, [dispatch, nickname, email])
 
   const classes = useStyles()
 
@@ -54,7 +56,7 @@ export default function PreferencesPage (): React.ReactElement {
         }
         title={
           <Typography component="div" margin-bottom="large" variant="h5">
-            Lizard Amphisbaenia
+          {nick}
           </Typography>
         }
         // eslint-disable-next-line react/jsx-sort-props
@@ -71,15 +73,15 @@ export default function PreferencesPage (): React.ReactElement {
       />
 
       <CardContent >
-        <TextField className={classes.textfields} defaultValue="Lizard Amphisbaenia" 
-          label="User Name" onChange={onChangeUsername} required variant="outlined" />
-        <TextField className={classes.textfields} defaultValue="Las Vegas, US" 
-          label="Address" onChange={onChangeAddress} variant="outlined"  />
+        <TextField className={classes.textfields} label="nickname" 
+          onChange={onChangeNickname} required value={nick} variant="outlined" />
+        <TextField className={classes.textfields} label="email"
+          onChange={onChangeEmail} value={umail} variant="outlined"   />
         <br />
         <TextField className={classes.textfields} defaultValue="HypnoToad" 
-          label="Job Title" onChange={onChangeJob} variant="outlined" />
+          label="Job Title" variant="outlined" />
         <TextField className={classes.textfields} defaultValue="United Swamps" 
-          label="Company" onChange={onChangeCompany} variant="outlined"  />
+          label="Company" variant="outlined"  />
        
       </CardContent>
       <CardActions className={classes.contactButton}>

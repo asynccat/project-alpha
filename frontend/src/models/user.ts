@@ -3,8 +3,7 @@ export interface IUser {
 }
 
 export interface IUserPreference{
-  username: string
-  address: string
-  jobTitle: string
-  company: string
+  nickname: string
+  email: string
+  id: string
 }

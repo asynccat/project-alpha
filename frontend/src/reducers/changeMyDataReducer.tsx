@@ -1,32 +1,33 @@
-import {postedUserAction, PrefActionType } from '../actions/prefAndProfileActions'
+import { PrefActionType, PrefActions } from '../actions/prefAndProfileActions'
 
 interface ChangeInitState {
       // Here we use any becase type don't specified yet
     // eslint-disable-next-line
-    username: any
-    // eslint-disable-next-line
-    address: any
-    // eslint-disable-next-line
-    jobTitle: any
-    // eslint-disable-next-line
-    company: any
+    nickname: any
+      // eslint-disable-next-line
+    email: any
+      // eslint-disable-next-line
+    id: any
 }
 
 export const initialState = {
-    username: '',
-    address: '',
-    jobTitle: '',
-    company: '',
+    nickname: '',
+    email: '',
+    id: ''
+
 }
 
-const changeMyDataReducer = ( state: ChangeInitState = initialState, action: postedUserAction): ChangeInitState => {
+const changeMyDataReducer = ( state: ChangeInitState = initialState, action: PrefActions): ChangeInitState => {
     switch(action.type){
+        case PrefActionType.RETRIEVE_DATA:
+            return action.payload
+
         case PrefActionType.CHANGE_DATA:
             return {
-                username: {...action.payload},
-                address: {...action.payload},
-                jobTitle: {...action.payload},
-                company: {...action.payload}
+                ...state,
+               email: action.payload,
+               id: action.payload,
+               nickname: action.payload,
             }
 
         default: return state
