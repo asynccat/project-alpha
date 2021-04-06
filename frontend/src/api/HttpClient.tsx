@@ -2,18 +2,18 @@ import { IUserDetails} from '../actions/authActions'
 import {config} from '../config'
 
 const baseURL = config.baseUrl+config.apiV1
-const token = localStorage.getItem('token')
-
-const headers = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-Authorization: `Bearer ${token}`}
 
 export class HttpClient {
-    private async execute (url:string, payload: IUserDetails, method:string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private async execute (url:string, method:string, payload?: IUserDetails) {
+    const token = localStorage.getItem('token')
         const response = await fetch(`${baseURL}/${url}/`, {
           method: method,
-          headers: headers,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json', 
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify(payload),
         })
         if (response.ok) {
@@ -29,11 +29,11 @@ export class HttpClient {
 
     // eslint-disable-next-line
     async post(url:string, payload: any): Promise<any> {
-      return await this.execute(url, payload, 'POST')
+      return await this.execute(url, 'POST', payload)
     }
 
     // eslint-disable-next-line
-    protected async get(url:string, payload: any):Promise<any> {
-        return await this.execute(url, payload, 'GET')
+    protected async get(url:string):Promise<any> {
+        return await this.execute(url, 'GET')
     }
 }

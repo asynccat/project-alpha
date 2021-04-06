@@ -9,6 +9,7 @@ import {Provider} from 'react-redux'
 import {rootReducer} from './reducers/index'
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+
 type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>
 
