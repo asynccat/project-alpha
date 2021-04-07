@@ -12,9 +12,6 @@ import {RootState} from '../../reducers/index'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
-
-  // eslint-disable-next-line no-debugger
-  debugger
   
   useEffect(() => {
         dispatch(getMyData())
