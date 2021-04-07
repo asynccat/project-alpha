@@ -5,7 +5,7 @@ import SignUpSide from '../src/components/authentication/SignUp'
 import ProfilePage from '../src/components/personal/ProfilePage'
 import PreferencesPage from '../src/components/personal/PreferencesPage'
 import SignInSide from './components/authentication/SignIn'
-import {history} from './index'
+import {history} from './history'
 
 const App: React.FC = () => {
   
