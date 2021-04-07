@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState, useCallback} from 'react'
 import {useDispatch} from 'react-redux'
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
@@ -24,15 +23,13 @@ export default function SignInSide(): React.ReactElement {
   }, [setPassword])
 
   const dispatch = useDispatch()
-  const history = useHistory()
 
   const signIn = useCallback((e) => {
     e.preventDefault()
     // eslint-disable-next-line
     // @ts-ignore
     dispatch(login({email, password}))
-    history.push('/welcome')
-  }, [dispatch, email, password, history])
+  }, [dispatch, email, password])
 
   const classes = useStyles()
 

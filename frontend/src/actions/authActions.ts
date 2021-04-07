@@ -1,4 +1,5 @@
 import {Dispatch} from 'redux'
+import { push } from 'connected-react-router'
 
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
@@ -42,6 +43,9 @@ export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fe
        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     dispatch(setUserAction(result.email))
+     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    dispatch(push('/welcome'))
   } catch (e) {
     alert(e.message)
   }
@@ -52,10 +56,14 @@ export const login = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUs
 
   try {
     const result = await authApiClient.login(payload, headersNoAuth)
-    localStorage.setItem('token', result.access)
+    const a = result.access
+    localStorage.setItem('token', a)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     dispatch(setUserAction(result.email))
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    dispatch(push('/welcome'))
   } catch (e) {
     alert(e.message)
   }

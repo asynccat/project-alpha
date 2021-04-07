@@ -32,6 +32,12 @@ export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise
   const inquiryMyDataRequest = new InquiryMyDataRequest()
 
   try {
+    const a = (localStorage.getItem('token'))
+      const headersAuth = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json', 
+        Authorization: `Bearer ${a}`
+      }
       const result = await inquiryMyDataRequest.getData(headersAuth)
       dispatch(getInqUserAction(result))
   } catch (e) {
