@@ -1,6 +1,5 @@
 import React, {useCallback, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -24,15 +23,13 @@ export default function SignUpSide(): React.ReactElement {
   }, [setPassword])
 
   const dispatch = useDispatch()
-  const history = useHistory()
 
   const signUp = useCallback((e) => {
     e.preventDefault()
     // eslint-disable-next-line
     // @ts-ignore
     dispatch(signUserUp({email, password}))
-    history.push('/welcome')
-  }, [dispatch, email, password, history])
+  }, [dispatch, email, password])
 
   const classes = useStyles()
 

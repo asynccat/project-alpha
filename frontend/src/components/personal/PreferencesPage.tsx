@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-magic-numbers */
 
 import React, { useState, useCallback, useEffect } from 'react'
@@ -12,12 +13,16 @@ import {RootState} from '../../reducers/index'
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
 
+  // eslint-disable-next-line no-debugger
+  debugger
   
   useEffect(() => {
         dispatch(getMyData())
     }, [dispatch])  
 
+  // @ts-ignore
   const umail = useSelector((state: RootState) => state.changeMyDataReducer.email)
+   // @ts-ignore
   const nick = useSelector((state: RootState) => state.changeMyDataReducer.nickname)
 
   const [nickname, setNickname] = useState('')
