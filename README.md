@@ -1,5 +1,9 @@
 # project-alpha
 
+## Pre-requisitions
+ - python3.8
+ - python3.8-venv
+
 ## Installation
 
 Create a new directory to work in, and cd into it:
@@ -14,7 +18,7 @@ git clone https://github.com/asynccat/project-alpha.git .
 ### Backend (Django)
 Create and activate a virtual environment:
 ```
-python3 -m venv venv
+python3.8 -m venv venv
 source venv/bin/activate
 ```
 cd into backend folder:
