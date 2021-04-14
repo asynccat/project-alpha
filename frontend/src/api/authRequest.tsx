@@ -6,17 +6,17 @@ import { HttpClient} from './HttpClient'
 
 
 export interface IAuthApiClient {
-    register: (payload: IUserDetails, headers: any) => Promise<IUserAuthApiResponse>
-    login: (payload: IUserDetails, headers: any) => Promise<IUserAuthApiResponse>
+    register: (payload: IUserDetails, useCredentials: true) => Promise<IUserAuthApiResponse>
+    login: (payload: IUserDetails, useCredentials: true) => Promise<IUserAuthApiResponse>
 }
 
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
     
-      async register(payload: IUserDetails, headers: any): Promise<IUserAuthApiResponse> {
-        return await this.post('sign-up', payload, headers) as IUserAuthApiResponse
+      async register(payload: IUserDetails): Promise<IUserAuthApiResponse> {
+        return await this.post('sign-up', true, payload) as IUserAuthApiResponse
   }
 
-      async login(payload: IUserDetails, headers: any): Promise<IUserAuthApiResponse>{
-        return await this.post('token', payload, headers) as IUserAuthApiResponse
+      async login(payload: IUserDetails): Promise<IUserAuthApiResponse>{
+        return await this.post('token', true, payload) as IUserAuthApiResponse
     }
 }

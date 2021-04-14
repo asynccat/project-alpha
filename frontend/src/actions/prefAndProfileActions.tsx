@@ -2,11 +2,9 @@
 import {Dispatch} from 'redux'
 
 import {Action} from '../types/action'
-import {ChangeMyDataRequest} from '../api/ChangeMyDataRequest'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {IUserPreference} from '../models/user'
-import {InquiryMyDataRequest} from '../api/InquiryMyDataRequest'
-import {headersAuth} from '../constants/headers'
+import {workWithMyDataRequest} from '../api/HttpClientInstance'
 
 
 export enum PrefActionType {
@@ -29,16 +27,9 @@ export const getInqUserAction = actionCreator<PrefActionType.RETRIEVE_DATA,
 IUserPreference>(PrefActionType.RETRIEVE_DATA)
 
 export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise<void> => {
-  const inquiryMyDataRequest = new InquiryMyDataRequest()
 
   try {
-    const a = (localStorage.getItem('token'))
-      const headersAuth = {
-        'Content-Type': 'application/json',
-        Accept: 'application/json', 
-        Authorization: `Bearer ${a}`
-      }
-      const result = await inquiryMyDataRequest.getData(headersAuth)
+      const result = await workWithMyDataRequest.getData()
       dispatch(getInqUserAction(result))
   } catch (e) {
     console.log('Error:', e)
@@ -46,10 +37,9 @@ export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise
 }
 
 export const changeMyData = (payload: IMyData) => async (dispatch:Dispatch<postedUserAction>): Promise<void> => {
-  const changeMyDataRequest = new ChangeMyDataRequest()
 
   try {
-      const result = await changeMyDataRequest.saveData(payload, headersAuth)
+      const result = await workWithMyDataRequest.saveData(payload)
       dispatch(postUserAction(result))
   } catch (e) {
     console.log('Error:', e)

@@ -4,6 +4,7 @@ import {Card, CardActions, CardContent, CardHeader, CardMedia, Button,
 
 import {useStyles} from './ProfilePreferencesPage.styles'
 
+
 export default function ProfilePage (): React.ReactElement {
   const classes = useStyles()
 

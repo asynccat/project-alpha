@@ -3,13 +3,24 @@ import {config} from '../config'
 
 const baseURL = config.baseUrl+config.apiV1
 
+export interface IHttpClient {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  post: (url:string, useCredentials: boolean,  payload: any) => Promise<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get: (url:string, useCredentials: boolean) => Promise<any>
+}
+
 export class HttpClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async execute (url:string, method:string, header: any, payload?: IUserDetails) {
-    
+  private async execute (url:string, method: string,  useCredentials: boolean, payload?: IUserDetails) {
+     const token = localStorage.getItem('token')
         const response = await fetch(`${baseURL}/${url}/`, {
           method: method,
-          headers: header,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json', 
+            Authorization: token&&!useCredentials? `Bearer ${token}` : '',
+          },
           body: JSON.stringify(payload),
         })
         if (response.ok) {
@@ -24,12 +35,12 @@ export class HttpClient {
     * */
 
     // eslint-disable-next-line
-    async post(url:string, payload: any, header: any): Promise<any> {
-      return await this.execute(url, 'POST', header, payload)
+    async post(url:string, useCredentials: boolean, payload: any): Promise<any> {
+      return await this.execute(url, 'POST', useCredentials, payload)
     }
 
     // eslint-disable-next-line
-    protected async get(url:string, header: any):Promise<any> {
-        return await this.execute(url, 'GET', header)
+    async get(url:string, useCredentials: boolean) :Promise<any> {
+        return await this.execute(url, 'GET', useCredentials)
     }
 }
