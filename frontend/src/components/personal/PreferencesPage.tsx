@@ -9,6 +9,7 @@ import {Card, CardActions, CardContent, CardHeader, CardMedia, Button,
 import {changeMyData, getMyData} from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
+import './PreferencesPage.scss'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -52,6 +53,7 @@ export default function PreferencesPage (): React.ReactElement {
         />
       </Box>
 
+<div className="avatarName">
       <CardHeader
         avatar={
           <Avatar alt="Remy Sharp" className={classes.large} />
@@ -73,10 +75,11 @@ export default function PreferencesPage (): React.ReactElement {
           </Box>
         }
       />
-
+</div>
+    <div className="myDataDetails">
       <CardContent >
         <TextField className={classes.textfields} label="nickname" 
-          onChange={onChangeNickname} required value={nick} variant="outlined" />
+          onChange={onChangeNickname} value={nick} variant="outlined" />
         <TextField className={classes.textfields} label="email"
           onChange={onChangeEmail} value={umail} variant="outlined"   />
         <br />
@@ -86,11 +89,13 @@ export default function PreferencesPage (): React.ReactElement {
           label="Company" variant="outlined"  />
        
       </CardContent>
+    </div>
       <CardActions className={classes.contactButton}>
       <Button  color="secondary" onClick={saveChanges} type="submit" variant="contained">
         Save Changes
       </Button>
       </CardActions>
     </Card>
+
   )
 }

@@ -3,11 +3,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles({
     root: {
-      maxWidth: 700,
+      maxWidth: 800,
     },
     media: {
       height: 200,
-      width: 600,
+      width: 800,
     },
     large: {
       width: 150,
@@ -24,6 +24,7 @@ export const useStyles = makeStyles({
     contactButton: {
       display: 'flex',
       justifyContent: 'center',
+      marginBottom: '15px'
     },
     textfields: {
       margin: 15,

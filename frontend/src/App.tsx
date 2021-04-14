@@ -14,7 +14,7 @@ const App: React.FC = () => {
     // @ts-ignore
     <Router history={history}>
       <div >
-        <h1>Welcome to Project-alpha!</h1>
+        <h1 className="heading">Welcome to Project-alpha!</h1>
         <div className="container page">
           <Switch>
             <Route exact path="/login">

@@ -8,3 +8,13 @@ body {
     background: linear-gradient(to right, #e96443, #904e95);
     min-height: 100vh
 }
+
+.myDataDetails {
+    display: flex;
+   justify-content: center;
+}
+
+.avatarName {
+    display: flex;
+    flex-direction: column;
+}
