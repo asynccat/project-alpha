@@ -6,8 +6,8 @@ import { HttpClient} from './HttpClient'
 
 
 export interface IAuthApiClient {
-    register: (payload: IUserDetails, useCredentials: true) => Promise<IUserAuthApiResponse>
-    login: (payload: IUserDetails, useCredentials: true) => Promise<IUserAuthApiResponse>
+    register: (payload: IUserDetails) => Promise<IUserAuthApiResponse>
+    login: (payload: IUserDetails) => Promise<IUserAuthApiResponse>
 }
 
 export class AuthApiClient extends HttpClient implements IAuthApiClient {

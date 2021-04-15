@@ -5,5 +5,5 @@ export interface IUser {
 export interface IUserPreference{
   nickname: string
   email: string
-  id: string
+  id: number
 }

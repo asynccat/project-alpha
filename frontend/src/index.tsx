@@ -12,8 +12,6 @@ import './index.scss'
 import App from './App'
 import {rootReducer} from './reducers/index'
 
-
-
 export const store = createStore(rootReducer(history), 
 composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk)))
 

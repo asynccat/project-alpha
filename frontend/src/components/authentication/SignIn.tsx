@@ -26,8 +26,6 @@ export default function SignInSide(): React.ReactElement {
 
   const signIn = useCallback((e) => {
     e.preventDefault()
-    // eslint-disable-next-line
-    // @ts-ignore
     dispatch(login({email, password}))
   }, [dispatch, email, password])
 
