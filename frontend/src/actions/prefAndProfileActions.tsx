@@ -1,4 +1,3 @@
-/* eslint-disable no-magic-numbers */
 import {Dispatch} from 'redux'
 
 import {Action} from '../types/action'
@@ -13,10 +12,17 @@ export enum PrefActionType {
 }
 
 export interface IMyData {
-    nickname: string
-    email: string
-    id: string
+  nickname: string
+  email: string
+  id: number
 }
+
+export interface ISendData {
+  nickname: string
+  email: string
+  id: number
+}
+
 export type postedUserAction = Action<PrefActionType.CHANGE_DATA, IUserPreference>
 
 export type PrefActions = postedUserAction | getUserAction
@@ -29,8 +35,8 @@ IUserPreference>(PrefActionType.RETRIEVE_DATA)
 export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise<void> => {
 
   try {
-      const result = await workWithMyDataRequest.getData()
-      dispatch(getInqUserAction(result))
+    const result = await workWithMyDataRequest.getData()
+    dispatch(getInqUserAction(result))
   } catch (e) {
     console.log('Error:', e)
   }
@@ -39,8 +45,8 @@ export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise
 export const changeMyData = (payload: IMyData) => async (dispatch:Dispatch<postedUserAction>): Promise<void> => {
 
   try {
-      const result = await workWithMyDataRequest.saveData(payload)
-      dispatch(postUserAction(result))
+    const result = await workWithMyDataRequest.saveData(payload)
+    dispatch(postUserAction(result))
   } catch (e) {
     console.log('Error:', e)
   }

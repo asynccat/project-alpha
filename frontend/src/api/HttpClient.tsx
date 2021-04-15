@@ -14,13 +14,17 @@ export class HttpClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async execute (url:string, method: string,  useCredentials: boolean, payload?: AbstractApiData) {
      const token = localStorage.getItem('token')
+     const header = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: ''
+    }
+    if (token&&!useCredentials) {
+      header.Authorization = `Bearer ${token}`
+    }
         const response = await fetch(`${baseURL}/${url}/`, {
           method: method,
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json', 
-            Authorization: token&&!useCredentials? `Bearer ${token}` : '',
-          },
+          headers: header,
           body: JSON.stringify(payload),
         })
         if (response.ok) {

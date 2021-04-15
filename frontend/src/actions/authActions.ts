@@ -17,9 +17,12 @@ export interface IUserDetails {
 }
 
 export interface IUserAuthApiResponse {
-  token: string
   access: string
   email: string
+  token : {
+    access: string
+    refresh: string
+  }
 }
 
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
@@ -36,12 +39,8 @@ export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fe
 
   try {
     const result = await authApiClient.register(payload)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     localStorage.setItem('token', result.token.access)
-       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    dispatch(setUserAction(result.email))
+    dispatch(setUserAction(result))
      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     dispatch(push('/welcome'))
@@ -55,11 +54,8 @@ export const login = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUs
 
   try {
     const result = await authApiClient.login(payload)
-    const a = result.access
-    localStorage.setItem('token', a)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    dispatch(setUserAction(result.email))
+    localStorage.setItem('token', result.access)
+    dispatch(setUserAction(result))
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     dispatch(push('/welcome'))

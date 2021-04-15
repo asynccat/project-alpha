@@ -10,8 +10,6 @@ import {history} from './history'
 const App: React.FC = () => {
   
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     <Router history={history}>
       <div >
         <h1 className="heading">Welcome to Project-alpha!</h1>

@@ -1,9 +1,7 @@
 import { PrefActionType, PrefActions } from '../actions/prefAndProfileActions'
 
 interface ChangeInitState {
-      // Here we use any becase type don't specified yet
-    // eslint-disable-next-line
-    nickname: any
+    nickname: string
       // eslint-disable-next-line
     email: any
       // eslint-disable-next-line
@@ -14,7 +12,6 @@ export const initialState = {
     nickname: '',
     email: '',
     id: ''
-
 }
 
 const changeMyDataReducer = ( state: ChangeInitState = initialState, action: PrefActions): ChangeInitState => {
@@ -25,9 +22,7 @@ const changeMyDataReducer = ( state: ChangeInitState = initialState, action: Pre
         case PrefActionType.CHANGE_DATA:
             return {
                 ...state,
-               email: action.payload,
-               id: action.payload,
-               nickname: action.payload,
+                nickname: action.payload
             }
 
         default: return state

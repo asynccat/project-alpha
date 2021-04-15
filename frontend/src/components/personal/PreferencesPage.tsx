@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-magic-numbers */
 
 import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
@@ -18,29 +16,29 @@ export default function PreferencesPage (): React.ReactElement {
         dispatch(getMyData())
     }, [dispatch])  
 
-  // @ts-ignore
   const umail = useSelector((state: RootState) => state.changeMyDataReducer.email)
-   // @ts-ignore
   const nick = useSelector((state: RootState) => state.changeMyDataReducer.nickname)
 
-  const [nickname, setNickname] = useState('')
+  const [nickname, setNickname] = useState(nick)
   const onChangeNickname = useCallback((e) => {
     setNickname(e.target.value)
   }, [setNickname])
 
-  const [email, setEmail] = useState('')
-
+  const [email, setEmail] = useState(umail)
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value)
   }, [setEmail])
 
+  const [id, setId] = useState(1)
+  const onChangeId = useCallback((e) => {
+    setId(e.target.value)
+  }, [setId])
+
 
   const saveChanges = useCallback((e) => {
     e.preventDefault()
-    // eslint-disable-next-line
-    // @ts-ignore
-    dispatch(changeMyData({nickname, email}))
-  }, [dispatch, nickname, email])
+    dispatch(changeMyData({nickname, email, id}))
+  }, [dispatch, nickname, email, id])
 
   const classes = useStyles()
 
@@ -83,8 +81,8 @@ export default function PreferencesPage (): React.ReactElement {
         <TextField className={classes.textfields} label="email"
           onChange={onChangeEmail} value={umail} variant="outlined"   />
         <br />
-        <TextField className={classes.textfields} defaultValue="HypnoToad" 
-          label="Job Title" variant="outlined" />
+        <TextField className={classes.textfields} defaultValue={1}
+          label="id" onChange={onChangeId} value={id} variant="outlined" />
         <TextField className={classes.textfields} defaultValue="United Swamps" 
           label="Company" variant="outlined"  />
        
