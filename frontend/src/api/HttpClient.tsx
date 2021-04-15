@@ -1,18 +1,18 @@
-import { IUserDetails} from '../actions/authActions'
 import {config} from '../config'
 
 const baseURL = config.baseUrl+config.apiV1
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AbstractApiData = any
+
 export interface IHttpClient {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  post: (url:string, useCredentials: boolean,  payload: any) => Promise<any>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get: (url:string, useCredentials: boolean) => Promise<any>
+  post: <Payload, Response>(url:string, useCredentials: boolean,  payload: Payload) => Promise<Response>
+  get: <Response>(url:string, useCredentials: boolean) => Promise<Response>
 }
 
 export class HttpClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async execute (url:string, method: string,  useCredentials: boolean, payload?: IUserDetails) {
+  private async execute (url:string, method: string,  useCredentials: boolean, payload?: AbstractApiData) {
      const token = localStorage.getItem('token')
         const response = await fetch(`${baseURL}/${url}/`, {
           method: method,
@@ -35,12 +35,12 @@ export class HttpClient {
     * */
 
     // eslint-disable-next-line
-    async post(url:string, useCredentials: boolean, payload: any): Promise<any> {
+    async post(url:string, useCredentials: boolean, payload: AbstractApiData): Promise<AbstractApiData> {
       return await this.execute(url, 'POST', useCredentials, payload)
     }
 
     // eslint-disable-next-line
-    async get(url:string, useCredentials: boolean) :Promise<any> {
+    async get(url:string, useCredentials: boolean): Promise<AbstractApiData> {
         return await this.execute(url, 'GET', useCredentials)
     }
 }
