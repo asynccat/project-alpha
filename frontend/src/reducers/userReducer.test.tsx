@@ -1,6 +1,5 @@
 import reducer, {initialState} from './userReducer'
 import {AuthActionType} from '../actions/authActions'
-import '@testing-library/jest-dom/'
 
 describe('user reducer', () => {
   it('should handle user signing up', () => { 
@@ -12,7 +11,6 @@ describe('user reducer', () => {
     ).toEqual(
       {
         loggedIn: true,
-        email: 'test@email.com'
       }
     )
 })

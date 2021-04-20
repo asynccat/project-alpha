@@ -1,17 +1,19 @@
-import {HttpClient} from './HttpClient'
+import {workWithMyDataRequest } from './HttpClientInstance'
 import {WorkWithMyData} from './WorkWithMyData'
 
-jest.mock('./HttpClient')
-const httpClient = new HttpClient()
-
 describe('use of WorkWithMyData client', () => {
-  beforeEach(() => {
-    HttpClient.mockClear()
+  afterEach(() => {
+    jest.resetModules()  // reset modules after each test
   })
 
-  it('WorkWithMyData should be able to call new() on HttpClient', () => {
-    const workWithMyData = new WorkWithMyData(httpClient)
-    expect(workWithMyData).toBeTruthy()
+  it('WorkWithMyData is truthy', () => {
+    expect(workWithMyDataRequest).toBeTruthy()
+  })
+
+  it('test one', () => {
+    // eslint-disable-next-line max-nested-callbacks
+    WorkWithMyData.prototype.getData = jest.fn().mockImplementation(() => ({ nickname: 'kate' }))
+    workWithMyDataRequest.getData() 
   })
 
 })

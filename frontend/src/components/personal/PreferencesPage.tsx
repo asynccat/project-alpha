@@ -16,15 +16,25 @@ export default function PreferencesPage (): React.ReactElement {
         dispatch(getMyData())
     }, [dispatch])  
 
-  const umail = useSelector((state: RootState) => state.changeMyDataReducer.email)
-  const nick = useSelector((state: RootState) => state.changeMyDataReducer.nickname)
+    const user = useSelector((state: RootState) => state.changeMyDataReducer)
 
-  const [nickname, setNickname] = useState(nick)
+  const [nickname, setNickname] = useState(user ? user.nickname : '')
+
+  useEffect(() => {
+    setNickname(user? user.nickname : '')
+ },[user])
+
   const onChangeNickname = useCallback((e) => {
     setNickname(e.target.value)
   }, [setNickname])
 
-  const [email, setEmail] = useState(umail)
+  const [email, setEmail] = useState(user ? user.email : '')
+
+  useEffect(() => {
+    setEmail(user? user.email : '')
+ },[user])
+
+
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value)
   }, [setEmail])
@@ -58,7 +68,7 @@ export default function PreferencesPage (): React.ReactElement {
         }
         title={
           <Typography component="div" margin-bottom="large" variant="h5">
-          {nick}
+          {nickname}
           </Typography>
         }
         // eslint-disable-next-line react/jsx-sort-props
@@ -77,12 +87,12 @@ export default function PreferencesPage (): React.ReactElement {
     <div className="myDataDetails">
       <CardContent >
         <TextField className={classes.textfields} label="nickname" 
-          onChange={onChangeNickname} value={nick} variant="outlined" />
+          onChange={onChangeNickname} value={nickname} variant="outlined" />
         <TextField className={classes.textfields} label="email"
-          onChange={onChangeEmail} value={umail} variant="outlined"   />
+          onChange={onChangeEmail} value={email} variant="outlined"   />
         <br />
         <TextField className={classes.textfields} defaultValue={1}
-          label="id" onChange={onChangeId} value={id} variant="outlined" />
+         label="id" onChange={onChangeId} value={id} variant="outlined" />
         <TextField className={classes.textfields} defaultValue="United Swamps" 
           label="Company" variant="outlined"  />
        

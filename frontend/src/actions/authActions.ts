@@ -1,5 +1,5 @@
 import {Dispatch} from 'redux'
-import { push } from 'connected-react-router'
+import { push, CallHistoryMethodAction } from 'connected-react-router'
 
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
@@ -34,34 +34,32 @@ export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthA
 
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
-export const signUserUp = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
-  const authApiClient = new AuthApiClient()
+export const signUserUp = (payload: IUserDetails) => 
+  async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
+    const authApiClient = new AuthApiClient()
 
-  try {
-    const result = await authApiClient.register(payload)
-    localStorage.setItem('token', result.token.access)
-    dispatch(setUserAction(result))
-     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    dispatch(push('/welcome'))
-  } catch (e) {
-    alert(e.message)
-  }
+    try {
+      const result = await authApiClient.register(payload)
+      localStorage.setItem('token', result.token.access)
+      dispatch(setUserAction(result))
+      dispatch(push('/welcome'))
+    } catch (e) {
+      alert(e.message)
+    }
 }
 
-export const login = (payload: IUserDetails) => async (dispatch:Dispatch<fetchUserAction>): Promise<void> => {
-  const authApiClient = new AuthApiClient()
+export const login = (payload: IUserDetails) => 
+  async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
+    const authApiClient = new AuthApiClient()
 
-  try {
-    const result = await authApiClient.login(payload)
-    localStorage.setItem('token', result.access)
-    dispatch(setUserAction(result))
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    dispatch(push('/welcome'))
-  } catch (e) {
-    alert(e.message)
-  }
+    try {
+      const result = await authApiClient.login(payload)
+      localStorage.setItem('token', result.access)
+      dispatch(setUserAction(result))
+      dispatch(push('/welcome'))
+    } catch (e) {
+      alert(e.message)
+    }
 }
 
 // TODO: action - token refresh

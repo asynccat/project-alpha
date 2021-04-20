@@ -2,7 +2,7 @@ export interface IUser {
   email: string
 }
 
-export interface IUserPreference{
+export interface IUserPreference {
   nickname: string
   email: string
   id: number

@@ -11,7 +11,6 @@ export interface IHttpClient {
 }
 
 export class HttpClient {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async execute (url:string, method: string,  useCredentials: boolean, payload?: AbstractApiData) {
      const token = localStorage.getItem('token')
      const header = {
