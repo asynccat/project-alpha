@@ -21,7 +21,7 @@ export const useStyles = makeStyles({
       flexDirection: 'column',
       justifyContent: 'center',
     },
-    contactButton: {
+    actionButton: {
       display: 'flex',
       justifyContent: 'center',
       marginBottom: '15px'

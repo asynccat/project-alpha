@@ -56,7 +56,7 @@ export default function ProfilePage (): React.ReactElement {
               Last seen: 11 mar 2021
         </Typography>
       </CardContent>
-      <CardActions className={classes.contactButton}>
+      <CardActions className={classes.actionButton}>
       <Button  color="secondary" variant="contained">
         Contact Lizard
       </Button>
