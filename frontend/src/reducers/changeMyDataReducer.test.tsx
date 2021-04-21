@@ -9,13 +9,11 @@ describe('changeMyDataReducer', () => {
         payload: {
             nickname: 'kate',
             email: 'test@email.com',
-            id: 1,
         }
       })
     ).toEqual({
             nickname: 'kate',
             email: 'test@email.com',
-            id: 1,
     }
     )
   })

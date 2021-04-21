@@ -6,25 +6,14 @@ describe('user reducer', () => {
     expect(
       reducer(initialState, {
         type: AuthActionType.SET_USER,
-        payload: {email: 'test@email.com'},
+        payload: { id: 1},
       })
     ).toEqual(
       {
         loggedIn: true,
+        id: 1
       }
     )
-})
-it('should handle user log out', () => { 
-  expect(
-    reducer(initialState, {
-      type: AuthActionType.LOG_OUT,
-      payload: '',
-    })
-  ).toEqual(
-    {
-      loggedIn: false,
-    }
-  )
 })
 })
 
