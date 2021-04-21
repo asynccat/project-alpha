@@ -1,11 +1,20 @@
-import * as React from 'react'
+import React, {useCallback } from 'react'
+import {useDispatch} from 'react-redux'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
   Typography, Avatar, Box } from '@material-ui/core'
 
+import { userLogOut } from '../../actions/authActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 
 
 export default function ProfilePage (): React.ReactElement {
+  const dispatch = useDispatch()
+
+  const logOut = useCallback((e) => {
+    e.preventDefault()
+    dispatch(userLogOut())
+  }, [dispatch])
+ 
   const classes = useStyles()
 
   return (
@@ -59,6 +68,9 @@ export default function ProfilePage (): React.ReactElement {
       <CardActions className={classes.actionButton}>
       <Button  color="secondary" variant="contained">
         Contact Lizard
+      </Button>
+      <Button className="buttons" color="secondary" onClick={logOut}  type="submit" variant="contained">
+        Logout
       </Button>
       </CardActions>
     </Card>
