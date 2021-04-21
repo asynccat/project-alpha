@@ -14,13 +14,11 @@ export enum PrefActionType {
 export interface IMyData {
   nickname: string
   email: string
-  id: number
 }
 
 export interface ISendData {
   nickname: string
   email: string
-  id: number
 }
 
 export type postedUserAction = Action<PrefActionType.CHANGE_DATA, IUserPreference>

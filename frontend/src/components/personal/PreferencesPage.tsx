@@ -17,7 +17,8 @@ export default function PreferencesPage (): React.ReactElement {
         dispatch(getMyData())
     }, [dispatch])  
 
-    const user = useSelector((state: RootState) => state.changeMyDataReducer)
+  const user = useSelector((state: RootState) => state.changeMyDataReducer)
+  const id = useSelector((state: RootState) => state.userReducer.id)
 
   const [nickname, setNickname] = useState(user ? user.nickname : '')
 
@@ -40,16 +41,11 @@ export default function PreferencesPage (): React.ReactElement {
     setEmail(e.target.value)
   }, [setEmail])
 
-  const [id, setId] = useState(user? user.id : 1)
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value)
-  }, [setId])
-
 
   const saveChanges = useCallback((e) => {
     e.preventDefault()
-    dispatch(changeMyData({nickname, email, id}))
-  }, [dispatch, nickname, email, id])
+    dispatch(changeMyData({nickname, email}))
+  }, [dispatch, nickname, email])
 
   const logOut = useCallback((e) => {
     e.preventDefault()
@@ -86,6 +82,9 @@ export default function PreferencesPage (): React.ReactElement {
             <Typography component="p">
             User
             </Typography>
+            <Typography component="p">
+            # {id}
+            </Typography>
           </Box>
         }
       />
@@ -97,8 +96,8 @@ export default function PreferencesPage (): React.ReactElement {
         <TextField className={classes.textfields} label="email"
           onChange={onChangeEmail} value={email} variant="outlined"   />
         <br />
-        <TextField className={classes.textfields} 
-         label="id" onChange={onChangeId} value={id} variant="outlined" />
+        <TextField className={classes.textfields} defaultValue="HypnoToad" 
+         label="Job Title" variant="outlined" />
         <TextField className={classes.textfields} defaultValue="United Swamps" 
           label="Company" variant="outlined"  />
        

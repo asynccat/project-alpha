@@ -18,6 +18,7 @@ it('should handle user log out', () => {
   expect(
     reducer(initialState, {
       type: AuthActionType.LOG_OUT,
+      payload: '',
     })
   ).toEqual(
     {

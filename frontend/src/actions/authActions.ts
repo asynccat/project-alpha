@@ -19,6 +19,7 @@ export interface IUserDetails {
 export interface IUserAuthApiResponse {
   access: string
   email: string
+  id: number
   token : {
     access: string
     refresh: string

@@ -3,13 +3,11 @@ import { PrefActionType, PrefActions } from '../actions/prefAndProfileActions'
 interface ChangeInitState {
     nickname: string
     email: string
-    id: number
 }
 
 export const initialState = {
     nickname: '',
     email: '',
-    id: 1
 }
 
 const changeMyDataReducer = ( state: ChangeInitState = initialState, action: PrefActions): ChangeInitState => {
@@ -22,7 +20,6 @@ const changeMyDataReducer = ( state: ChangeInitState = initialState, action: Pre
                 ...state,
                 nickname: action.payload.nickname,
                 email: action.payload.email,
-                id: action.payload.id
             }
 
         default: return state
