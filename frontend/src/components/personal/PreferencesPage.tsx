@@ -8,6 +8,7 @@ import {changeMyData, getMyData} from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
+import { userLogOut } from '../../actions/authActions'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -39,7 +40,7 @@ export default function PreferencesPage (): React.ReactElement {
     setEmail(e.target.value)
   }, [setEmail])
 
-  const [id, setId] = useState(1)
+  const [id, setId] = useState(user? user.id : 1)
   const onChangeId = useCallback((e) => {
     setId(e.target.value)
   }, [setId])
@@ -49,6 +50,11 @@ export default function PreferencesPage (): React.ReactElement {
     e.preventDefault()
     dispatch(changeMyData({nickname, email, id}))
   }, [dispatch, nickname, email, id])
+
+  const logOut = useCallback((e) => {
+    e.preventDefault()
+    dispatch(userLogOut())
+  }, [dispatch])
 
   const classes = useStyles()
 
@@ -91,16 +97,19 @@ export default function PreferencesPage (): React.ReactElement {
         <TextField className={classes.textfields} label="email"
           onChange={onChangeEmail} value={email} variant="outlined"   />
         <br />
-        <TextField className={classes.textfields} defaultValue={1}
+        <TextField className={classes.textfields} 
          label="id" onChange={onChangeId} value={id} variant="outlined" />
         <TextField className={classes.textfields} defaultValue="United Swamps" 
           label="Company" variant="outlined"  />
        
       </CardContent>
     </div>
-      <CardActions className={classes.contactButton}>
-      <Button  color="secondary" onClick={saveChanges} type="submit" variant="contained">
+      <CardActions className={classes.actionButton}>
+      <Button  className="buttons" color="primary"  onClick={saveChanges} type="submit" variant="contained">
         Save Changes
+      </Button>
+      <Button className="buttons" color="secondary" onClick={logOut}  type="submit" variant="contained">
+        Logout
       </Button>
       </CardActions>
     </Card>

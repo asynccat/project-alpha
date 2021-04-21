@@ -62,4 +62,15 @@ export const login = (payload: IUserDetails) =>
     }
 }
 
+export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHistoryMethodAction>): void => {
+
+  try {
+    localStorage.removeItem('token')
+    dispatch(logoutAction())
+    dispatch(push('/login'))
+  } catch (e) {
+    alert(e.message)
+  }
+}
+
 // TODO: action - token refresh
