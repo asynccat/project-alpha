@@ -38,7 +38,8 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
-        return self.create_user(email, password, nickname=email, **extra_fields)
+        nickname = generate_unique_nickname(self.model)
+        return self.create_user(email, password, nickname=nickname, **extra_fields)
 
 
 class User(AbstractUser):
@@ -62,6 +63,5 @@ class User(AbstractUser):
 
 
 class UserSettings(models.Model):
-    user = models.OneToOneField(User, related_name='settings', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
     nickname_updated = models.DateTimeField(_('nickname updated'), blank=True, null=True)
-    is_first_nickname_update = models.BooleanField(default=True)
