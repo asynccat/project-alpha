@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import dynaconf
@@ -132,7 +133,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-NICKNAME_CHANGE_LOCK_PERIOD = 30  # in days
+NICKNAME_UPDATE_TIMEOUT_DAYS = 1
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
 
 settings = dynaconf.DjangoDynaconf(
     __name__,
