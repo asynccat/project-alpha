@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from .utils import get_tokens_for_user
-from web.models import UserSettings
 
 User = get_user_model()
 
@@ -35,15 +34,7 @@ class UserPreferencesSerializer(serializers.ModelSerializer):
         fields = ('email', 'nickname', 'avatar')
 
 
-class UserSettingsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserSettings
-        fields = ('nickname_updated',)
-
-
 class UpdateNicknameSerializer(serializers.ModelSerializer):
-    nickname_updated = UserSettingsSerializer(required=False)
-
     class Meta:
         model = User
-        fields = ('nickname', 'nickname_updated')
+        fields = ('nickname',)
