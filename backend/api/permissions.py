@@ -17,8 +17,10 @@ class IsOwner(BasePermission):
 class NicknameUpdateAllowed(BasePermission):
     def has_object_permission(self, request, view, obj):
         nickname_updated = obj.usersettings.nickname_updated
+
         if nickname_updated:
             today = timezone.now()
             last_nickname_update = today - nickname_updated
             return last_nickname_update.days >= settings.NICKNAME_UPDATE_TIMEOUT_DAYS
+
         return True
