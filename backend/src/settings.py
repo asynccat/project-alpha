@@ -133,11 +133,11 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-NICKNAME_UPDATE_TIMEOUT_DAYS = 1
+NICKNAME_UPDATE_TIMEOUT_DAYS = 30
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
 }
 
 settings = dynaconf.DjangoDynaconf(
