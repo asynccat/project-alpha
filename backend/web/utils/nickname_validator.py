@@ -79,23 +79,3 @@ def nickname_in_blacklist(nickname):
     if nickname in BLACKLIST:
         return _('Forbidden nickname!')
     return True
-
-
-def nickname_is_safe(nickname):
-    validators = [is_valid_length, is_valid_symbols, nickname_in_blacklist]
-    errors = []
-    result_of_checking = {
-        'valid': True,
-        'errors': []
-    }
-
-    for validator in validators:
-        valid = validator(nickname)
-        if valid is not True:
-            errors.append(valid)
-
-    if errors:
-        result_of_checking['valid'] = False
-        result_of_checking['errors'] = errors
-
-    return result_of_checking
