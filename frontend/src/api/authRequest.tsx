@@ -1,5 +1,6 @@
 import {IUserAuthApiResponse, IUserDetails} from '../actions/authActions'
 import { HttpClient} from './HttpClient'
+import {jwtDecode} from './TokenRefreshInstance'
 
 
 export interface IAuthApiClient {
@@ -15,8 +16,11 @@ export class AuthApiClient extends HttpClient implements IAuthApiClient {
 
       async login(payload: IUserDetails): Promise<IUserAuthApiResponse>{
         const response = await this.post('token', true, payload) as IUserAuthApiResponse
-        response.id = 100500
-        // TODO: remove when id will be returning from server
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const wholeToken: any  = jwtDecode(response.access)
+        response.id = wholeToken.payload.user_id
         return response
     }
 }

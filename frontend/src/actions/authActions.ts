@@ -23,7 +23,14 @@ export interface IUserAuthApiResponse {
   token : {
     access: string
     refresh: string
+    raw: string
+    payload: {
+        exp: number
+        id: number
+    }
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  split: any
 }
 
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
