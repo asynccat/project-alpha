@@ -65,3 +65,4 @@ class User(AbstractUser):
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
     nickname_updated = models.DateTimeField(_('nickname updated'), blank=True, null=True)
+    show_email = models.BooleanField(_('show email'), default=False)

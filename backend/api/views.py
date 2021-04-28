@@ -65,11 +65,13 @@ class UserProfileAPIView(generics.RetrieveAPIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, nickname):
+        user = self.get_object()
         user_data = {
-            'nickname': nickname,
-            'email': f'{nickname}@gmail.com',
+            'nickname': user.nickname,
             'avatar': '/path/to/avatar.png',
         }
+        if user.usersettings.show_email:
+            user_data['email'] = user.email,
         return Response(user_data)
 
 
@@ -83,8 +85,9 @@ class UserPreferencesAPIView(APIView):
     def get(self, request):
         user = request.user
         user_data = {
-            'nickname': user.email.split('@')[0],
+            'nickname': user.nickname,
             'email': user.email,
             'avatar': '/path/to/avatar.png',
+            'show_email': user.usersettings.show_email,
         }
         return Response(user_data)
