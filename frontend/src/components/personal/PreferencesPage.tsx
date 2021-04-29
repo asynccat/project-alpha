@@ -9,8 +9,8 @@ import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
 import { userLogOut } from '../../actions/authActions'
-import { timeDiffChecker } from '../../api/TokenRefreshInstance'
-import { TWENTYTHOUSAND } from '../../constants/valuableNumbers'
+import { timeDiffChecker } from '../../api/TokenRefresh'
+import { FIFTY_SECONDS } from '../../constants/valuableNumbers'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -23,7 +23,7 @@ export default function PreferencesPage (): React.ReactElement {
   useEffect(() => {
     setInterval(() => {
      timeDiffChecker()
-    }, TWENTYTHOUSAND)
+    }, FIFTY_SECONDS)
   })
 
   const user = useSelector((state: RootState) => state.changeMyDataReducer)

@@ -50,7 +50,7 @@
     "max-len": ["error", { "code": 120 }],
     "max-lines": ["error", 800],
     "max-lines-per-function": ["error", 300],
-    "max-nested-callbacks": ["error", 2],
+    "max-nested-callbacks": ["error", 3],
     "new-cap": "error",
     "no-var": "error",
     "prefer-const": "error",
