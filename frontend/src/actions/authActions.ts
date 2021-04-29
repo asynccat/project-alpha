@@ -5,6 +5,7 @@ import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
 import {AuthApiClient } from '../api/authRequest'
 import {IUser} from '../models/user'
+import {TokenStorage} from '../services/TokenStorage'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -18,6 +19,7 @@ export interface IUserDetails {
 
 export interface IUserAuthApiResponse {
   access: string
+  refresh: string
   email: string
   id: number
   token : {
@@ -29,8 +31,7 @@ export interface IUserAuthApiResponse {
         id: number
     }
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  split: any
+  split: StringConstructor
 }
 
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
@@ -48,7 +49,9 @@ export const signUserUp = (payload: IUserDetails) =>
 
     try {
       const result = await authApiClient.register(payload)
-      localStorage.setItem('token', result.token.access)
+      const tokenStorage = new TokenStorage
+      tokenStorage.saveToken(result.token.access)
+      tokenStorage.saveRefreshToken(result.token.refresh)
       dispatch(setUserAction(result))
       dispatch(push('/welcome'))
     } catch (e) {
@@ -62,7 +65,9 @@ export const login = (payload: IUserDetails) =>
 
     try {
       const result = await authApiClient.login(payload)
-      localStorage.setItem('token', result.access)
+      const tokenStorage = new TokenStorage
+      tokenStorage.saveToken(result.access) 
+      tokenStorage.saveRefreshToken(result.refresh)
       dispatch(setUserAction(result))
       dispatch(push('/welcome'))
     } catch (e) {
@@ -73,12 +78,11 @@ export const login = (payload: IUserDetails) =>
 export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHistoryMethodAction>): void => {
 
   try {
-    localStorage.removeItem('token')
+    const tokenStorage = new TokenStorage
+    tokenStorage.removeToken()
     dispatch(logoutAction())
     dispatch(push('/login'))
   } catch (e) {
     alert(e.message)
   }
 }
-
-// TODO: action - token refresh

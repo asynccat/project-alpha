@@ -4,7 +4,7 @@ import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {IUserPreference} from '../models/user'
 import {workWithMyDataRequest} from '../api/HttpClientInstance'
-import { freshTheToken } from '../api/TokenRefreshInstance'
+import { refreshToken } from '../api/TokenRefresh'
 
 export enum PrefActionType {
   CHANGE_DATA = 'pref/CHANGE_DATA',
@@ -36,7 +36,7 @@ export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise
     const result = await workWithMyDataRequest.getData()
     dispatch(getInqUserAction(result))
   } catch (e) {
-    freshTheToken()
+    refreshToken()
     console.log('Error:', e)
   }
 }

@@ -1,4 +1,4 @@
-export const THOUSAND = 1000
-export const FIVETHOUSAND = 5000
+export const MILLISECONDS_IN_SECOND = 1000
+export const FIVE_SECONDS = 5000
 export const FIFTYTHOUSAND = 50000
-export const TWENTYTHOUSAND = 20000
+export const FIFTY_SECONDS = 50000
