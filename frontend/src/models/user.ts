@@ -7,3 +7,7 @@ export interface IUserPreference {
   nickname: string
   email: string
 }
+
+export interface IUserPreferenceNickChanged {
+  nickname: string
+}

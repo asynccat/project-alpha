@@ -7,6 +7,7 @@ type AbstractApiData = any
 
 export interface IHttpClient {
   post: <Payload, Response>(url:string, useCredentials: boolean,  payload: Payload) => Promise<Response>
+  put: <Payload, Response>(url:string, useCredentials: boolean,  payload: Payload) => Promise<Response>
   get: <Response>(url:string, useCredentials: boolean) => Promise<Response>
 }
 
@@ -46,4 +47,8 @@ export class HttpClient {
     async get(url:string, useCredentials: boolean): Promise<AbstractApiData> {
         return await this.execute(url, 'GET', useCredentials)
     }
+
+    async put(url:string, useCredentials: boolean): Promise<AbstractApiData> {
+      return await this.execute(url, 'PUT', useCredentials)
+  }
 }

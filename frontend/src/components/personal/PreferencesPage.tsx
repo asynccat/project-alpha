@@ -37,15 +37,15 @@ export default function PreferencesPage (): React.ReactElement {
  },[user])
 
 
-  const onChangeEmail = useCallback((e) => {
-    setEmail(e.target.value)
-  }, [setEmail])
-
+  const oldNick = user.nickname
+  const newNick = nickname
+  console.log(oldNick)
+  console.log(newNick)
 
   const saveChanges = useCallback((e) => {
     e.preventDefault()
-    dispatch(changeMyData({nickname, email}))
-  }, [dispatch, nickname, email])
+    dispatch(changeMyData({oldNick, newNick}))
+  }, [dispatch, oldNick, newNick])
 
   const logOut = useCallback((e) => {
     e.preventDefault()
@@ -94,7 +94,7 @@ export default function PreferencesPage (): React.ReactElement {
         <TextField className={classes.textfields} label="nickname" 
           onChange={onChangeNickname} value={nickname} variant="outlined" />
         <TextField className={classes.textfields} label="email"
-          onChange={onChangeEmail} value={email} variant="outlined"   />
+         value={email} variant="outlined"   />
         <br />
         <TextField className={classes.textfields} defaultValue="HypnoToad" 
          label="Job Title" variant="outlined" />

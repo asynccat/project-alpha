@@ -7,7 +7,7 @@ interface ChangeInitState {
 
 export const initialState = {
     nickname: '',
-    email: '',
+    email: ''
 }
 
 const changeMyDataReducer = ( state: ChangeInitState = initialState, action: PrefActions): ChangeInitState => {
@@ -15,11 +15,10 @@ const changeMyDataReducer = ( state: ChangeInitState = initialState, action: Pre
         case PrefActionType.RETRIEVE_DATA:
             return action.payload
 
-        case PrefActionType.CHANGE_DATA:
+        case PrefActionType.CHANGE_NICK:
             return {
                 ...state,
                 nickname: action.payload.nickname,
-                email: action.payload.email,
             }
 
         default: return state
