@@ -5,6 +5,7 @@ import { HttpClient } from './HttpClient'
 jest.mock('./HttpClient')
 
 describe('use of AuthApiClient', () => {
+
   beforeEach(() => {
     HttpClient.mockClear()
   })
@@ -20,6 +21,24 @@ describe('use of AuthApiClient', () => {
   })
 
 })
+
+describe('use of TokenRefresh', () => {
+  afterEach(() => {
+    jest.resetModules()  // reset modules after each test
+  })
+
+
+  it('test usage of postRefresh method of AuthApiClient class', () => {
+    const authApiClient = new AuthApiClient()
+    const spy = jest.spyOn(authApiClient, 'postRefresh')
+    authApiClient.postRefresh({ refresh: '12345'})
+
+    expect(spy).toHaveBeenCalled()
+    expect(authApiClient.postRefresh).toHaveBeenCalled()
+    spy.mockRestore()
+  })
+})
+
 
 
 
