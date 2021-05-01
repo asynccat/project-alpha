@@ -36,16 +36,12 @@ export default function PreferencesPage (): React.ReactElement {
     setEmail(user? user.email : '')
  },[user])
 
-
-  const oldNick = user.nickname
-  const newNick = nickname
-  console.log(oldNick)
-  console.log(newNick)
+  const oldNickname = user.nickname
 
   const saveChanges = useCallback((e) => {
     e.preventDefault()
-    dispatch(changeMyData({oldNick, newNick}))
-  }, [dispatch, oldNick, newNick])
+    dispatch(changeMyData({oldNickname, nickname}))
+  }, [dispatch, oldNickname, nickname])
 
   const logOut = useCallback((e) => {
     e.preventDefault()
