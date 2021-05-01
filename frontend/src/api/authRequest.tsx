@@ -1,7 +1,6 @@
-import {IUserDetails, IUserAuthApiRegisterResponse, IUserAuthApiLoginResponse}
- from '../actions/authActions'
-import { HttpClient} from './HttpClient'
-import {ITokenSendType, ITokenRefreshType} from '../services/TokenRefresh'
+import {IUserAuthApiResponse, IUserDetails} from '../actions/authActions'
+import { HttpClient, changedHttpRequestOptions} from './HttpClient'
+
 
 export interface IAuthApiClient {
     register: (payload: IUserDetails) => Promise<IUserAuthApiRegisterResponse>
@@ -11,15 +10,15 @@ export interface IAuthApiClient {
 
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
     
-      async register(payload: IUserDetails): Promise<IUserAuthApiRegisterResponse> {
-        return await this.post('sign-up',  true, payload) as IUserAuthApiRegisterResponse
+      async register(payload: IUserDetails): 
+      Promise<IUserAuthApiResponse> {
+        return await this.post('sign-up', changedHttpRequestOptions, payload) as IUserAuthApiResponse
   }
 
-      async login(payload: IUserDetails): Promise<IUserAuthApiLoginResponse>{
-        return await this.post('token', true, payload) as IUserAuthApiLoginResponse
-    }
-
-    async postRefresh(payload: ITokenSendType): Promise<ITokenRefreshType> {
-        return await this.post('token/refresh', true, payload) as ITokenRefreshType
+      async login(payload: IUserDetails): Promise<IUserAuthApiResponse>{
+        const response = await this.post('token', changedHttpRequestOptions, payload) as IUserAuthApiResponse
+        response.id = 100500
+        // TODO: remove when id will be returning from server
+        return response
     }
 }

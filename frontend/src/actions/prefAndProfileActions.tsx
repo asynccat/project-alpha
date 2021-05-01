@@ -18,8 +18,8 @@ export interface IGetMyData {
 }
 
 export interface ISendData {
-  oldNick: string
-  newNick: string
+  oldNickname: string
+  nickname: string
 }
 
 export interface IReceiveDataAfterChange {
@@ -47,10 +47,11 @@ export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise
   }
 }
 
-export const changeMyData = (payload: ISendData) => 
+export const changeMyData = (payload: ISendData ) => 
 async (dispatch:Dispatch<postedUserAction>): Promise<void> => {
 
   try {
+    console.log(payload)
     const result = await workWithMyDataRequest.saveData(payload)
     dispatch(postUserAction(result))
   } catch (e) {
