@@ -4,7 +4,7 @@ import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {IUserPreference} from '../models/user'
 import {workWithMyDataRequest} from '../api/HttpClientInstance'
-import { refreshToken } from '../api/TokenRefresh'
+import { refreshToken } from '../services/TokenRefresh'
 
 export enum PrefActionType {
   CHANGE_DATA = 'pref/CHANGE_DATA',
