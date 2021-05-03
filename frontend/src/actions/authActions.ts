@@ -52,11 +52,13 @@ export const signUserUp = (payload: IUserDetails) =>
       tokenStorage.saveToken(result.token.access)
       tokenStorage.saveRefreshToken(result.token.refresh)
       const wholeToken: IToken  = jwtDecode(result.token.access)
-      result.id = wholeToken.payload.user_id
+      const user = {
+        id: wholeToken.payload.user_id
+      }
       const expirationTime = ((wholeToken.payload.exp*MILLISECONDS_IN_SECOND) - Date.now() - 
       TEN_SECONDS_BEFORE_TOKEN_EXPIRE)
       autoRefresh(expirationTime)
-      dispatch(setUserAction(result))
+      dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (e) {
       alert(e.message)
@@ -73,11 +75,13 @@ export const login = (payload: IUserDetails) =>
       tokenStorage.saveToken(result.access) 
       tokenStorage.saveRefreshToken(result.refresh)
       const wholeToken: IToken  = jwtDecode(result.access)
-      result.id = wholeToken.payload.user_id
+      const user = {
+        id: wholeToken.payload.user_id
+      }
       const expirationTime = ((wholeToken.payload.exp*MILLISECONDS_IN_SECOND) - Date.now() - 
       TEN_SECONDS_BEFORE_TOKEN_EXPIRE)
       autoRefresh(expirationTime)
-      dispatch(setUserAction(result))
+      dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (e) {
       alert(e.message)

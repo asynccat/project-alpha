@@ -22,7 +22,7 @@ describe('use of AuthApiClient', () => {
 
 })
 
-describe('use of TokenRefresh', () => {
+describe('use of postRefresh method', () => {
   afterEach(() => {
     jest.resetModules()  // reset modules after each test
   })
