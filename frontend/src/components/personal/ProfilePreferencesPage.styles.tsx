@@ -1,9 +1,13 @@
 /* eslint-disable no-magic-numbers */
 import { makeStyles } from '@material-ui/core/styles'
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 800,
+      width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
     },
     media: {
       height: 200,
@@ -29,4 +33,4 @@ export const useStyles = makeStyles({
     textfields: {
       margin: 15,
     }
-  })
+  }))
