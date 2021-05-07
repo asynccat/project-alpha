@@ -2,33 +2,45 @@ import {Dispatch} from 'redux'
 
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
-import {IUserPreference} from '../models/user'
+import {IUserPreference, IUserPreferenceNickChanged, IUserPreferenceErrored } from '../models/user'
 import {workWithMyDataRequest} from '../api/HttpClientInstance'
 import { refreshToken } from '../services/TokenRefresh'
 
 export enum PrefActionType {
-  CHANGE_DATA = 'pref/CHANGE_DATA',
-  RETRIEVE_DATA= 'pref/RETRIEVE_DATA'
+  CHANGE_NICK = 'pref/CHANGE_NICK',
+  CHANGE_EMAIL = 'pref/CHANGE_EMAIL',
+  RETRIEVE_DATA= 'pref/RETRIEVE_DATA',
+  GOT_ERROR = 'pref/GOT_ERROR'
 }
 
-export interface IMyData {
+export interface IGetMyData {
   nickname: string
   email: string
+  error?: string
 }
 
 export interface ISendData {
+  oldNickname: string
   nickname: string
-  email: string
 }
 
-export type postedUserAction = Action<PrefActionType.CHANGE_DATA, IUserPreference>
+export interface IReceiveDataAfterChange {
+  nickname: string
+}
 
-export type PrefActions = postedUserAction | getUserAction
+export type postedUserAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
+export type errorUserAction = Action<PrefActionType.GOT_ERROR, IUserPreferenceErrored>
+
+export type PrefActions = postedUserAction | getUserAction | errorUserAction
 export type getUserAction = Action<PrefActionType.RETRIEVE_DATA, IUserPreference>
-export const postUserAction = actionCreator<PrefActionType.CHANGE_DATA, IUserPreference>(PrefActionType.CHANGE_DATA)
+export const postUserAction = actionCreator<PrefActionType.CHANGE_NICK, 
+IUserPreferenceNickChanged>(PrefActionType.CHANGE_NICK)
 
 export const getInqUserAction = actionCreator<PrefActionType.RETRIEVE_DATA, 
 IUserPreference>(PrefActionType.RETRIEVE_DATA)
+
+export const erroredUserAction = actionCreator<PrefActionType.GOT_ERROR, 
+IUserPreferenceErrored>(PrefActionType.GOT_ERROR)
 
 export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise<void> => {
 
@@ -41,13 +53,20 @@ export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise
   }
 }
 
-export const changeMyData = (payload: IMyData) => async (dispatch:Dispatch<postedUserAction>): Promise<void> => {
+
+export const changeMyData = (payload: ISendData ) => 
+async (dispatch:Dispatch<postedUserAction>): Promise<void | string > => {
 
   try {
+    console.log(payload)
     const result = await workWithMyDataRequest.saveData(payload)
     dispatch(postUserAction(result))
-  } catch (e) {
-    console.log('Error:', e)
+  } catch (error) {
+    const destructuredError = {error}
+    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    const [messageArrayFromDestructuredError] = destructuredMessage.errors
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    dispatch(erroredUserAction({error: messageArrayFromDestructuredError.message}))
   }
 }
-

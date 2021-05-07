@@ -1,9 +1,9 @@
-import { IHttpClient } from './HttpClient'
-import {IMyData, ISendData } from '../actions/prefAndProfileActions'
+import { IHttpClient , defaultHttpRequestOptions} from './HttpClient'
+import {IGetMyData, ISendData, IReceiveDataAfterChange } from '../actions/prefAndProfileActions'
 
 export interface IWorkWithMyData {
-  getData: (useCredentials: boolean) => Promise<IMyData>
-  saveData: (payload: ISendData, useCredentials: boolean) => Promise<IMyData>
+  getData: () => Promise<IGetMyData>
+  saveData: (payload: ISendData) => Promise<IReceiveDataAfterChange>
 }
 
 export class WorkWithMyData implements IWorkWithMyData {
@@ -13,11 +13,13 @@ export class WorkWithMyData implements IWorkWithMyData {
     this.client = client
   }
   
-    async getData(): Promise<IMyData> {
-      return await this.client.get('preferences', false) as IMyData
+    async getData(): Promise<IGetMyData> {
+      return await this.client.get('preferences', defaultHttpRequestOptions) as IGetMyData
       }
 
-    async saveData(payload: ISendData): Promise<IMyData> {
-      return await this.client.post('preferences', false, payload) as IMyData
+    async saveData(payload: ISendData): Promise<IReceiveDataAfterChange> {
+      const {oldNickname} = payload
+      return await this.client.put(`user/${oldNickname}/nickname/update`, 
+      defaultHttpRequestOptions, payload) as IReceiveDataAfterChange
   }
 }

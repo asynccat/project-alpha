@@ -1,6 +1,6 @@
+import { HttpClient, changedHttpRequestOptions} from './HttpClient'
 import {IUserDetails, IUserAuthApiRegisterResponse, IUserAuthApiLoginResponse}
  from '../actions/authActions'
-import { HttpClient} from './HttpClient'
 import {ITokenSendType, ITokenRefreshType} from '../services/TokenRefresh'
 
 export interface IAuthApiClient {
@@ -11,15 +11,15 @@ export interface IAuthApiClient {
 
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
     
-      async register(payload: IUserDetails): Promise<IUserAuthApiRegisterResponse> {
-        return await this.post('sign-up',  true, payload) as IUserAuthApiRegisterResponse
+  async register(payload: IUserDetails): Promise<IUserAuthApiRegisterResponse> {
+    return await this.post('sign-up', changedHttpRequestOptions, payload) as IUserAuthApiRegisterResponse
   }
 
-      async login(payload: IUserDetails): Promise<IUserAuthApiLoginResponse>{
-        return await this.post('token', true, payload) as IUserAuthApiLoginResponse
-    }
+  async login(payload: IUserDetails): Promise<IUserAuthApiLoginResponse>{
+    return await this.post('token', changedHttpRequestOptions, payload) as IUserAuthApiLoginResponse
+}
 
     async postRefresh(payload: ITokenSendType): Promise<ITokenRefreshType> {
-        return await this.post('token/refresh', true, payload) as ITokenRefreshType
+        return await this.post('token/refresh', changedHttpRequestOptions, payload) as ITokenRefreshType
     }
 }
