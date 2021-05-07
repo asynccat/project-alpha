@@ -6,12 +6,12 @@
 body {
     background: #654ea3;
     background: linear-gradient(to right, #e96443, #904e95);
-    min-height: 100vh
+    min-height: 100vh;
 }
 
 .myDataDetails {
     display: flex;
-   justify-content: center;
+    justify-content: center;
 }
 
 .avatarName {
@@ -20,5 +20,34 @@ body {
 }
 
 .buttons {
-    width: 150px;
+    width: 200px;
+    height: max-content;
+}
+
+.collapsible {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    text-align: center;
+}
+
+.nickButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emailButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.PasswordFields {
+    display: flex;
+    justify-content: center;
+}
+
+.Collapsible {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    text-align: center;
+    cursor: pointer;
 }

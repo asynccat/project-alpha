@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 800,
+      overflow: 'visible',
       width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
@@ -32,5 +33,5 @@ export const useStyles = makeStyles((theme) => ({
     },
     textfields: {
       margin: 15,
-    }
+    },
   }))
