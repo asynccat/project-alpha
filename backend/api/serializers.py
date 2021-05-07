@@ -49,3 +49,9 @@ class UpdateNicknameSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('nickname',)
+
+
+class ChangeUserPasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True, allow_blank=False, allow_null=False)
+    new_password = serializers.CharField(required=True, allow_blank=False, allow_null=False)
+    confirm_password = serializers.CharField(required=True, allow_blank=False, allow_null=False)

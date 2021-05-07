@@ -6,7 +6,8 @@ from .views import (
     UserCreateAPIView,
     UserProfileAPIView,
     UserPreferencesAPIView,
-    UpdateNicknameAPIView
+    UpdateNicknameAPIView,
+    ChangeUserPassword,
 )
 
 v1_router = DefaultRouter()
@@ -18,5 +19,6 @@ urlpatterns = [
     path('v1/user/<str:nickname>/nickname/update/', UpdateNicknameAPIView.as_view(), name='nickname_update'),
     path('v1/profile/<str:nickname>/', UserProfileAPIView.as_view(), name='user_profile'),
     path('v1/preferences/', UserPreferencesAPIView.as_view(), name='preferences'),
+    path('v1/change_password/', ChangeUserPassword.as_view(), name='change_password'),
     path('v1/', include(v1_router.urls)),
 ]

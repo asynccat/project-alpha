@@ -1,9 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
+
+from rest_framework.request import Request
+from rest_framework.renderers import JSONRenderer
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.views import APIView
 
 from web.models import UserSettings
@@ -15,6 +19,7 @@ from .serializers import (
     UserProfileSerializer,
     UserPreferencesSerializer,
     UpdateNicknameSerializer,
+    ChangeUserPasswordSerializer,
 )
 
 
@@ -80,6 +85,8 @@ class UserPreferencesAPIView(APIView):
     Retrieve user preferences.
     """
     permission_classes = (IsAuthenticated,)
+    # TODO: APIView does not have serializer_class
+    # Probably need to use Generic views here
     serializer_class = UserPreferencesSerializer
 
     def get(self, request):
@@ -91,3 +98,37 @@ class UserPreferencesAPIView(APIView):
             'show_email': user.usersettings.show_email,
         }
         return Response(user_data)
+
+
+class ChangeUserPassword(APIView):
+    permission_classes = (IsAuthenticated,)
+    renderer_classes = (JSONRenderer,)
+
+    def error_response(self, msg):
+        return {'error': msg, 'status': 'error'}
+
+    def post(self, request: Request) -> Response:
+        # return Response({'status': 'success'}, status=status.HTTP_200_OK)
+        data = dict(request.data)
+        serializer = ChangeUserPasswordSerializer(data=data)
+
+        if not serializer.is_valid():
+            return Response(
+                self.error_response(str(serializer.errors)),
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user = request.user
+        old_password = request.data.get('old_password')
+        if not user.check_password(old_password):
+            return Response(self.error_response('Password is incorrect'), status=status.HTTP_400_BAD_REQUEST)
+
+        new_pwd = request.data.get('new_password')
+        confirm_new_pwd = request.data.get('confirm_password')
+
+        if new_pwd != confirm_new_pwd:
+            return Response(self.error_response('New passwords does not match'), status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_pwd)
+        user.save()
+        return Response({'status': 'success'}, status=status.HTTP_200_OK)
