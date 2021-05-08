@@ -1,5 +1,4 @@
 development:
-  DEBUG: True
   SECRET_KEY: '4vjtf_9%ltt*pi7'
   ALLOWED_HOSTS:
     - 'localhost'
