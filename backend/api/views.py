@@ -104,18 +104,24 @@ class ChangeUserPassword(APIView):
     permission_classes = (IsAuthenticated,)
     renderer_classes = (JSONRenderer,)
 
-    def error_response(self, msg):
-        return {'error': msg, 'status': 'error'}
+    def error_response(self, msg: str, details: str = None) -> dict:
+        response = {'error': msg, 'status': 'error'}
+        if details:
+            response['details'] = details
+        return response
 
     def post(self, request: Request) -> Response:
-        # return Response({'status': 'success'}, status=status.HTTP_200_OK)
         data = dict(request.data)
         serializer = ChangeUserPasswordSerializer(data=data)
 
         if not serializer.is_valid():
             return Response(
-                self.error_response(str(serializer.errors)),
-                status=status.HTTP_400_BAD_REQUEST
+                self.error_response(
+                    'Required fields are missing or empty.',
+                    details=str(serializer.errors)
+                ),
+                status=status.HTTP_400_BAD_REQUEST,
+                content_type='application/json'
             )
 
         user = request.user

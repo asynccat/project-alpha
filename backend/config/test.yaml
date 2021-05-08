@@ -1,2 +1,4 @@
 test:
-  SECRET_KEY: '4vjtf_9%ltt*pi7'
+  SECRET_KEY: 'TESTSECRETKEY'
+  ALLOWED_HOSTS:
+    - 'testserver'
