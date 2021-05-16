@@ -18,6 +18,8 @@ export interface IUserPreferenceGetData {
   nickname: string
   email: string
   error?: string
+  init: boolean
+  isLoading: boolean
 }
 
 export interface IUserPreferenceSendData {
