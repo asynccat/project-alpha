@@ -9,11 +9,18 @@ describe('operatePreferencesDataReducer', () => {
         payload: {
             nickname: 'kate',
             email: 'test@email.com',
+            error: '',
+            init: false,
+            isLoading: false,
+        
         }
       })
     ).toEqual({
             nickname: 'kate',
             email: 'test@email.com',
+            error: '',
+            init: false,
+            isLoading: false,
     }
     )
   })

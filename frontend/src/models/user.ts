@@ -7,6 +7,8 @@ export interface IUserPreference {
   nickname: string
   email: string
   error?: string
+  init: boolean
+  isLoading: boolean
 }
 
 export interface IUserPreferenceNickChanged {
