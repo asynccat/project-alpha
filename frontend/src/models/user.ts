@@ -17,3 +17,9 @@ export interface IUserPreferenceNickChanged {
 export interface IUserPreferenceErrored {
   error: string
 }
+
+export interface IUserPreferenceInitiatedReq {
+  init: boolean
+  isLoading: boolean
+}
+

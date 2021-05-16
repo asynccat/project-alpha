@@ -2,71 +2,83 @@ import {Dispatch} from 'redux'
 
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
-import {IUserPreference, IUserPreferenceNickChanged, IUserPreferenceErrored } from '../models/user'
-import {workWithMyDataRequest} from '../api/HttpClientInstance'
-import { refreshToken } from '../services/TokenRefresh'
+import {IUserPreference, IUserPreferenceNickChanged, IUserPreferenceErrored, 
+  IUserPreferenceInitiatedReq } from '../models/user'
+import {operateUserDataRequest} from '../api/HttpClientInstance'
 
 export enum PrefActionType {
   CHANGE_NICK = 'pref/CHANGE_NICK',
   CHANGE_EMAIL = 'pref/CHANGE_EMAIL',
   RETRIEVE_DATA= 'pref/RETRIEVE_DATA',
-  GOT_ERROR = 'pref/GOT_ERROR'
+  REQUEST_FAILED = 'pref/REQUEST_FAILED',
+  REQUEST_INITIATED = 'pref/REQUEST_INITIATED'
 }
 
-export interface IGetMyData {
+export interface IUserPreferenceGetData {
   nickname: string
   email: string
   error?: string
 }
 
-export interface ISendData {
+export interface IUserPreferenceSendData {
   oldNickname: string
   nickname: string
 }
 
-export interface IReceiveDataAfterChange {
+export interface IUserPreferenceReceiveDataAfterChange {
   nickname: string
 }
 
-export type postedUserAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
-export type errorUserAction = Action<PrefActionType.GOT_ERROR, IUserPreferenceErrored>
+export const IUserPreferenceSentInquiry = {
+  init: true,
+  isLoading: true
+}
 
-export type PrefActions = postedUserAction | getUserAction | errorUserAction
+export type initUserAction = Action<PrefActionType.REQUEST_INITIATED, IUserPreferenceInitiatedReq>
+export type postedUserAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
+export type errorUserAction = Action<PrefActionType.REQUEST_FAILED, IUserPreferenceErrored>
+
+export type PrefActions = postedUserAction | getUserAction | errorUserAction | initUserAction 
 export type getUserAction = Action<PrefActionType.RETRIEVE_DATA, IUserPreference>
+
+export const initiatedUserAction = actionCreator<PrefActionType.REQUEST_INITIATED, 
+IUserPreferenceInitiatedReq>(PrefActionType.REQUEST_INITIATED)
+
 export const postUserAction = actionCreator<PrefActionType.CHANGE_NICK, 
 IUserPreferenceNickChanged>(PrefActionType.CHANGE_NICK)
 
 export const getInqUserAction = actionCreator<PrefActionType.RETRIEVE_DATA, 
 IUserPreference>(PrefActionType.RETRIEVE_DATA)
 
-export const erroredUserAction = actionCreator<PrefActionType.GOT_ERROR, 
-IUserPreferenceErrored>(PrefActionType.GOT_ERROR)
+export const erroredUserAction = actionCreator<PrefActionType.REQUEST_FAILED, 
+IUserPreferenceErrored>(PrefActionType.REQUEST_FAILED)
 
-export const getMyData = () => async (dispatch:Dispatch<getUserAction>): Promise<void> => {
+export const getMyData = () => async (dispatch:Dispatch< getUserAction | errorUserAction | 
+  initUserAction >): Promise<void> => {
 
   try {
-    const result = await workWithMyDataRequest.getData()
+    dispatch(initiatedUserAction(IUserPreferenceSentInquiry))
+    const result = await operateUserDataRequest.getPreferenceData()
     dispatch(getInqUserAction(result))
-  } catch (e) {
-    refreshToken()
-    console.log('Error:', e)
+  } catch (error) {
+    const destructuredError = {error}
+    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    const [messageArrayFromDestructuredError] = destructuredMessage.errors
+    dispatch(erroredUserAction({error: messageArrayFromDestructuredError.message}))
   }
 }
 
-
-export const changeMyData = (payload: ISendData ) => 
-async (dispatch:Dispatch<postedUserAction>): Promise<void | string > => {
+export const changeMyData = (payload: IUserPreferenceSendData ) => 
+async (dispatch:Dispatch<postedUserAction | errorUserAction | initUserAction >): Promise<void | string > => {
 
   try {
-    console.log(payload)
-    const result = await workWithMyDataRequest.saveData(payload)
+    dispatch(initiatedUserAction(IUserPreferenceSentInquiry))
+    const result = await operateUserDataRequest.savePreferenceData(payload)
     dispatch(postUserAction(result))
   } catch (error) {
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     dispatch(erroredUserAction({error: messageArrayFromDestructuredError.message}))
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import userReducer from './userReducer'
-import changeMyDataReducer from './changeMyDataReducer'
+import operatePreferencesDataReducer from './operatePreferencesDataReducer'
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import {store} from '../index'
@@ -10,7 +10,7 @@ import {store} from '../index'
 export const rootReducer = (history) => combineReducers({
     router: connectRouter(history),
     userReducer,
-    changeMyDataReducer,
+    operatePreferencesDataReducer,
 })
 
 export type RootState = ReturnType<typeof store.getState>

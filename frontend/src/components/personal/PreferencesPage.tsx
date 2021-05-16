@@ -4,7 +4,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
-  Typography, Avatar, Box, Snackbar, TextField} from '@material-ui/core'
+  Typography, Avatar, Box, Snackbar, TextField,  CircularProgress} from '@material-ui/core'
   import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 
 import {changeMyData, getMyData } from '../../actions/prefAndProfileActions'
@@ -39,8 +39,9 @@ export default function PreferencesPage (): React.ReactElement {
     dispatch(getMyData())
   }, [dispatch])  
   
-  const user = useSelector((state: RootState) => state.changeMyDataReducer)
+  const user = useSelector((state: RootState) => state.operatePreferencesDataReducer)
   const id = useSelector((state: RootState) => state.userReducer.id)
+  const loader = useSelector((state: RootState) => state.operatePreferencesDataReducer.isLoading)
 
   const [nickname, setNickname] = useState(user ? user.nickname : '')
 
@@ -117,6 +118,7 @@ export default function PreferencesPage (): React.ReactElement {
       />
 </div>
     <div className="myDataDetails">
+      <div> { loader? <CircularProgress/> : ''} </div>
       <CardContent >
         <TextField className={classes.textfields} label="nickname" 
           onChange={onChangeNickname} value={nickname} variant="outlined" />

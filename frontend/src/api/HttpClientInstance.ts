@@ -1,5 +1,5 @@
 import {HttpClient} from './HttpClient'
-import {WorkWithMyData} from './WorkWithMyData'
+import {OperateUserData} from './operatePreferenceData'
 
 export const httpClient = new HttpClient()
-export const workWithMyDataRequest = new WorkWithMyData(httpClient)
+export const operateUserDataRequest = new OperateUserData(httpClient)
