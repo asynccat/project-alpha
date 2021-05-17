@@ -7,7 +7,7 @@ import {Card, CardActions, CardContent, CardHeader, CardMedia, Button,
   Typography, Avatar, Box, Snackbar, TextField,  CircularProgress} from '@material-ui/core'
   import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 
-import {changeMyData, getMyData } from '../../actions/prefAndProfileActions'
+import {updateUserPreferences, getMyData } from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
@@ -72,7 +72,7 @@ export default function PreferencesPage (): React.ReactElement {
 
   const saveChanges = useCallback((e) => {
     e.preventDefault()
-      dispatch(changeMyData({oldNickname, nickname}))
+      dispatch(updateUserPreferences({oldNickname, nickname}))
     }, [dispatch, oldNickname, nickname])
 
   const logOut = useCallback((e) => {
