@@ -1,11 +1,9 @@
 import { PrefActionType, PrefActions } from '../actions/prefAndProfileActions'
+import RemoteSource from '../types/RemoteSource'
 
-interface ChangeInitState {
-    init: boolean
-    isLoading: boolean
+interface IUserPreferencesState extends RemoteSource {
     nickname: string
     email: string
-    error?: string
 }
 
 export const initialState = {
@@ -16,8 +14,8 @@ export const initialState = {
     isLoading: false
 }
 
-const operatePreferencesDataReducer = ( state: ChangeInitState = initialState, action: PrefActions): 
-ChangeInitState => {
+const operatePreferencesDataReducer = (state: IUserPreferencesState = initialState, action: PrefActions):
+IUserPreferencesState => {
     switch(action.type){
         case PrefActionType.REQUEST_INITIATED:
             return {

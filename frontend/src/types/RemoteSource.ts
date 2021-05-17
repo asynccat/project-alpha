@@ -1,6 +1,5 @@
-export default interface RemoteSource<T> {
+export default interface RemoteSource {
   init: boolean
   isLoading: boolean
   error: string
-  data: T
 }
