@@ -1,10 +1,13 @@
 import { IHttpClient , defaultHttpRequestOptions} from './HttpClient'
-import { IUserPreferencesResponse, IUpdateNicknameActionPayload,
-  INicknameUpdateResponse } from '../actions/prefAndProfileActions'
+import { IUserPreferencesResponse, IUpdateNicknameActionPayload } from '../actions/prefAndProfileActions'
 
 export interface IUserPreferenceOperateData {
   fetchUserPreferences: () => Promise<IUserPreferencesResponse>
   updateNickname: (payload: IUpdateNicknameActionPayload) => Promise<INicknameUpdateResponse>
+}
+
+interface INicknameUpdateResponse {
+  nickname: string
 }
 
 export class OperateUserData implements IUserPreferenceOperateData {
