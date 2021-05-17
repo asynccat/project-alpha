@@ -23,7 +23,8 @@ export class OperateUserData implements IUserPreferenceOperateData {
 
     async updateNickname(payload: IUpdateNicknameActionPayload): Promise<INicknameUpdateResponse> {
       const {oldNickname} = payload
+      const {nickname} = payload
       return await this.client.put(`user/${oldNickname}/nickname/update`, 
-      defaultHttpRequestOptions, payload) as INicknameUpdateResponse
+      defaultHttpRequestOptions, {nickname}) as INicknameUpdateResponse
   }
 }
