@@ -22,11 +22,6 @@ export interface IUserPreferenceGetData {
   isLoading: boolean
 }
 
-export interface IUserPreferenceSendData {
-  oldNickname: string
-  nickname: string
-}
-
 export interface IUserPreferenceReceiveDataAfterChange {
   nickname: string
 }
@@ -37,10 +32,10 @@ export const IUserPreferenceSentInquiry = {
 }
 
 export type initUserAction = Action<PrefActionType.REQUEST_INITIATED, IUserPreferenceInitiatedReq>
-export type postedUserAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
+export type UpdateNicknameAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
 export type errorUserAction = Action<PrefActionType.REQUEST_FAILED, IUserPreferenceErrored>
 
-export type PrefActions = postedUserAction | getUserAction | errorUserAction | initUserAction 
+export type PrefActions = UpdateNicknameAction | getUserAction | errorUserAction | initUserAction 
 export type getUserAction = Action<PrefActionType.RETRIEVE_DATA, IUserPreference>
 
 export const initiatedUserAction = actionCreator<PrefActionType.REQUEST_INITIATED, 
@@ -70,12 +65,17 @@ export const getMyData = () => async (dispatch:Dispatch< getUserAction | errorUs
   }
 }
 
-export const updateUserPreferences = (payload: IUserPreferenceSendData ) =>
-async (dispatch:Dispatch<postedUserAction | errorUserAction | initUserAction>): Promise<void> => {
+export interface IUpdateNicknameActionPayload {
+  oldNickname: string // old nickname is required to generate URL
+  nickname: string
+}
+
+export const updateUserNickname = (payload: IUpdateNicknameActionPayload ) =>
+async (dispatch:Dispatch<UpdateNicknameAction | errorUserAction | initUserAction>): Promise<void> => {
 
   try {
     dispatch(initiatedUserAction(IUserPreferenceSentInquiry))
-    const result = await operateUserDataRequest.savePreferenceData(payload)
+    const result = await operateUserDataRequest.updateNickname(payload)
     dispatch(postUserAction(result))
   } catch (error) {
     const destructuredError = {error}
