@@ -71,7 +71,7 @@ export const getMyData = () => async (dispatch:Dispatch< getUserAction | errorUs
 }
 
 export const changeMyData = (payload: IUserPreferenceSendData ) => 
-async (dispatch:Dispatch<postedUserAction | errorUserAction | initUserAction >): Promise<void | string > => {
+async (dispatch:Dispatch<postedUserAction | errorUserAction | initUserAction >): Promise<void> => {
 
   try {
     dispatch(initiatedUserAction(IUserPreferenceSentInquiry))
