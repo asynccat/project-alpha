@@ -29,7 +29,7 @@ IUserPreferencesState => {
                 isLoading: false,
                 error: action.payload.error,
             }
-        case PrefActionType.RETRIEVE_DATA:
+        case PrefActionType.SET_USER_PREFERENCES:
             return {
                 ...state,
                 isLoading: false,

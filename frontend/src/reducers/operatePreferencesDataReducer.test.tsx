@@ -2,10 +2,10 @@ import {PrefActionType} from '../actions/prefAndProfileActions'
 import reducer, {initialState} from './operatePreferencesDataReducer'
 
 describe('operatePreferencesDataReducer', () => {
-  it('should handle RETRIEVE_DATA', () => {
+  it('should handle SET_USER_PREFERENCES', () => {
     expect(
       reducer(initialState, {
-        type: PrefActionType.RETRIEVE_DATA,
+        type: PrefActionType.SET_USER_PREFERENCES,
         payload: {
             nickname: 'kate',
             email: 'test@email.com',

@@ -7,7 +7,7 @@ import {Card, CardActions, CardContent, CardHeader, CardMedia, Button,
   Typography, Avatar, Box, Snackbar, TextField,  CircularProgress} from '@material-ui/core'
   import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 
-import {updateUserNickname, getMyData } from '../../actions/prefAndProfileActions'
+import {updateUserNickname, fetchUserPreferences } from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
@@ -36,7 +36,7 @@ export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
   
   useEffect(() => {
-    dispatch(getMyData())
+    dispatch(fetchUserPreferences())
   }, [dispatch])  
   
   const user = useSelector((state: RootState) => state.operatePreferencesDataReducer)

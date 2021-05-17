@@ -6,81 +6,90 @@ import {IUserPreference, IUserPreferenceNickChanged, IUserPreferenceErrored,
   IUserPreferenceInitiatedReq } from '../models/user'
 import {operateUserDataRequest} from '../api/HttpClientInstance'
 
+// Define action types
+
 export enum PrefActionType {
   CHANGE_NICK = 'pref/CHANGE_NICK',
   CHANGE_EMAIL = 'pref/CHANGE_EMAIL',
-  RETRIEVE_DATA= 'pref/RETRIEVE_DATA',
+  SET_USER_PREFERENCES = 'pref/SET_USER_PREFERENCES',
   REQUEST_FAILED = 'pref/REQUEST_FAILED',
   REQUEST_INITIATED = 'pref/REQUEST_INITIATED'
 }
 
-export interface IUserPreferenceGetData {
+// Define actions
+
+export type UserPreferencesSetAction = Action<PrefActionType.SET_USER_PREFERENCES, IUserPreference>
+export type UserPreferencesRequestInitiatedAction =
+  Action<PrefActionType.REQUEST_INITIATED, IUserPreferenceInitiatedReq>
+export type UpdateNicknameAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
+export type UserPreferencesRequestFailedAction = Action<PrefActionType.REQUEST_FAILED, IUserPreferenceErrored>
+
+export type PrefActions =
+  | UserPreferencesRequestInitiatedAction
+  | UserPreferencesRequestFailedAction
+  | UpdateNicknameAction
+  | UserPreferencesSetAction
+
+
+// Define action creators for init/fail
+
+export const userPreferencesRequestInitiated =
+  actionCreator<PrefActionType.REQUEST_INITIATED>(PrefActionType.REQUEST_INITIATED)
+export const userPreferencesRequestFailed = actionCreator<PrefActionType.REQUEST_FAILED,
+  IUserPreferenceErrored>(PrefActionType.REQUEST_FAILED)
+
+
+// Define action creator and thunk for setting/fetching user preferences
+
+export interface IUserPreferencesResponse {
   nickname: string
   email: string
-  error?: string
-  init: boolean
-  isLoading: boolean
 }
 
-export interface IUserPreferenceReceiveDataAfterChange {
-  nickname: string
-}
+export const setUserPreferences = actionCreator<PrefActionType.SET_USER_PREFERENCES,
+IUserPreferencesResponse>(PrefActionType.SET_USER_PREFERENCES)
 
-export const IUserPreferenceSentInquiry = {
-  init: true,
-  isLoading: true
-}
-
-export type initUserAction = Action<PrefActionType.REQUEST_INITIATED, IUserPreferenceInitiatedReq>
-export type UpdateNicknameAction = Action<PrefActionType.CHANGE_NICK, IUserPreferenceNickChanged>
-export type errorUserAction = Action<PrefActionType.REQUEST_FAILED, IUserPreferenceErrored>
-
-export type PrefActions = UpdateNicknameAction | getUserAction | errorUserAction | initUserAction 
-export type getUserAction = Action<PrefActionType.RETRIEVE_DATA, IUserPreference>
-
-export const initiatedUserAction = actionCreator<PrefActionType.REQUEST_INITIATED, 
-IUserPreferenceInitiatedReq>(PrefActionType.REQUEST_INITIATED)
-
-export const postUserAction = actionCreator<PrefActionType.CHANGE_NICK, 
-IUserPreferenceNickChanged>(PrefActionType.CHANGE_NICK)
-
-export const getInqUserAction = actionCreator<PrefActionType.RETRIEVE_DATA, 
-IUserPreference>(PrefActionType.RETRIEVE_DATA)
-
-export const erroredUserAction = actionCreator<PrefActionType.REQUEST_FAILED, 
-IUserPreferenceErrored>(PrefActionType.REQUEST_FAILED)
-
-export const getMyData = () => async (dispatch:Dispatch< getUserAction | errorUserAction | 
-  initUserAction >): Promise<void> => {
-
+export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<void> => {
+  dispatch(userPreferencesRequestInitiated())
   try {
-    dispatch(initiatedUserAction(IUserPreferenceSentInquiry))
-    const result = await operateUserDataRequest.getPreferenceData()
-    dispatch(getInqUserAction(result))
+    const result = await operateUserDataRequest.fetchUserPreferences()
+    dispatch(setUserPreferences(result))
   } catch (error) {
-    const destructuredError = {error}
-    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    // TODO: error can be 500 or another that does not match `error.message` format
+    // so that can lead to another error
+    const destructuredMessage = JSON.parse(error.message)
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
-    dispatch(erroredUserAction({error: messageArrayFromDestructuredError.message}))
+    dispatch(userPreferencesRequestFailed({error: messageArrayFromDestructuredError.message}))
   }
 }
+
+// Define action creator and thunk for updating users nickname
 
 export interface IUpdateNicknameActionPayload {
   oldNickname: string // old nickname is required to generate URL
   nickname: string
 }
 
-export const updateUserNickname = (payload: IUpdateNicknameActionPayload ) =>
-async (dispatch:Dispatch<UpdateNicknameAction | errorUserAction | initUserAction>): Promise<void> => {
+export interface INicknameUpdateResponse {
+  nickname: string
+}
 
+export const changeUserNickname = actionCreator<PrefActionType.CHANGE_NICK,
+  IUserPreferenceNickChanged>(PrefActionType.CHANGE_NICK)
+
+export const updateUserNickname =
+  (payload: IUpdateNicknameActionPayload ) => async (dispatch:Dispatch): Promise<void> => {
+
+  dispatch(userPreferencesRequestInitiated())
   try {
-    dispatch(initiatedUserAction(IUserPreferenceSentInquiry))
     const result = await operateUserDataRequest.updateNickname(payload)
-    dispatch(postUserAction(result))
+    dispatch(changeUserNickname(result))
   } catch (error) {
+    // TODO: error can be 500 or another that does not match `error.message` format
+    // so that can lead to another error
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
-    dispatch(erroredUserAction({error: messageArrayFromDestructuredError.message}))
+    dispatch(userPreferencesRequestFailed({error: messageArrayFromDestructuredError.message}))
   }
 }

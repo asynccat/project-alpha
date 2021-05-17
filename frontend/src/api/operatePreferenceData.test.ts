@@ -12,8 +12,8 @@ describe('use of OperateUserData client', () => {
 
   it('test one', () => {
     // eslint-disable-next-line max-nested-callbacks
-    OperateUserData.prototype.getPreferenceData = jest.fn().mockImplementation(() => ({ nickname: 'kate' }))
-    operateUserDataRequest.getPreferenceData() 
+    OperateUserData.prototype.fetchUserPreferences = jest.fn().mockImplementation(() => ({ nickname: 'kate' }))
+    operateUserDataRequest.fetchUserPreferences()
   })
 
 })
