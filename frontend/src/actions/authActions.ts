@@ -61,7 +61,7 @@ export const signUserUp = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (e) {
-      alert(e.message)
+      console.log('Error:', e.message)
     }
 }
 
@@ -84,7 +84,7 @@ export const login = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (e) {
-      alert(e.message)
+      console.log('Error:', e.message)
     }
 }
 
@@ -96,6 +96,6 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     dispatch(logoutAction())
     dispatch(push('/login'))
   } catch (e) {
-    alert(e.message)
+    console.log('Error:', e.message)
   }
 }

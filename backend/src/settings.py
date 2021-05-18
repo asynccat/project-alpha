@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import dynaconf
@@ -125,11 +126,20 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'EXCEPTION_HANDLER': 'api.utils.custom_exception_handler',
 }
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
+
+
+NICKNAME_UPDATE_TIMEOUT_DAYS = 30
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+}
 
 settings = dynaconf.DjangoDynaconf(
     __name__,
