@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable react/jsx-no-bind */
 
 import React, { useState, useCallback, useEffect } from 'react'
@@ -12,6 +12,7 @@ import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
 import { userLogOut } from '../../actions/authActions'
+import {TWOSIGNS} from '../../constants/valuableNumbers'
 
  function Alert(props: AlertProps) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -21,10 +22,6 @@ import { userLogOut } from '../../actions/authActions'
 
 export default function PreferencesPage (): React.ReactElement {
   const [open, setOpen] = useState(false)
-  
-  const handleClick = () => {
-    setOpen(true)
-  }
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -55,11 +52,23 @@ export default function PreferencesPage (): React.ReactElement {
 
   const [error, setError] = useState(user ? user : '')
   useEffect(() => {
-    //@ts-ignore
     setError(user ? user.error : '')
-    if (user.error) {
-      handleClick()
-    } 
+    if (user.error.length > TWOSIGNS) {
+      setOpen(true)
+    } else {
+      return
+    }  
+ },[user])
+
+ const [status, setStatus] = useState(user ? user : '')
+  useEffect(() => {
+    setStatus(user ? user.status : '')
+    if (user.status.length > TWOSIGNS) {
+      console.log(user.status.length)
+      setOpen(true)
+    } else {
+     return
+    }
  },[user])
 
   const [email, setEmail] = useState(user ? user.email : '')
@@ -139,12 +148,20 @@ export default function PreferencesPage (): React.ReactElement {
       <Button className="buttons" color="secondary" onClick={logOut}  type="submit" variant="contained">
         Logout
       </Button>
-      </CardActions>
+      </CardActions> 
+      { error ? 
       <Snackbar autoHideDuration={6000} onClose={handleClose} open={open}>
-        <Alert onClose={handleClose} severity="error">
-          {error}
-        </Alert>
+        <Alert onClose={handleClose} severity="error">{error}
+        </Alert> 
       </Snackbar>
+ : '' }
+
+      { status ? 
+      <Snackbar autoHideDuration={6000} onClose={handleClose} open={open}>
+        <Alert onClose={handleClose} severity="success">{status}
+        </Alert> 
+      </Snackbar>
+      : '' }
     </Card>
 
   )
