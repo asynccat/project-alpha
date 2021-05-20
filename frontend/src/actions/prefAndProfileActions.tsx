@@ -67,6 +67,12 @@ export interface IUpdateNicknameActionPayload {
   nickname: string
 }
 
+export interface IUpdatePasswordActionPayload {
+  old_password: string
+  new_password: string
+  confirm_password: string
+}
+
 export const changeUserNickname =
   actionCreator<PrefActionType.CHANGE_NICK, string>(PrefActionType.CHANGE_NICK)
 
@@ -84,5 +90,24 @@ export const updateUserNickname =
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
     dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+  }
+}
+
+export const changeUserPassword =
+  actionCreator<PrefActionType.CHANGE_PASSWORD, string>(PrefActionType.CHANGE_PASSWORD)
+
+export const updateUserPassword =
+  (payload: IUpdatePasswordActionPayload) => async (dispatch:Dispatch): Promise<void> => {
+
+  dispatch(userPreferencesRequestInitiated())
+  try {
+    const result = await operateUserDataRequest.updatePassword(payload)
+    dispatch(changeUserPassword(result.status))
+  } catch (error) {
+    const destructuredError = {error}
+    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    console.log(destructuredMessage)
+    const messageArrayFromDestructuredError = destructuredMessage.error
+    dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
   }
 }
