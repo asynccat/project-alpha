@@ -27,7 +27,7 @@ IUserPreferencesState => {
             return {
                 ...state,
                 isLoading: false,
-                error: action.payload.error,
+                error: action.payload,
             }
         case PrefActionType.SET_USER_PREFERENCES:
             return {
@@ -43,6 +43,15 @@ IUserPreferencesState => {
                 isLoading: false,
                 nickname: action.payload.nickname,
             }
+        
+        case PrefActionType.CHANGE_PASSWORD:
+            return {
+                ...state,
+                isLoading: false,
+                status: action.payload,
+                error: ''
+                }
+
 
         default: return state
     }

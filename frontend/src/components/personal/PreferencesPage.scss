@@ -19,6 +19,43 @@ body {
     flex-direction: column;
 }
 
-.buttons {
-    width: 150px;
+
+.nickEmail {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5%;
+}
+
+.emailButton {
+    display: flex;
+    flex-direction: row;
+    width: 40%;
+}
+
+.collapsible {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    text-align: center;
+}
+
+.nickButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emailButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.PasswordFields {
+    display: flex;
+    justify-content: center;
+}
+
+.Collapsible {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    text-align: center;
+    cursor: pointer;
 }
