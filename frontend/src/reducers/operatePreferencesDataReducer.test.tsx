@@ -21,6 +21,7 @@ describe('operatePreferencesDataReducer', () => {
             error: '',
             init: false,
             isLoading: false,
+            status: ''
     }
     )
   })
