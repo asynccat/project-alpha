@@ -1,2 +1,3 @@
 export const MILLISECONDS_IN_SECOND = 1000
 export const TEN_SECONDS_BEFORE_TOKEN_EXPIRE = 10000
+export const TWOSIGNS = 2

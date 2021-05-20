@@ -7,6 +7,7 @@ export const useStyles = makeStyles((theme) => ({
       width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
+
     },
     },
     media: {
@@ -28,7 +29,11 @@ export const useStyles = makeStyles((theme) => ({
     actionButton: {
       display: 'flex',
       justifyContent: 'center',
-      marginBottom: '15px'
+      marginBottom: '15px',
+    },
+    nicknameButton: {
+      width: 120,
+      padding: 10,
     },
     textfields: {
       margin: 15,
