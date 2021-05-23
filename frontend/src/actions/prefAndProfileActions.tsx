@@ -1,4 +1,5 @@
 import {Dispatch} from 'redux'
+import humps from 'humps'
 
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
@@ -52,8 +53,6 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
     const result = await operateUserDataRequest.fetchUserPreferences()
     dispatch(setUserPreferences(result))
   } catch (error) {
-    // TODO: error can be 500 or another that does not match `error.message` format
-    // so that can lead to another error
     const destructuredMessage = JSON.parse(error.message)
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
     dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
@@ -68,6 +67,14 @@ export interface IUpdateNicknameActionPayload {
 }
 
 export interface IUpdatePasswordActionPayload {
+  // the way it comes from user input
+  oldPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
+export interface IUpdatePasswordActionPayloadSnakeCase {
+  // the way its transformed for backend
   old_password: string
   new_password: string
   confirm_password: string
@@ -90,10 +97,13 @@ export const updateUserNickname =
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
     dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+  } else {
+    dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
   }
 }
+}
 
-export const changeUserPassword =
+export const changeUserPasswordSuccessfull =
   actionCreator<PrefActionType.CHANGE_PASSWORD, string>(PrefActionType.CHANGE_PASSWORD)
 
 export const updateUserPassword =
@@ -101,13 +111,20 @@ export const updateUserPassword =
 
   dispatch(userPreferencesRequestInitiated())
   try {
-    const result = await operateUserDataRequest.updatePassword(payload)
-    dispatch(changeUserPassword(result.status))
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const payloadToSnakeCase : IUpdatePasswordActionPayloadSnakeCase = humps.decamelizeKeys(payload)
+
+    const result = await operateUserDataRequest.updatePassword(payloadToSnakeCase)
+    dispatch(changeUserPasswordSuccessfull(result.status))
   } catch (error) {
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
-    console.log(destructuredMessage)
-    const messageArrayFromDestructuredError = destructuredMessage.error
-    dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
+    if (destructuredMessage) {
+      const messageArrayFromDestructuredError = destructuredMessage.error
+      dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
+    } else {
+      dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
+    }
   }
 }

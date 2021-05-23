@@ -18,10 +18,67 @@ describe('operatePreferencesDataReducer', () => {
     ).toEqual({
             nickname: 'kate',
             email: 'test@email.com',
-            error: '',
+            error:  '',
             init: false,
             isLoading: false,
             status: ''
+    }
+    )
+  })
+  it('should handle REQUEST_FAILED', () => {
+    expect(
+      reducer(initialState, {
+        type: PrefActionType.REQUEST_FAILED,
+        payload: {
+          email: 'test@email.com',
+          error: '',
+          nickname: 'kate',
+          status: '',
+          isLoading: false,
+
+        }
+      })
+    ).toEqual({
+            nickname: '',
+            email: '',
+            error: {
+              email: 'test@email.com',
+              nickname: 'kate',
+              isLoading: false,
+              status: '',
+              error: ''
+            },
+            init: false,
+            isLoading: false,
+            status: ''
+
+    }
+    )
+  })
+  it('should handle CHANGE_PASSWORD', () => {
+    expect(
+      reducer(initialState, {
+        type: PrefActionType.CHANGE_PASSWORD,
+        payload: {
+         oldPassword: '22',
+         newPassword: '33',
+         confirmPassword: '33'
+
+        }
+      })
+    ).toEqual({
+            status: 'success',
+            email: '',
+            error: '',
+           init: false,
+            isLoading: false,
+            nickname: '',
+            status:  {
+            confirmPassword: '33',
+            newPassword: '33',
+            oldPassword: '22',
+            },
+        
     }
     )
   })
