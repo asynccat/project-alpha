@@ -56,8 +56,6 @@ export default function PreferencesPage (): React.ReactElement {
     setError(user ? user.error : '')
     if (user.error.length > TWOSIGNS) {
       setOpen(true)
-    } else {
-      return
     }
  },[user])
 
@@ -67,9 +65,7 @@ export default function PreferencesPage (): React.ReactElement {
     if (user.status.length > TWOSIGNS) {
       console.log(user.status.length)
       setOpen(true)
-    } else {
-     return
-    }
+    } 
  },[user])
 
   const [email, setEmail] = useState(user ? user.email : '')

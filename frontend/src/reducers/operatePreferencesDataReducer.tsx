@@ -22,6 +22,8 @@ IUserPreferencesState => {
                 ...state,
                 isLoading: true,
                 init: true,
+                status: '',
+                error: ''
             }
         case PrefActionType.REQUEST_FAILED:
             return {
