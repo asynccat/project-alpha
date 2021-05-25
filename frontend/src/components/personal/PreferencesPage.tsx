@@ -5,8 +5,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
-  Typography, Avatar, Box, Snackbar, TextField,  CircularProgress} from '@material-ui/core'
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
+  Typography, Avatar, Box, TextField,  CircularProgress} from '@material-ui/core'
 
 import {updateUserNickname, fetchUserPreferences } from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
@@ -15,22 +14,8 @@ import './PreferencesPage.scss'
 import { userLogOut } from '../../actions/authActions'
 import PasswordChangeForm from './PasswordChangeForm'
 
- function Alert(props: AlertProps) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
 
 export default function PreferencesPage (): React.ReactElement {
-  const [open, setOpen] = useState(false)
-
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpen(false)
-  }
-
   const dispatch = useDispatch()
   
   useEffect(() => {
@@ -50,23 +35,6 @@ export default function PreferencesPage (): React.ReactElement {
   const onChangeNickname = useCallback((e) => {
     setNickname(e.target.value)
   }, [setNickname])
-
-  const [error, setError] = useState(user ? user : '')
-  useEffect(() => {
-    setError(user ? user.error : '')
-    if (user.error.length) {
-      setOpen(true)
-    }
- },[user])
-
- const [status, setStatus] = useState(user ? user : '')
-  useEffect(() => {
-    setStatus(user ? user.status : '')
-    if (user.status.length) {
-      console.log(user.status.length)
-      setOpen(true)
-    } 
- },[user])
 
   const [email, setEmail] = useState(user ? user.email : '')
 
@@ -154,19 +122,6 @@ export default function PreferencesPage (): React.ReactElement {
         Logout
       </Button>
       </CardActions>
-      { error ?
-      <Snackbar autoHideDuration={6000} onClose={handleClose} open={open}>
-        <Alert onClose={handleClose} severity="error">{error}
-        </Alert>
-      </Snackbar>
- : '' }
-
-      { status ?
-      <Snackbar autoHideDuration={6000} onClose={handleClose} open={open}>
-        <Alert onClose={handleClose} severity="success">{status}
-        </Alert>
-      </Snackbar>
-      : '' }
     </Card>
 
   )
