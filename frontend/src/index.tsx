@@ -13,8 +13,15 @@ import './index.scss'
 import App from './App'
 import {rootReducer} from './reducers/index'
 
-export const store = createStore(rootReducer(history), 
-composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk, logger)))
+const middleWares = [routerMiddleware(history), thunk]
+if (process.env.NODE_ENV === 'development') {
+  middleWares.push(logger)
+}
+
+export const store = createStore(rootReducer(history),
+composeWithDevTools(
+  applyMiddleware(...middleWares))
+)
 
 type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>
