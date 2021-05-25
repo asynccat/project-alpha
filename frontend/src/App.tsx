@@ -1,11 +1,13 @@
 import React from 'react'
 import {Router, Switch, Route, Redirect } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 
 import SignUpSide from '../src/components/authentication/SignUp'
 import ProfilePage from '../src/components/personal/ProfilePage'
 import PreferencesPage from '../src/components/personal/PreferencesPage'
 import SignInSide from './components/authentication/SignIn'
 import {history} from './history'
+
 
 const App: React.FC = () => {
   
@@ -14,6 +16,7 @@ const App: React.FC = () => {
       <div >
         <h1 className="heading">Welcome to Project-alpha!</h1>
         <div className="container page">
+        <ToastContainer autoClose={8000} />
           <Switch>
             <Route exact path="/login">
               <SignInSide />
