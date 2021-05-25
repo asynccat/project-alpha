@@ -10,6 +10,7 @@ import {operateUserDataRequest} from '../api/HttpClientInstance'
 export enum PrefActionType {
   CHANGE_NICK = 'pref/CHANGE_NICK',
   CHANGE_EMAIL = 'pref/CHANGE_EMAIL',
+  CHANGE_PASSWORD = 'pref/CHANGE_PASSWORD',
   SET_USER_PREFERENCES = 'pref/SET_USER_PREFERENCES',
   REQUEST_FAILED = 'pref/REQUEST_FAILED',
   REQUEST_INITIATED = 'pref/REQUEST_INITIATED'
@@ -21,12 +22,14 @@ export type UserPreferencesSetAction = Action<PrefActionType.SET_USER_PREFERENCE
 export type UserPreferencesRequestInitiatedAction = Action<PrefActionType.REQUEST_INITIATED>
 export type UpdateNicknameAction = Action<PrefActionType.CHANGE_NICK, string>
 export type UserPreferencesRequestFailedAction = Action<PrefActionType.REQUEST_FAILED, string>
+export type UpdatePasswordAction = Action<PrefActionType.CHANGE_PASSWORD, string>
 
 export type PrefActions =
   | UserPreferencesRequestInitiatedAction
   | UserPreferencesRequestFailedAction
   | UpdateNicknameAction
   | UserPreferencesSetAction
+  | UpdatePasswordAction
 
 
 // Define action creators for init/fail
@@ -54,8 +57,11 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
     dispatch(setUserPreferences(result))
   } catch (error) {
     const destructuredMessage = JSON.parse(error.message)
-    const [messageArrayFromDestructuredError] = destructuredMessage.errors
-    dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+    if (destructuredMessage) {
+      const [messageArrayFromDestructuredError] = destructuredMessage.errors
+      dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+    }
+    dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
   }
 }
 
@@ -91,10 +97,9 @@ export const updateUserNickname =
     const result = await operateUserDataRequest.updateNickname(payload)
     dispatch(changeUserNickname(result.nickname))
   } catch (error) {
-    // TODO: error can be 500 or another that does not match `error.message` format
-    // so that can lead to another error
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
+    if (destructuredMessage) {
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
     dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
   } else {
@@ -107,7 +112,8 @@ export const changeUserPasswordSuccessfull =
   actionCreator<PrefActionType.CHANGE_PASSWORD, string>(PrefActionType.CHANGE_PASSWORD)
 
 export const updateUserPassword =
-  (payload: IUpdatePasswordActionPayload) => async (dispatch:Dispatch): Promise<void> => {
+  (payload: IUpdatePasswordActionPayload | IUpdatePasswordActionPayloadSnakeCase ) => 
+  async (dispatch:Dispatch): Promise<void> => {
 
   dispatch(userPreferencesRequestInitiated())
   try {

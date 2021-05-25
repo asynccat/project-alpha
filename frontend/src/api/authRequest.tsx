@@ -12,14 +12,14 @@ export interface IAuthApiClient {
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
     
   async register(payload: IUserDetails): Promise<IUserAuthApiRegisterResponse> {
-    return await this.post('sign-up', changedHttpRequestOptions, payload) as IUserAuthApiRegisterResponse
+    return await this.post('sign-up', payload, changedHttpRequestOptions, ) as IUserAuthApiRegisterResponse
   }
 
   async login(payload: IUserDetails): Promise<IUserAuthApiLoginResponse>{
-    return await this.post('token', changedHttpRequestOptions, payload) as IUserAuthApiLoginResponse
+    return await this.post('token', payload, changedHttpRequestOptions) as IUserAuthApiLoginResponse
 }
 
     async postRefresh(payload: ITokenSendType): Promise<ITokenRefreshType> {
-        return await this.post('token/refresh', changedHttpRequestOptions, payload) as ITokenRefreshType
+        return await this.post('token/refresh', payload, changedHttpRequestOptions) as ITokenRefreshType
     }
 }
