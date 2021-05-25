@@ -4,6 +4,7 @@ import humps from 'humps'
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {operateUserDataRequest} from '../api/HttpClientInstance'
+import { toast } from 'react-toastify'
 
 // Define action types
 
@@ -60,8 +61,12 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
     if (destructuredMessage) {
       const [messageArrayFromDestructuredError] = destructuredMessage.errors
       dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+      const errorText = (messageArrayFromDestructuredError.message).toString()
+      toast.error(errorText)
+    } else {
+      dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
+      toast.error('Something went wrong, please try again later')
     }
-    dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
   }
 }
 
@@ -102,8 +107,11 @@ export const updateUserNickname =
     if (destructuredMessage) {
     const [messageArrayFromDestructuredError] = destructuredMessage.errors
     dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+    const errorText = (messageArrayFromDestructuredError.message).toString()
+    toast.error(errorText)
   } else {
     dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
+    toast.error('Something went wrong, please try again later')
   }
 }
 }
@@ -123,14 +131,17 @@ export const updateUserPassword =
 
     const result = await operateUserDataRequest.updatePassword(payloadToSnakeCase)
     dispatch(changeUserPasswordSuccessfull(result.status))
+    toast.success(result.status)
   } catch (error) {
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     if (destructuredMessage) {
       const messageArrayFromDestructuredError = destructuredMessage.error
       dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
+      toast.error(messageArrayFromDestructuredError)
     } else {
       dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
+      toast.error('Something went wrong, please try again later')
     }
   }
 }

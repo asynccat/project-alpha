@@ -1,5 +1,6 @@
 import {Dispatch} from 'redux'
 import { push, CallHistoryMethodAction } from 'connected-react-router'
+import { toast } from 'react-toastify'
 
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
@@ -60,10 +61,17 @@ export const signUserUp = (payload: IUserDetails) =>
       autoRefresh(expirationTime)
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
-    } catch (e) {
-      console.log('Error:', e.message)
+    } catch (error) {
+      const destructuredMessage = JSON.parse(error.message)
+      if (destructuredMessage) {
+        const [messageArrayFromDestructuredError] = destructuredMessage.errors
+        const errorText = (messageArrayFromDestructuredError.message).toString()
+        toast.error(errorText)
+      } else {
+        toast.error('Something went wrong, please try again later')
+      }
     }
-}
+  }
 
 export const login = (payload: IUserDetails) => 
   async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
@@ -83,8 +91,15 @@ export const login = (payload: IUserDetails) =>
       autoRefresh(expirationTime)
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
-    } catch (e) {
-      console.log('Error:', e.message)
+    } catch (error) {
+      const destructuredMessage = JSON.parse(error.message)
+      if (destructuredMessage) {
+        const [messageArrayFromDestructuredError] = destructuredMessage.errors
+        const errorText = (messageArrayFromDestructuredError.message).toString()
+        toast.error(errorText)
+      } else {
+        toast.error('Something went wrong, please try again later')
+      }
     }
 }
 
@@ -95,7 +110,14 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     tokenStorage.removeToken()
     dispatch(logoutAction())
     dispatch(push('/login'))
-  } catch (e) {
-    console.log('Error:', e.message)
+  } catch (error) {
+    const destructuredMessage = JSON.parse(error.message)
+      if (destructuredMessage) {
+        const [messageArrayFromDestructuredError] = destructuredMessage.errors
+        const errorText = (messageArrayFromDestructuredError.message).toString()
+        toast.error(errorText)
+      } else {
+        toast.error('Something went wrong, please try again later')
+      }
+    }
   }
-}

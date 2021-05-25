@@ -12,3 +12,13 @@
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 
+.Toastify__toast-container--bottom-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Toastify__toast--error {
+  background-color: #e74c3c;
+}
+
