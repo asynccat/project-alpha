@@ -3,17 +3,17 @@
 
 import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
   Typography, Avatar, Box, Snackbar, TextField,  CircularProgress} from '@material-ui/core'
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 
-import {updateUserNickname, fetchUserPreferences, updateUserPassword,
-  userPreferencesRequestFailed, userPreferencesRequestInitiated } from '../../actions/prefAndProfileActions'
+import {updateUserNickname, fetchUserPreferences } from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
 import { userLogOut } from '../../actions/authActions'
-import {TWOSIGNS} from '../../constants/valuableNumbers'
+import PasswordChangeForm from './PasswordChangeForm'
 
  function Alert(props: AlertProps) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -54,7 +54,7 @@ export default function PreferencesPage (): React.ReactElement {
   const [error, setError] = useState(user ? user : '')
   useEffect(() => {
     setError(user ? user.error : '')
-    if (user.error.length > TWOSIGNS) {
+    if (user.error.length) {
       setOpen(true)
     }
  },[user])
@@ -62,7 +62,7 @@ export default function PreferencesPage (): React.ReactElement {
  const [status, setStatus] = useState(user ? user : '')
   useEffect(() => {
     setStatus(user ? user.status : '')
-    if (user.status.length > TWOSIGNS) {
+    if (user.status.length) {
       console.log(user.status.length)
       setOpen(true)
     } 
@@ -76,39 +76,10 @@ export default function PreferencesPage (): React.ReactElement {
 
   const oldNickname = user.nickname
 
-  const saveChanges = useCallback((e) => {
+  const saveNickNameChange = useCallback((e) => {
     e.preventDefault()
       dispatch(updateUserNickname({oldNickname, nickname}))
     }, [dispatch, oldNickname, nickname])
-
-  const [old_password, setOldPassword] = useState('')
-  const [new_password, setNewPassword] = useState('')
-  const [confirm_password, setConfirmPassword] = useState('')
-
-    const onChangeOldPassword = useCallback((e) => {
-      setOldPassword(e.target.value)
-    }, [setOldPassword])
-
-    const onChangeNewPassword = useCallback((e) => {
-      setNewPassword(e.target.value)
-    }, [setNewPassword])
-
-    const onChangeConfirmPassword = useCallback((e) => {
-      setConfirmPassword(e.target.value)
-    }, [setConfirmPassword])
-
-  const savePasswordChange = useCallback((e) => {
-      e.preventDefault()
-      if (new_password === confirm_password) {
-        dispatch(updateUserPassword({old_password, new_password, confirm_password}))
-      } else {
-        dispatch(userPreferencesRequestInitiated())
-        dispatch(userPreferencesRequestFailed('passwords are not the same'))
-      }
-      setConfirmPassword('')
-      setNewPassword('')
-      setOldPassword('')
-      }, [dispatch, old_password, new_password, confirm_password])
 
 
   const logOut = useCallback((e) => {
@@ -174,23 +145,7 @@ export default function PreferencesPage (): React.ReactElement {
           </Button>
         </div>
         </div>
-
-       
-        <Collapsible className="collapsible" trigger="Change Password&nbsp; &gt;">
-       <div className="PasswordFields">
-          <TextField className={classes.textfields} label="Old password" onChange={onChangeOldPassword}
-          value={old_password} variant="outlined" />
-          <TextField className={classes.textfields} label="New password" onChange={onChangeNewPassword}
-            value={new_password} variant="outlined"  />
-          <TextField className={classes.textfields} label="Repeat new password" onChange={onChangeConfirmPassword}
-            value={confirm_password} variant="outlined"  />
-       </div>
-          <CardActions className={classes.actionButton}>
-            <Button className="buttons" color="primary" onClick={savePasswordChange} type="submit" variant="contained">
-             change Password
-            </Button>
-          </CardActions>
-        </Collapsible>
+        <PasswordChangeForm />
       </CardContent>
 
   </div>

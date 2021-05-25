@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
     root: {
-      maxWidth: 800,
+      maxWidth: 1000,
+      overflow: 'visible',
       width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
@@ -12,7 +13,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     media: {
       height: 200,
-      width: 800,
+      width: 1000,
     },
     large: {
       width: 150,

@@ -1,13 +1,20 @@
-import { IHttpClient , defaultHttpRequestOptions} from './HttpClient'
-import { IUserPreferencesResponse, IUpdateNicknameActionPayload } from '../actions/prefAndProfileActions'
+import { IHttpClient} from './HttpClient'
+import { IUserPreferencesResponse, IUpdateNicknameActionPayload, 
+  IUpdatePasswordActionPayload,
+  IUpdatePasswordActionPayloadSnakeCase} from '../actions/prefAndProfileActions'
 
 export interface IUserPreferenceOperateData {
   fetchUserPreferences: () => Promise<IUserPreferencesResponse>
   updateNickname: (payload: IUpdateNicknameActionPayload) => Promise<INicknameUpdateResponse>
+  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IPasswordUpdateResponse >
 }
 
 interface INicknameUpdateResponse {
   nickname: string
+}
+
+interface IPasswordUpdateResponse {
+  status: string
 }
 
 export class OperateUserData implements IUserPreferenceOperateData {
@@ -18,13 +25,18 @@ export class OperateUserData implements IUserPreferenceOperateData {
   }
   
     async fetchUserPreferences(): Promise<IUserPreferencesResponse> {
-      return await this.client.get('preferences', defaultHttpRequestOptions) as IUserPreferencesResponse
+      return await this.client.get('preferences') as IUserPreferencesResponse
       }
 
     async updateNickname(payload: IUpdateNicknameActionPayload): Promise<INicknameUpdateResponse> {
       const {oldNickname} = payload
       const {nickname} = payload
-      return await this.client.put(`user/${oldNickname}/nickname/update`, 
-      defaultHttpRequestOptions, {nickname}) as INicknameUpdateResponse
+      return await this.client.put(`user/${oldNickname}/nickname/update`, {nickname}) as INicknameUpdateResponse
   }
+    
+    async updatePassword(payload: IUpdatePasswordActionPayload | IUpdatePasswordActionPayloadSnakeCase): 
+      Promise<IPasswordUpdateResponse > {
+      return await this.client.post('change_password', payload) 
+  }
+
 }

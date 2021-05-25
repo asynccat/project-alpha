@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrefActionType, PrefActions } from '../actions/prefAndProfileActions'
 import RemoteSource from '../types/RemoteSource'
 
@@ -11,7 +12,8 @@ export const initialState = {
     email: '',
     error: '',
     init: false,
-    isLoading: false
+    isLoading: false,
+    status: '',
 }
 
 const operatePreferencesDataReducer = (state: IUserPreferencesState = initialState, action: PrefActions):
@@ -43,7 +45,7 @@ IUserPreferencesState => {
             return {
                 ...state,
                 isLoading: false,
-                nickname: action.payload.nickname,
+                nickname: action.payload,
             }
         
         case PrefActionType.CHANGE_PASSWORD:

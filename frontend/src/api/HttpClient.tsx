@@ -18,14 +18,15 @@ export const changedHttpRequestOptions = {
 }
 
 export interface IHttpClient {
-  post: <Payload, Response>(url:string, options: IHttpRequestOptions,  payload: Payload) => Promise<Response>
-  put: <Payload, Response>(url:string, options: IHttpRequestOptions,  payload: Payload) => Promise<Response>
-  get: <Response>(url:string, options: IHttpRequestOptions) => Promise<Response>
+  post: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
+  put: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
+  get: <Response>(url:string, options?: IHttpRequestOptions) => Promise<Response>
 }
 
 export class HttpClient {
-  private async execute (url:string, method: string, options: IHttpRequestOptions = defaultHttpRequestOptions, 
-    payload?: AbstractApiData) {
+  private async execute (url:string, method: string, payload?: AbstractApiData, 
+    options: IHttpRequestOptions = defaultHttpRequestOptions
+    ) {
      const token = localStorage.getItem('token')
      const header = {
       'Content-Type': 'application/json',
@@ -52,16 +53,16 @@ export class HttpClient {
     * */
 
     // eslint-disable-next-line
-    async post(url:string, options: IHttpRequestOptions, payload: AbstractApiData): Promise<AbstractApiData> {
-      return await this.execute(url, 'POST', options, payload)
+    async post(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
+      return await this.execute(url, 'POST',  payload, options)
     }
 
     // eslint-disable-next-line
-    async get(url:string, options: IHttpRequestOptions): Promise<AbstractApiData> {
+    async get(url:string, options?: IHttpRequestOptions): Promise<AbstractApiData> {
         return await this.execute(url, 'GET', options)
     }
 
-    async put(url:string, options: IHttpRequestOptions, payload: AbstractApiData): Promise<AbstractApiData> {
-      return await this.execute(url, 'PUT', options, payload)
+    async put(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
+      return await this.execute(url, 'PUT',  payload, options)
   }
 }
