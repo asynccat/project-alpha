@@ -13,7 +13,7 @@ import {RootState} from '../../reducers/index'
 import './PreferencesPage.scss'
 import { userLogOut } from '../../actions/authActions'
 import PasswordChangeForm from './PasswordChangeForm'
-
+import EmailChangeForm from './EmailChangeForm'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -36,11 +36,7 @@ export default function PreferencesPage (): React.ReactElement {
     setNickname(e.target.value)
   }, [setNickname])
 
-  const [email, setEmail] = useState(user ? user.email : '')
-
-  useEffect(() => {
-    setEmail(user? user.email : '')
- },[user])
+  
 
   const oldNickname = user.nickname
 
@@ -106,13 +102,7 @@ export default function PreferencesPage (): React.ReactElement {
                 change nickname
               </Button>
           </div>
-        <div className="emailButton">
-          <TextField className={classes.textfields} label="email"
-            value={email} variant="outlined"   />
-          <Button  color="primary" type="submit" variant="contained">
-              change email
-          </Button>
-        </div>
+      <EmailChangeForm />
         </div>
         <PasswordChangeForm />
       </CardContent>
