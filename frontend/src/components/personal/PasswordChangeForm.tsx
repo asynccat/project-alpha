@@ -81,7 +81,8 @@ export default function PasswordChangeForm (): React.ReactElement {
               variant="outlined"
             />
             <CardActions className={classes.actionButton}>
-                <Button className="buttons" color="primary" type="submit" variant="contained">
+                <Button className="buttons" color="primary" 
+                data-testid="submitButton" type="submit" variant="contained">
                 change Password
                 </Button>
             </CardActions>
