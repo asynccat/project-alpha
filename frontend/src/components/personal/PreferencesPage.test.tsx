@@ -7,12 +7,9 @@ import PreferencesPage from './PreferencesPage'
 import {store} from '../../index'
 
 
-
 describe('Preferences', () => {
   it('renders App component', () => {
     render(<Provider store={store}><PreferencesPage /></Provider>)
     expect(screen.getByText(/CHANGE NICKNAME/i)).toBeInTheDocument()
   })
-
 })
-

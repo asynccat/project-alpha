@@ -1,3 +1,5 @@
+@import './variables';
+
 .page {
   display: flex;
   height: 700px;
@@ -7,9 +9,9 @@
 
 .heading {
   text-align: center;
-  font-size: 2rem;
+  font-size: 3rem;
   color: white;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+  font-family: $base-font;
 }
 
 .Toastify__toast-container--bottom-left {
