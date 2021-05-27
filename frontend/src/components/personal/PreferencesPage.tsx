@@ -129,10 +129,11 @@ export default function PreferencesPage (): React.ReactElement {
       <CardContent>
         <div className="nickEmail">
           <div className="nickButton">
-            <TextField className={classes.textfields} label="nickname" 
+            <TextField className={classes.textfields}  label="nickname" 
               onChange={onChangeNickname} value={nickname} variant="outlined" />
 
-              <Button  className={classes.nicknameButton} color="primary"  onClick={saveNickNameChange}
+              <Button  className={classes.nicknameButton} color="primary" 
+                data-testid="nickSubmit" onClick={saveNickNameChange}
                 type="submit" variant="contained">
                 change nickname
               </Button>
