@@ -21,9 +21,9 @@ export default function EmailChangeForm (): React.ReactElement {
       email: Yup.string()
       .required('Enter your new Email')
       .email('This is not email')
+      .notOneOf([(user.email)], 'New email must differ')
     })
     
-    // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle)
     const [open, setOpen] = React.useState(false)
   
@@ -38,11 +38,18 @@ export default function EmailChangeForm (): React.ReactElement {
     const formik = useFormik({
       enableReinitialize: true,
       initialValues: {
-        email: user? user.email : ''
+        email: user? user.email : '',
+        password: '',
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
-        console.log('the data is sent', values)
+        if (values.email && !values.password) {
+          handleOpen()
+        }
+        if (values.email && values.password) {
+          console.log('The data is collected', values)
+          handleClose()         
+        }
       }
     })
 
@@ -52,10 +59,11 @@ export default function EmailChangeForm (): React.ReactElement {
           You are going to change sensitive information. 
           Please confirm by entering password
         </h3>
-        <div className="modal">
-          <TextField id="simple-modal-description" className={classes.textfields}  variant="outlined" />
-          <Button color="primary" type="submit" variant="contained" >Submit</Button>
-        </div>
+        <form className="modal" onSubmit={formik.handleSubmit} >
+          <TextField id="password" className={classes.textfields} onChange={formik.handleChange}
+             variant="outlined" />
+          <Button color="primary" type="submit" variant="contained"  >Submit</Button>
+        </form>
       </div>
     )
 
@@ -68,7 +76,8 @@ export default function EmailChangeForm (): React.ReactElement {
                    value={formik.values.email}
                         variant="outlined" />
                 <CardActions className={classes.actionButton}>
-                    <Button  color="primary" type="submit" variant="contained" onClick={handleOpen}>
+                    <Button  color="primary" data-testid="sbmtEmail" 
+                      type="submit" variant="contained" >
                         change email
                     </Button>
                 </CardActions>
