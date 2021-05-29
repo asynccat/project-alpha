@@ -73,16 +73,15 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    {'NAME': 'project_alpha.web.utils.password_validator.MinimumLengthValidator',
         'OPTIONS': {
             'min_length': 8, }
      },
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
-    {'NAME': 'web.passwordvalidation.NumberValidator',
+    {'NAME': 'project_alpha.web.utils.password_validator.NumberValidator',
         'OPTIONS': {
             'min_digits': 1, }},
-    {'NAME': 'web.passwordvalidation.UppercaseValidator', },
-    {'NAME': 'web.passwordvalidation.LowercaseValidator', },
+    {'NAME': 'project_alpha.web.utils.password_validator.UppercaseValidator', },
+    {'NAME': 'project_alpha.web.utils.password_validator.LowercaseValidator', },
 ]
 
 
