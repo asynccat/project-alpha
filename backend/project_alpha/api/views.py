@@ -69,14 +69,14 @@ class UserProfileAPIView(generics.RetrieveAPIView):
     lookup_field = 'nickname'
     permission_classes = (AllowAny,)
 
-    def get(self, request, nickname):
+    def get(self, request, nickname):  # pylint: disable=unused-argument, arguments-differ
         user = self.get_object()
         user_data = {
             'nickname': user.nickname,
             'avatar': '/path/to/avatar.png',
         }
         if user.usersettings.show_email:
-            user_data['email'] = user.email,
+            user_data['email'] = user.email
         return Response(user_data)
 
 

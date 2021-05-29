@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .utils.nickname_generator import generate_unique_nickname
+from project_alpha.web.utils.nickname_generator import generate_unique_nickname
 
 
 class CustomUserManager(BaseUserManager):

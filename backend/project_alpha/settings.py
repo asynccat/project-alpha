@@ -22,8 +22,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     # project apps
-    'api',
-    'web',
+    'project_alpha.api',
+    'project_alpha.web',
 ]
 
 MIDDLEWARE = [
@@ -37,7 +37,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'src.urls'
+ROOT_URLCONF = 'project_alpha.urls'
 
 TEMPLATES = [
     {
@@ -55,7 +55,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'src.wsgi.application'
+WSGI_APPLICATION = 'project_alpha.wsgi.application'
 
 
 # Database
@@ -130,7 +130,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
-    'EXCEPTION_HANDLER': 'api.utils.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'project_alpha.api.utils.custom_exception_handler',
 }
 
 AUTHENTICATION_BACKENDS = (
