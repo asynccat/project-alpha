@@ -3,8 +3,8 @@
 # We're using virtual env only on development
 if [[ $ENV =~ ^(test|staging|production)$ ]]
 then
-    pylint src
+    pylint project_alpha --rcfile .pylintrc --ignore=migrations
 else
     source ../venv/bin/activate
-    pylint src
+    pylint project_alpha --rcfile .pylintrc --ignore=migrations
 fi

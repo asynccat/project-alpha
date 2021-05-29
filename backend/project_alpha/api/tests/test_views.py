@@ -1,5 +1,4 @@
 import json
-from django.conf import settings
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from project_alpha.web.models import User
@@ -13,7 +12,7 @@ class ChangePasswordViewTestCase(APITestCase):
         self.user = User.objects.create_user(self.username, self.pwd)
 
     def request(self, data):
-        self.client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
         response = self.client.post(reverse('change_password'), data=data, format='json')
         return response.status_code, json.loads(response.content)
 
