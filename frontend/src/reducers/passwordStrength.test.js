@@ -8,7 +8,8 @@ describe('checkPasswordStrength', () => {
 });
 
 describe('checkPasswordStrength', () => {
-    it('does password contains numbers and symbols', function checkPassword(checkPasswordStrength(password, is_digits, is_specials)) {
+    it('does password contains numbers and symbols', 
+        function checkPassword(checkPasswordStrength(password), is_digits, is_specials) {
 
             let is_digits = false; 
             let is_specials = false; 
