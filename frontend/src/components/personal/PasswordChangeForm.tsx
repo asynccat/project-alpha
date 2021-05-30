@@ -2,11 +2,11 @@ import React from 'react'
 import { useFormik } from 'formik'
 import { CardActions, Button, TextField} from '@material-ui/core'
 import Collapsible from 'react-collapsible'
-import * as Yup from 'yup'
 import {useDispatch} from 'react-redux'
 
  import {updateUserPassword,
  userPreferencesRequestFailed} from '../../actions/prefAndProfileActions'
+ import {validationSchema} from '../../utils/ValidationSchemes'
   import {useStyles} from './ProfilePreferencesPage.styles'
 
 
@@ -14,17 +14,6 @@ import {useDispatch} from 'react-redux'
 export default function PasswordChangeForm (): React.ReactElement {
     const classes = useStyles()
     const dispatch = useDispatch()
-    
-    const validationSchema = Yup.object({
-      oldPassword: Yup.string()
-      .required('Enter your old password'),
-      newPassword: Yup.string()
-      .required('Enter your new password')
-      .notOneOf([Yup.ref('oldPassword')], 'Old and new passwords must be different'),
-      confirmPassword: Yup.string()
-      .required('Confirm your password')
-      .oneOf([Yup.ref('newPassword')], 'Passwords do not match')
-    })
 
     const formik = useFormik({
       initialValues: {
@@ -32,7 +21,7 @@ export default function PasswordChangeForm (): React.ReactElement {
         newPassword: '', 
         confirmPassword: ''
       },
-      validationSchema: validationSchema,
+      validationSchema: validationSchema.validationPassword,
       onSubmit: (values) => {
         try {
           dispatch(updateUserPassword(values))

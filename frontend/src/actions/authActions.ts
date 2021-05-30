@@ -9,6 +9,7 @@ import {IUser} from '../models/user'
 import {TokenStorage} from '../services/TokenStorage'
 import {jwtDecode, IToken, autoRefresh } from '../services/TokenRefresh'
 import { MILLISECONDS_IN_SECOND, TEN_SECONDS_BEFORE_TOKEN_EXPIRE} from '../constants/valuableNumbers'
+import {errorMessage } from '../constants/errorAndSuccessMessages'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -68,7 +69,7 @@ export const signUserUp = (payload: IUserDetails) =>
         const errorText = (messageArrayFromDestructuredError.message).toString()
         toast.error(errorText)
       } else {
-        toast.error('Something went wrong, please try again later')
+        toast.error(errorMessage.errorUnknown)
       }
     }
   }
@@ -98,7 +99,7 @@ export const login = (payload: IUserDetails) =>
         const errorText = (messageArrayFromDestructuredError.message).toString()
         toast.error(errorText)
       } else {
-        toast.error('Something went wrong, please try again later')
+        toast.error(errorMessage.errorUnknown)
       }
     }
 }
@@ -117,7 +118,7 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
         const errorText = (messageArrayFromDestructuredError.message).toString()
         toast.error(errorText)
       } else {
-        toast.error('Something went wrong, please try again later')
+        toast.error(errorMessage.errorUnknown)
       }
     }
   }
