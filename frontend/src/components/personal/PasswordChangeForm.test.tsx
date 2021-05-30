@@ -36,7 +36,7 @@ describe('PasswordChangeForm', () => {
       })
     )
     await waitFor(() =>
-    expect(updateUserPasswordMock).toBeCalled()
+      expect(updateUserPasswordMock).toBeCalled()
   )
   })
   it('Formik validation fails if new password and confirm password not match', async () => {
@@ -48,8 +48,6 @@ describe('PasswordChangeForm', () => {
     userEvent.click(screen.getByTestId(/submitButton/i ))
    
    await waitFor(() => {
-      
-  
       expect(screen.getByText('Passwords do not match')).not.toBeNull()
     })
   })

@@ -11,18 +11,14 @@ describe('EmailChangeForm', () => {
   it('title in place', () => {
     render(<Provider store={store}><EmailChangeForm /></Provider>)
     expect(screen.getByText(/CHANGE EMAIL/i)).toBeInTheDocument()
-
   })
   
   it('Formik validation fails if new email is not an email', async () => {
     render(<Provider store={store}><EmailChangeForm /></Provider>)
-    userEvent.type(screen.getByLabelText(/email/i), '1234')
-     
-    userEvent.click(screen.getByTestId(/sbmtEmail/i))
+    userEvent.type(screen.getByLabelText(/email/i), '1234') 
+    userEvent.click(screen.getByRole('button'))
    
-   await waitFor(() => {
-      
-  
+    await waitFor(() => {
       expect(screen.getByText('This is not email')).not.toBeNull()
     })
   })

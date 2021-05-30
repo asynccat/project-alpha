@@ -36,8 +36,6 @@ export default function PreferencesPage (): React.ReactElement {
     setNickname(e.target.value)
   }, [setNickname])
 
-  
-
   const oldNickname = user.nickname
 
   const saveNickNameChange = useCallback((e) => {
@@ -62,56 +60,55 @@ export default function PreferencesPage (): React.ReactElement {
         />
       </Box>
 
-<div className="avatarName">
-      <CardHeader
-        avatar={
-          <Avatar alt="Remy Sharp" className={classes.large} />
-        }
-        title={
-          <Typography component="div" margin-bottom="large" variant="h5">
-          {nickname}
-          </Typography>
-        }
-        // eslint-disable-next-line react/jsx-sort-props
-        subheader={
-          <Box>
-            <Typography component="p">
-              Las Vegas, US
+      <div className="avatarName">
+        <CardHeader
+          avatar={
+            <Avatar alt="Remy Sharp" className={classes.large} />
+          }
+          title={
+            <Typography component="div" margin-bottom="large" variant="h5">
+            {nickname}
             </Typography>
-            <Typography component="p">
-            User
-            </Typography>
-            <Typography component="p">
-            # {id}
-            </Typography>
-          </Box>
-        }
-      />
-</div>
-  <div className="myDataDetails">
-    <div> { loader? <CircularProgress/> : ''} </div>
-      <CardContent>
-        <div className="nickEmail">
-          <div className="nickButton">
-            <TextField className={classes.textfields}  label="nickname" 
-              onChange={onChangeNickname} value={nickname} variant="outlined" />
-
-              <Button  className={classes.nicknameButton} color="primary" 
-                data-testid="nickSubmit" onClick={saveNickNameChange}
-                type="submit" variant="contained">
-                change nickname
-              </Button>
-          </div>
-      <EmailChangeForm />
-        </div>
-        <PasswordChangeForm />
-      </CardContent>
-
-  </div>
+          }
+          // eslint-disable-next-line react/jsx-sort-props
+          subheader={
+            <Box>
+              <Typography component="p">
+                Las Vegas, US
+              </Typography>
+              <Typography component="p">
+              User
+              </Typography>
+              <Typography component="p">
+              # {id}
+              </Typography>
+            </Box>
+          }
+        />
+      </div>
+      <div className="myDataDetails">
+        <div> { loader? <CircularProgress/> : ''} </div>
+          <CardContent>
+            <div className="nickEmail">
+              <div className="nickButton">
+                <TextField className={classes.textfields}  label="nickname" 
+                  onChange={onChangeNickname} value={nickname} variant="outlined" 
+                />
+                <Button  className={classes.nicknameButton} color="primary" 
+                  data-testid="nickSubmit" onClick={saveNickNameChange}
+                  type="submit" variant="contained">
+                  change nickname
+                </Button>
+              </div>
+              <EmailChangeForm />
+            </div>
+              <PasswordChangeForm />
+          </CardContent>
+      </div>
       <CardActions className={classes.actionButton}>
-      <Button className="buttons" color="secondary" onClick={logOut}  type="submit" variant="contained">
-        Logout
-      </Button>
+        <Button className="buttons" color="secondary" onClick={logOut}  type="submit" variant="contained">
+          Logout
+        </Button>
       </CardActions>
     </Card>
 

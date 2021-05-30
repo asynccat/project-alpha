@@ -56,7 +56,15 @@ IUserPreferencesState => {
                 error: ''
                 }
 
-
+        case PrefActionType.CHANGE_EMAIL:
+            return {
+                ...state,
+                isLoading: false,
+                email: action.payload,
+                status: action.payload,
+                error: ''
+                }   
+                
         default: return state
     }
 }

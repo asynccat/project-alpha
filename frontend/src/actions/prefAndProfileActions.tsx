@@ -1,10 +1,11 @@
 import {Dispatch} from 'redux'
 import humps from 'humps'
+import { toast } from 'react-toastify'
 
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
-import {operateUserDataRequest} from '../api/HttpClientInstance'
-import { toast } from 'react-toastify'
+import {operateUserDataRequest, operateUserDataRequestWithInterceptors} from '../api/HttpClientInstance'
+import {successMessage, errorMessage } from '../constants/errorAndSuccessMessages'
 
 // Define action types
 
@@ -24,6 +25,7 @@ export type UserPreferencesRequestInitiatedAction = Action<PrefActionType.REQUES
 export type UpdateNicknameAction = Action<PrefActionType.CHANGE_NICK, string>
 export type UserPreferencesRequestFailedAction = Action<PrefActionType.REQUEST_FAILED, string>
 export type UpdatePasswordAction = Action<PrefActionType.CHANGE_PASSWORD, string>
+export type UpdateEmailAction = Action<PrefActionType.CHANGE_EMAIL, string>
 
 export type PrefActions =
   | UserPreferencesRequestInitiatedAction
@@ -31,6 +33,7 @@ export type PrefActions =
   | UpdateNicknameAction
   | UserPreferencesSetAction
   | UpdatePasswordAction
+  | UpdateEmailAction
 
 
 // Define action creators for init/fail
@@ -64,8 +67,8 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
       const errorText = (messageArrayFromDestructuredError.message).toString()
       toast.error(errorText)
     } else {
-      dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
-      toast.error('Something went wrong, please try again later')
+      dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
+      toast.error(errorMessage.errorUnknown)
     }
   }
 }
@@ -75,6 +78,32 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
 export interface IUpdateNicknameActionPayload {
   oldNickname: string // old nickname is required to generate URL
   nickname: string
+}
+
+export const changeUserNickname =
+  actionCreator<PrefActionType.CHANGE_NICK, string>(PrefActionType.CHANGE_NICK)
+
+export const updateUserNickname =
+  (payload: IUpdateNicknameActionPayload ) => async (dispatch:Dispatch): Promise<void> => {
+
+  dispatch(userPreferencesRequestInitiated())
+  try {
+    const result = await operateUserDataRequest.updateNickname(payload)
+    dispatch(changeUserNickname(result.nickname))
+    toast.success(successMessage.successNicknameChange)
+  } catch (error) {
+    const destructuredError = {error}
+    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    if (destructuredMessage) {
+    const [messageArrayFromDestructuredError] = destructuredMessage.errors
+    dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
+    const errorText = (messageArrayFromDestructuredError.message).toString()
+    toast.error(errorText)
+  } else {
+    dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
+    toast.error(errorMessage.errorUnknown)
+  }
+}
 }
 
 export interface IUpdatePasswordActionPayload {
@@ -89,31 +118,6 @@ export interface IUpdatePasswordActionPayloadSnakeCase {
   old_password: string
   new_password: string
   confirm_password: string
-}
-
-export const changeUserNickname =
-  actionCreator<PrefActionType.CHANGE_NICK, string>(PrefActionType.CHANGE_NICK)
-
-export const updateUserNickname =
-  (payload: IUpdateNicknameActionPayload ) => async (dispatch:Dispatch): Promise<void> => {
-
-  dispatch(userPreferencesRequestInitiated())
-  try {
-    const result = await operateUserDataRequest.updateNickname(payload)
-    dispatch(changeUserNickname(result.nickname))
-  } catch (error) {
-    const destructuredError = {error}
-    const destructuredMessage = JSON.parse(destructuredError.error.message)
-    if (destructuredMessage) {
-    const [messageArrayFromDestructuredError] = destructuredMessage.errors
-    dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
-    const errorText = (messageArrayFromDestructuredError.message).toString()
-    toast.error(errorText)
-  } else {
-    dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
-    toast.error('Something went wrong, please try again later')
-  }
-}
 }
 
 export const changeUserPasswordSuccessfull =
@@ -131,7 +135,7 @@ export const updateUserPassword =
 
     const result = await operateUserDataRequest.updatePassword(payloadToSnakeCase)
     dispatch(changeUserPasswordSuccessfull(result.status))
-    toast.success(result.status)
+    toast.success(successMessage.successPasswordChange)
   } catch (error) {
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
@@ -140,8 +144,39 @@ export const updateUserPassword =
       dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
       toast.error(messageArrayFromDestructuredError)
     } else {
-      dispatch(userPreferencesRequestFailed('Something went wrong, please try again later'))
-      toast.error('Something went wrong, please try again later')
+      dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
+      toast.error(errorMessage.errorUnknown)
+    }
+  }
+}
+
+export interface IUpdateEmailActionPayload {
+  email: string
+  password: string
+}
+
+export const changeUserEmailSuccessfull =
+  actionCreator<PrefActionType.CHANGE_EMAIL, string>(PrefActionType.CHANGE_EMAIL)
+
+export const updateUserEmail =
+  (payload: IUpdateEmailActionPayload ) => 
+  async (dispatch:Dispatch): Promise<void> => {
+
+  dispatch(userPreferencesRequestInitiated())
+  try {
+    const result = await operateUserDataRequestWithInterceptors.updateEmail(payload)
+    dispatch(changeUserEmailSuccessfull(result.email))
+    toast.success(successMessage.successEmailChange)
+  } catch (error) {
+    const destructuredError = {error}
+    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    if (destructuredMessage) {
+      const messageArrayFromDestructuredError = destructuredMessage.error
+      dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
+      toast.error(messageArrayFromDestructuredError)
+    } else {
+      dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
+      toast.error(errorMessage.errorUnknown)
     }
   }
 }
