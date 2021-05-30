@@ -2,12 +2,13 @@
 import * as Yup from 'yup'
 
 export const validationSchema = {
-      validationEmail: 
+      
+    validationEmail: 
         Yup.object({
             email: Yup.string()
             .required('Enter your new Email')
             .email('This is not email')
-            //.notOneOf([(user.email)], 'New email must differ')
+            //.notOneOf([(UserEmail)], 'New email must differ')
         }),
       validationPassword: 
         Yup.object({

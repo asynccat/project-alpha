@@ -1,7 +1,6 @@
 /* eslint-disable no-magic-numbers */
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { CSSProperties } from '@material-ui/core/styles/withStyles'
 
  export const useStyleModal = makeStyles((theme: Theme) =>
  createStyles({
@@ -14,19 +13,8 @@ import { CSSProperties } from '@material-ui/core/styles/withStyles'
      padding: theme.spacing(2, 4, 3),
      fontFamily: 'Roboto',
      lineHeight: '1.5rem',
+     left: '36%',
+     top: '20%'
    },
  }),
 )
-
-export function getModalStyle(): CSSProperties {
- const rand = () => Math.round(Math.random() * 20) - 10
-
- const top = 20 + rand()
- const left = 50 + rand()
-
- return {
-   top: `${top}%`,
-   left: `${left}%`,
-   transform: `translate(-${top}%, -${left}%)`
- }
-}
