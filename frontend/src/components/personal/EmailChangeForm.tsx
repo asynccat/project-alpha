@@ -1,15 +1,14 @@
-
 import React, {useCallback} from 'react'
 import { useFormik } from 'formik'
 import { CardActions, Button, TextField} from '@material-ui/core'
 import {useSelector, useDispatch} from 'react-redux'
+import Modal from '@material-ui/core/Modal'
 
 import {updateUserEmail,
   userPreferencesRequestFailed} from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
-import {useStyleModal, getModalStyle } from './EmailChangeForm.styles'
+import {useStyleModal } from './EmailChangeForm.styles'
 import {RootState} from '../../reducers/index'
-import Modal from '@material-ui/core/Modal'
 import {validationSchema} from '../../utils/ValidationSchemes'
 
 
@@ -20,7 +19,6 @@ export default function EmailChangeForm (): React.ReactElement {
   const classes = useStyles()
   const modalClass = useStyleModal()
   
-  const [modalStyle] = React.useState(getModalStyle)
   const [open, setOpen] = React.useState(false)
 
   const handleOpen = useCallback(() => {
@@ -54,7 +52,7 @@ export default function EmailChangeForm (): React.ReactElement {
   })
 
   const body = (
-    <div  className={modalClass.paper} style={modalStyle}>
+    <div  className={modalClass.paper} >
       <h3 id="simple-modal-title">
         You are going to change sensitive information. 
         Please confirm by entering password
