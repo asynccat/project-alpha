@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 
 from rest_framework.request import Request
@@ -36,11 +35,11 @@ class UserCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         nickname = generate_unique_nickname(User)
-        hashed_password = make_password(serializer.validated_data.get('password'))
+        password = serializer.validated_data.get('password')
 
         user = serializer.save()
         user.nickname = nickname
-        user.password = hashed_password
+        user.set_password(password)
         user.save()
 
         user_settings = UserSettings(user=user, nickname_updated=None)
