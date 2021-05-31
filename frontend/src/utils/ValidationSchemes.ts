@@ -8,7 +8,6 @@ export const validationSchema = {
             email: Yup.string()
             .required('Enter your new Email')
             .email('This is not email')
-            //.notOneOf([(UserEmail)], 'New email must differ')
         }),
       validationPassword: 
         Yup.object({
