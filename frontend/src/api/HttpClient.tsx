@@ -24,9 +24,9 @@ export interface IHttpClient {
 }
 
 export class HttpClient {
-  private async execute (url:string, method: string, payload?: AbstractApiData, 
+  protected async execute (url:string, method: string, payload?: AbstractApiData, 
     options: IHttpRequestOptions = defaultHttpRequestOptions
-    ) {
+    ) : Promise<AbstractApiData> {
      const token = localStorage.getItem('token')
      const header = {
       'Content-Type': 'application/json',

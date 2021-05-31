@@ -4,5 +4,4 @@ import {OperateUserData} from './operatePreferenceData'
 
 export const httpClient = new HttpClient()
 export const httpClientWithInterceptors = new HttpClientWithInterceptors()
-export const operateUserDataRequest = new OperateUserData(httpClient)
-export const operateUserDataRequestWithInterceptors = new OperateUserData(httpClientWithInterceptors)
+export const operateUserDataRequest = new OperateUserData(httpClientWithInterceptors)

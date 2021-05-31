@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
-import {operateUserDataRequest, operateUserDataRequestWithInterceptors} from '../api/HttpClientInstance'
+import {operateUserDataRequest} from '../api/HttpClientInstance'
 import {successMessage, errorMessage } from '../constants/errorAndSuccessMessages'
 
 // Define action types
@@ -164,7 +164,7 @@ export const updateUserEmail =
 
   dispatch(userPreferencesRequestInitiated())
   try {
-    const result = await operateUserDataRequestWithInterceptors.updateEmail(payload)
+    const result = await operateUserDataRequest.updateEmail(payload)
     dispatch(changeUserEmailSuccessfull(result.email))
     toast.success(successMessage.successEmailChange)
   } catch (error) {
