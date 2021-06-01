@@ -3,7 +3,7 @@ import {config} from '../config'
 const baseURL = config.baseUrl+config.apiV1
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AbstractApiData = any
+export type AbstractApiData = any
 
 export interface IHttpRequestOptions {
   useCredentials: boolean
