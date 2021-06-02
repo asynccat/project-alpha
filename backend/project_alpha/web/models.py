@@ -5,9 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.password_validation import get_password_validators, validate_password
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
-from django.conf import settings
 
 
 class CustomUserManager(BaseUserManager):
