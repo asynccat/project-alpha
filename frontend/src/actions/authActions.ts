@@ -1,6 +1,5 @@
 import {Dispatch} from 'redux'
-import { push, CallHistoryMethodAction } from 'connected-react-router'
-import { toast } from 'react-toastify'
+import { push } from 'connected-react-router'
 
 import {actionCreator} from '../redux-utils/actionCreator'
 import {Action} from '../types/action'
@@ -9,7 +8,7 @@ import {IUser} from '../models/user'
 import {TokenStorage} from '../services/TokenStorage'
 import {jwtDecode, IToken, autoRefresh } from '../services/TokenRefresh'
 import { MILLISECONDS_IN_SECOND, TEN_SECONDS_BEFORE_TOKEN_EXPIRE} from '../constants/valuableNumbers'
-import {errorMessage } from '../constants/errorAndSuccessMessages'
+import { errorHandler } from '../services/ErrorHandler'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -45,7 +44,7 @@ export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthA
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
 export const signUserUp = (payload: IUserDetails) => 
-  async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
+  async (dispatch:Dispatch): Promise<void> => {
     const authApiClient = new AuthApiClient()
 
     try {
@@ -63,19 +62,12 @@ export const signUserUp = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (error) {
-      const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+      errorHandler(error, dispatch)
     }
   }
 
 export const login = (payload: IUserDetails) => 
-  async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
+  async (dispatch:Dispatch): Promise<void> => {
     const authApiClient = new AuthApiClient()
 
     try {
@@ -93,18 +85,11 @@ export const login = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (error) {
-      const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+      errorHandler(error, dispatch)
     }
 }
 
-export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHistoryMethodAction>): void => {
+export const userLogOut = () => (dispatch: Dispatch): void => {
 
   try {
     const tokenStorage = new TokenStorage()
@@ -112,13 +97,6 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     dispatch(logoutAction())
     dispatch(push('/login'))
   } catch (error) {
-    const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+    errorHandler(error, dispatch)
     }
   }
