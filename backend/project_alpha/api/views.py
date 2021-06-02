@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from rest_framework.request import Request
 from rest_framework.renderers import JSONRenderer
@@ -8,6 +9,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.exceptions import APIException
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
@@ -39,7 +41,10 @@ class UserCreateAPIView(generics.CreateAPIView):
 
         user = serializer.save()
         user.nickname = nickname
-        user.set_password(password)
+        try:
+            user.set_password(password)
+        except ValidationError as error:
+            APIException(error, code=status.HTTP_400_BAD_REQUEST)
         user.save()
 
         user_settings = UserSettings(user=user, nickname_updated=None)
