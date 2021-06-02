@@ -44,7 +44,7 @@ class UserCreateAPIView(generics.CreateAPIView):
         try:
             user.set_password(password)
         except ValidationError as error:
-            APIException(error, code=status.HTTP_400_BAD_REQUEST)
+            raise APIException(error, code=status.HTTP_400_BAD_REQUEST) from error
         user.save()
 
         user_settings = UserSettings(user=user, nickname_updated=None)
