@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
@@ -39,12 +40,13 @@ class UserCreateAPIView(generics.CreateAPIView):
         nickname = generate_unique_nickname(User)
         password = serializer.validated_data.get('password')
 
-        user = serializer.save()
+        user = User()
+        user.email = serializer.validated_data.get('email')
         user.nickname = nickname
         try:
             user.set_password(password)
-        except ValidationError as error:
-            raise APIException(error, code=status.HTTP_400_BAD_REQUEST) from error
+        except ValidationError as err:
+            raise DRFValidationError(detail={'password': err.messages})
         user.save()
 
         user_settings = UserSettings(user=user, nickname_updated=None)
