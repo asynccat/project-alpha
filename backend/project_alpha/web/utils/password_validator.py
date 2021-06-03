@@ -17,11 +17,6 @@ class MinimumLengthValidator:
                 params={'min_length': self.min_length},
             )
 
-    def get_help_text(self):
-        return _(
-            "Your password must contain at least %(self.min_length)d characters."
-            % {'self.min_length': self.min_length}
-        )
 
 
 class NumberValidator:
@@ -39,11 +34,6 @@ class NumberValidator:
                 params={'min_digits': self.min_digits},
             )
 
-    def get_help_text(self):
-        return _(
-            "Your password must contain at least %(min_digits)d digit(s), 0-9." % {'min_digits': self.min_digits}
-        )
-
 
 class UppercaseValidator:
     """
@@ -56,11 +46,6 @@ class UppercaseValidator:
                 code='password_no_upper',
             )
 
-    def get_help_text(self):
-        return _(
-            "Your password must contain at least 1 uppercase letter, A-Z."
-        )
-
 
 class LowercaseValidator:
     """
@@ -72,8 +57,3 @@ class LowercaseValidator:
                 _("The password must contain at least 1 lowercase letter, a-z."),
                 code='password_no_lower',
             )
-
-    def get_help_text(self):
-        return _(
-            "Your password must contain at least 1 lowercase letter, a-z."
-        )
