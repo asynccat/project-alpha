@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.contrib.auth.backends import ModelBackend, UserModel
+from django.contrib.auth.models import AbstractBaseUser
 
 from rest_framework.request import Request
 from rest_framework.renderers import JSONRenderer
@@ -9,7 +11,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
@@ -40,13 +41,13 @@ class UserCreateAPIView(generics.CreateAPIView):
         nickname = generate_unique_nickname(User)
         password = serializer.validated_data.get('password')
 
-        user = User()
-        user.email = serializer.validated_data.get('email')
+        user = serializer.save()
         user.nickname = nickname
         try:
             user.set_password(password)
         except ValidationError as err:
-            raise DRFValidationError(detail={'password': err.messages})
+            user.delete()
+            raise DRFValidationError(detail={'password': err.messages}) from err
         user.save()
 
         user_settings = UserSettings(user=user, nickname_updated=None)
@@ -144,3 +145,23 @@ class ChangeUserPassword(APIView):
         user.set_password(new_pwd)
         user.save()
         return Response({'status': 'success'}, status=status.HTTP_200_OK)
+
+
+class CustomModelBackend(ModelBackend):
+    """
+    Authenticates against settings.AUTH_USER_MODEL.
+    """
+
+    def authenticate(self, request, username=None, password=None, **kwargs):  # pylint: disable=R1710
+        if username is None:
+            username = kwargs.get(UserModel.USERNAME_FIELD)
+        if username is None or password is None:
+            return
+        try:
+            user = UserModel._default_manager.get_by_natural_key(username)  # pylint: disable=W0212
+        except UserModel.DoesNotExist:
+            # changed here
+            AbstractBaseUser().set_password(password)
+        else:
+            if user.check_password(password) and self.user_can_authenticate(user):
+                return user
