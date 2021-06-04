@@ -8,7 +8,7 @@ class ChangePasswordViewTestCase(APITestCase):
 
     def setUp(self):
         self.username = 'test@example.com'
-        self.pwd = '1234'
+        self.pwd = '1234QWERty'
         self.user = User.objects.create_user(self.username, self.pwd)
 
     def request(self, data):
@@ -19,34 +19,34 @@ class ChangePasswordViewTestCase(APITestCase):
     def test_happy_path(self):
         status_code, _ = self.request({
             'old_password': self.pwd,
-            'new_password': '4321',
-            'confirm_password': '4321',
+            'new_password': '4321QWERty',
+            'confirm_password': '4321QWERty',
         })
 
         self.assertEqual(status_code, 200)
-        self.assertTrue(self.user.check_password('4321'))
+        self.assertTrue(self.user.check_password('4321QWERty'))
 
     def test_require_missing_fields(self):
         status_code, content = self.request({
             'old_password': self.pwd,
-            'new_password': '4321',
+            'new_password': '4321QWERty',
         })
 
         self.assertEqual(status_code, 400)
         self.assertEqual(content['error'], 'Required fields are missing or empty.')
 
         status_code, content = self.request({
-            'new_password': '4321',
-            'confirm_password': '4321',
+            'new_password': '4321QWERty',
+            'confirm_password': '4321QWERty',
         })
 
         self.assertEqual(status_code, 400)
         self.assertEqual(content['error'], 'Required fields are missing or empty.')
 
         status_code, content = self.request({
-            'new_password': '4321',
+            'new_password': '4321QWERty',
             'old_password': None,
-            'confirm_password': '4321',
+            'confirm_password': '4321QWERty',
         })
 
         self.assertEqual(status_code, 400)
@@ -55,8 +55,8 @@ class ChangePasswordViewTestCase(APITestCase):
     def test_change_old_password_incorrect(self):
         status_code, content = self.request({
             'old_password': 'wrong password',
-            'new_password': '4321',
-            'confirm_password': '4321',
+            'new_password': '4321QWERty',
+            'confirm_password': '4321QWERty',
         })
         self.assertEqual(status_code, 400)
         self.assertEqual(content['error'], 'Password is incorrect')
@@ -64,8 +64,8 @@ class ChangePasswordViewTestCase(APITestCase):
     def test_new_and_confirm_does_not_match(self):
         status_code, content = self.request({
             'old_password': self.pwd,
-            'new_password': '4321',
-            'confirm_password': '1111',
+            'new_password': '4321QWERty',
+            'confirm_password': '1111QWERty',
         })
 
         self.assertEqual(status_code, 400)
@@ -74,7 +74,81 @@ class ChangePasswordViewTestCase(APITestCase):
     def test_require_authorization(self):
         response = self.client.post(reverse('change_password'), data={
             'old_password': self.pwd,
-            'new_password': '4321',
-            'confirm_password': '4321',
+            'new_password': '4321QWERty',
+            'confirm_password': '4321QWERty',
         }, format='json')
         self.assertEqual(response.status_code, 401)
+
+
+class UserCreateAPIViewTestCase(APITestCase):
+
+    def request(self, data):
+        response = self.client.post(reverse('sign_up'), data=data, format='json')
+        return response.status_code, json.loads(response.content)
+
+    def test_success_sign_up_all_password_validators(self):
+        status_code, _ = self.request({
+            'email': 'test@test.test',
+            'password': '4321QWERTYaaaaa',
+        })
+        self.assertEqual(status_code, 201)
+
+    def test_show_all_password_validators(self):
+        status_code, content = self.request({
+            'email': 'test@test.test',
+            'password': '-',
+        })
+        self.assertEqual(status_code, 400)
+        self.assertEqual(content['errors'][0]['message'],
+                         ['The password must contain at least 8 characters.',
+                          'The password must contain at least 1 digit(s), 0-9.',
+                          'The password must contain at least 1 uppercase letter, A-Z.',
+                          'The password must contain at least 1 lowercase letter, a-z.'])
+
+    def test_success_sign_up_3_password_validators_length_number_upper(self):
+        status_code, _ = self.request({
+            'email': 'test@test.test',
+            'password': '4321QWERTY',
+        })
+        self.assertEqual(status_code, 201)
+
+    def test_success_sign_up_3_password_validators_length_upper_lower(self):
+        status_code, _ = self.request({
+            'email': 'test@test.test',
+            'password': 'AAAqqqWWW',
+        })
+        self.assertEqual(status_code, 201)
+
+    def test_success_sign_up_3_password_validators_length_number_lower(self):
+        status_code, _ = self.request({
+            'email': 'test@test.test',
+            'password': '11111aaaaa',
+        })
+        self.assertEqual(status_code, 201)
+
+    def test_success_sign_up_3_password_validators_number_lower_upper(self):
+        status_code, _ = self.request({
+            'email': 'test@test.test',
+            'password': '1Aa',
+        })
+        self.assertEqual(status_code, 201)
+
+    def test_bad_sign_up_password_validators_length_lower(self):
+        status_code, content = self.request({
+            'email': 'test@test.test',
+            'password': '4321QWE',
+        })
+        self.assertEqual(status_code, 400)
+        self.assertEqual(content['errors'][0]['message'],
+                         ['The password must contain at least 8 characters.',
+                          'The password must contain at least 1 lowercase letter, a-z.'])
+
+    def test_bad_sign_up_password_validators_number_upper(self):
+        status_code, content = self.request({
+            'email': 'test@test.test',
+            'password': 'qwertyqwertyqwerty',
+        })
+        self.assertEqual(status_code, 400)
+        self.assertEqual(content['errors'][0]['message'],
+                         ['The password must contain at least 1 digit(s), 0-9.',
+                          'The password must contain at least 1 uppercase letter, A-Z.'])
