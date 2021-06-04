@@ -1,0 +1,59 @@
+from django.test import TestCase
+from django.core.exceptions import ValidationError
+
+from project_alpha.web.utils.password_validator import (MinimumLengthValidator,
+                                                        NumberValidator,
+                                                        LowercaseValidator,
+                                                        UppercaseValidator)
+
+
+class MinimumLengthValidatorTestCase(TestCase):
+
+    def test_not_valid(self):
+        try:
+            MinimumLengthValidator().validate(password='12345')
+        except ValidationError as err:
+            self.assertEqual(err.messages[0], 'The password must contain at least 8 characters.')
+
+    def test_valid(self):
+        result = MinimumLengthValidator().validate(password='123456789')
+        self.assertEqual(result, None)
+
+
+class NumberValidatorTestCase(TestCase):
+
+    def test_not_valid(self):
+        try:
+            NumberValidator().validate(password='qwerty')
+        except ValidationError as err:
+            self.assertEqual(err.messages[0], 'The password must contain at least 1 digit(s), 0-9.')
+
+    def test_valid(self):
+        result = NumberValidator().validate(password='123456789')
+        self.assertEqual(result, None)
+
+
+class LowercaseValidatorTestCase(TestCase):
+
+    def test_not_valid(self):
+        try:
+            LowercaseValidator().validate(password='QWERTY')
+        except ValidationError as err:
+            self.assertEqual(err.messages[0], 'The password must contain at least 1 lowercase letter, a-z.')
+
+    def test_valid(self):
+        result = LowercaseValidator().validate(password='qwerty')
+        self.assertEqual(result, None)
+
+
+class UppercaseValidatorTestCase(TestCase):
+
+    def test_not_valid(self):
+        try:
+            UppercaseValidator().validate(password='qwerty')
+        except ValidationError as err:
+            self.assertEqual(err.messages[0], 'The password must contain at least 1 uppercase letter, A-Z.')
+
+    def test_valid(self):
+        result = UppercaseValidator().validate(password='QWERTY')
+        self.assertEqual(result, None)
