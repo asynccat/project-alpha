@@ -37,21 +37,30 @@ class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # changed here
+        user = self.perform_create(serializer)
+
+        headers = self.get_success_headers(user)
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
     def perform_create(self, serializer):
         nickname = generate_unique_nickname(User)
         password = serializer.validated_data.get('password')
-
-        user = serializer.save()
+        user = User()
+        user.email = serializer.validated_data.get('email')
         user.nickname = nickname
         try:
             user.set_password(password)
         except ValidationError as err:
-            user.delete()
             raise DRFValidationError(detail={'password': err.messages}) from err
         user.save()
-
         user_settings = UserSettings(user=user, nickname_updated=None)
         user_settings.save()
+        return user
 
 
 class UpdateNicknameAPIView(generics.UpdateAPIView):
