@@ -2,6 +2,8 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
+
+
 # pylint: disable=unused-argument
 
 
@@ -18,11 +20,11 @@ class MinimumLengthValidator:
             )
 
 
-
 class NumberValidator:
     """
     Checks for digits in a password
     """
+
     def __init__(self, min_digits=0):
         self.min_digits = min_digits
 
@@ -39,6 +41,7 @@ class UppercaseValidator:
     """
     Checks for uppercase letters in a password
     """
+
     def validate(self, password, user=None):
         if not re.findall(r'[A-Z]', password):
             raise ValidationError(
@@ -51,6 +54,7 @@ class LowercaseValidator:
     """
     Checks for lowercase letters in a password
     """
+
     def validate(self, password, user=None):
         if not re.findall(r'[a-z]', password):
             raise ValidationError(

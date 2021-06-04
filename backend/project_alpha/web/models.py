@@ -68,9 +68,9 @@ class User(AbstractUser):
                 validator.validate(raw_password)
             except ValidationError as error:
                 errors.append(error)
-        if len(errors) > 2:
-            return False
-        return True
+        if len(errors) <= 1:
+            return True
+        return False
 
     def set_password(self, raw_password):
         if self.validate(raw_password):
