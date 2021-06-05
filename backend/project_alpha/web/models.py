@@ -62,15 +62,13 @@ class User(AbstractUser):
 
     def validate(self, raw_password):
         validators = get_password_validators(validator_config=settings.AUTH_PASSWORD_VALIDATORS)
-        errors = []
+        errors_count = []
         for validator in validators:
             try:
                 validator.validate(raw_password)
             except ValidationError as error:
-                errors.append(error)
-        if len(errors) <= 1:
-            return True
-        return False
+                errors_count.append(error)
+        return len(errors_count) <= settings.PASSWORD_VALIDATORS_COUNT_ALLOW
 
     def set_password(self, raw_password):
         if self.validate(raw_password):
