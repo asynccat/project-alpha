@@ -1,6 +1,7 @@
 import json
 from django.urls import reverse
 from rest_framework.test import APITestCase
+from django.test import override_settings
 from project_alpha.web.models import User
 
 
@@ -86,69 +87,29 @@ class UserCreateAPIViewTestCase(APITestCase):
         response = self.client.post(reverse('sign_up'), data=data, format='json')
         return response.status_code, json.loads(response.content)
 
-    def test_success_sign_up_all_password_validators(self):
+    def test_success_unique_user_sign_up(self):
         status_code, _ = self.request({
-            'email': 'test@test.test',
+            'email': 'test@fortest.test',
             'password': '4321QWERTYaaaaa',
         })
         self.assertEqual(status_code, 201)
 
-    def test_show_all_password_validators(self):
-        status_code, content = self.request({
-            'email': 'test@test.test',
-            'password': '-',
+    def test_not_unique_user_sign_up(self):
+        self.username = 'test@testnotunique.com'
+        self.pwd = '1234QWERty'
+        self.user = User.objects.create_user(self.username, self.pwd)
+        status_code, _ = self.request({
+            'email': 'test@testnotunique.com',
+            'password': '4321QWERTYaaaaa',
         })
         self.assertEqual(status_code, 400)
-        self.assertEqual(content['errors'][0]['message'],
-                         ['The password must contain at least 8 characters.',
-                          'The password must contain at least 1 digit(s), 0-9.',
-                          'The password must contain at least 1 uppercase letter, A-Z.',
-                          'The password must contain at least 1 lowercase letter, a-z.'])
 
-    def test_success_sign_up_3_password_validators_length_number_upper(self):
+    @override_settings(AUTH_PASSWORD_VALIDATORS=[
+        {'NAME': 'project_alpha.web.utils.password_validator.FakeValidatorForTestViews',
+         }, ])
+    def test_sign_up(self):
         status_code, _ = self.request({
-            'email': 'test@test.test',
-            'password': '4321QWERTY',
+            'email': 'test@testtest.com',
+            'password': '4321QWERTYaaaaa',
         })
         self.assertEqual(status_code, 201)
-
-    def test_success_sign_up_3_password_validators_length_upper_lower(self):
-        status_code, _ = self.request({
-            'email': 'test@test.test',
-            'password': 'AAAqqqWWW',
-        })
-        self.assertEqual(status_code, 201)
-
-    def test_success_sign_up_3_password_validators_length_number_lower(self):
-        status_code, _ = self.request({
-            'email': 'test@test.test',
-            'password': '11111aaaaa',
-        })
-        self.assertEqual(status_code, 201)
-
-    def test_success_sign_up_3_password_validators_number_lower_upper(self):
-        status_code, _ = self.request({
-            'email': 'test@test.test',
-            'password': '1Aa',
-        })
-        self.assertEqual(status_code, 201)
-
-    def test_bad_sign_up_password_validators_length_lower(self):
-        status_code, content = self.request({
-            'email': 'test@test.test',
-            'password': '4321QWE',
-        })
-        self.assertEqual(status_code, 400)
-        self.assertEqual(content['errors'][0]['message'],
-                         ['The password must contain at least 8 characters.',
-                          'The password must contain at least 1 lowercase letter, a-z.'])
-
-    def test_bad_sign_up_password_validators_number_upper(self):
-        status_code, content = self.request({
-            'email': 'test@test.test',
-            'password': 'qwertyqwertyqwerty',
-        })
-        self.assertEqual(status_code, 400)
-        self.assertEqual(content['errors'][0]['message'],
-                         ['The password must contain at least 1 digit(s), 0-9.',
-                          'The password must contain at least 1 uppercase letter, A-Z.'])

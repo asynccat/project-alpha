@@ -61,3 +61,15 @@ class LowercaseValidator:
                 _("The password must contain at least 1 lowercase letter, a-z."),
                 code='password_no_lower',
             )
+
+
+class FakeValidatorForTestViews:
+    """
+    All time raise ValidationError
+    """
+
+    def validate(self, password, user=None):
+        raise ValidationError(
+                _("Test error text"),
+                code='test-error',
+        )

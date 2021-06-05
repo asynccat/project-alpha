@@ -84,6 +84,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'project_alpha.web.utils.password_validator.LowercaseValidator', },
 ]
 
+PASSWORD_VALIDATORS_COUNT_ALLOW = 1
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

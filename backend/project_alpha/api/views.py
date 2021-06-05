@@ -161,16 +161,17 @@ class CustomModelBackend(ModelBackend):
     Authenticates against settings.AUTH_USER_MODEL.
     """
 
-    def authenticate(self, request, username=None, password=None, **kwargs):  # pylint: disable=R1710
+    def authenticate(self, request, username=None, password=None, **kwargs):
         if username is None:
             username = kwargs.get(UserModel.USERNAME_FIELD)
         if username is None or password is None:
-            return
+            return None
         try:
-            user = UserModel._default_manager.get_by_natural_key(username)  # pylint: disable=W0212
+            user = UserModel.objects.get_by_natural_key(username)
         except UserModel.DoesNotExist:
             # changed here
             AbstractBaseUser().set_password(password)
         else:
             if user.check_password(password) and self.user_can_authenticate(user):
                 return user
+        return None
