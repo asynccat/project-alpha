@@ -2,11 +2,6 @@
 import passwordStrength, { checkPasswordStrength,
   hasPasswordDigits, hasPasswordLowerCaseLetters, hasPasswordUpperCaseLetters} from './passwordStrength';
 
-<<<<<<< HEAD
-=======
-/* testing checkPasswordStrength*/
-
->>>>>>> 7045beaf... adding functions for checking that password has lowerUpperCase letter & numbers, also unit tests
 describe('Password strength', () => {
   test('returns true if password length is greater than 6', () => {
     const longPassword = '1234567' //подготавливаешь тестовые данные
@@ -20,14 +15,14 @@ describe('Password strength', () => {
     expect(result).toBe(false) //проверка результата утверждением
   })
 
-<<<<<<< HEAD
+
   test('returns false if password is not a string', () => {
     const wrongTypePassword = 12134; //подготавливаешь тестовые данные
     const result = passwordStrength(wrongTypePassword) // вызываешь свою функцию с тестовыми данными
     expect(result).toBe(false) //проверка результата утверждением
   })
-  //второй тест допиши сам :)
-=======
+
+
 /* testing hasPasswordDigits*/
   
   test('returns true if password has digits', () => {
@@ -68,7 +63,6 @@ describe('Password strength', () => {
     const result = hasPasswordUpperCaseLetters(lowerCaseInPassword) // вызываешь свою функцию с тестовыми данными
     expect(result).toBe(false) //проверка результата утверждением
   })
->>>>>>> 7045beaf... adding functions for checking that password has lowerUpperCase letter & numbers, also unit tests
 })
   
 

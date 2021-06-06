@@ -1,25 +1,14 @@
-<<<<<<< HEAD
-
-
-function checkPasswordStrength(password:String) { 
-  return password.length > 6
- }
-=======
 const passwordLength = 6;
 
 function checkPasswordStrength(password:String) { 
   return password.length > passwordLength;
  };
->>>>>>> 7045beaf... adding functions for checking that password has lowerUpperCase letter & numbers, also unit tests
  
 
  function hasPasswordDigits(password:String) {
     
   let is_digits = false; 
 
-<<<<<<< HEAD
- 
-=======
   let digits = "0123456789"; 
   
    
@@ -52,11 +41,3 @@ export default checkPasswordStrength;
  }
 
 
-// let is_specials = false; 
-
-// let specials = "!@#$%^&*()_-+=\|/.,:;[]{}";
-
-// else if (!is_specials && (specials.indexOf(password[i])) != -1) {
-//   is_specials = true;
-// }
->>>>>>> 7045beaf... adding functions for checking that password has lowerUpperCase letter & numbers, also unit tests
