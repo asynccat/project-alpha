@@ -1,8 +1,7 @@
 
 
 function checkPasswordStrength(password:String) { 
-	let result = (password.length > 6) ? true : false;
-  return result;
+  return password.length > 6
  }
  
  export default checkPasswordStrength
