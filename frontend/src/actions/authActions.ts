@@ -8,7 +8,7 @@ import {IUser} from '../models/user'
 import {TokenStorage} from '../services/TokenStorage'
 import {jwtDecode, IToken, autoRefresh } from '../services/TokenRefresh'
 import { MILLISECONDS_IN_SECOND, TEN_SECONDS_BEFORE_TOKEN_EXPIRE} from '../constants/valuableNumbers'
-import { errorHandler } from '../services/ErrorHandler'
+import { errorShow } from '../services/ErrorHandler'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -62,7 +62,7 @@ export const signUserUp = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (error) {
-      errorHandler(error, dispatch)
+      errorShow(error, dispatch)
     }
   }
 
@@ -85,7 +85,7 @@ export const login = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (error) {
-      errorHandler(error, dispatch)
+      errorShow(error, dispatch)
     }
 }
 
@@ -97,6 +97,6 @@ export const userLogOut = () => (dispatch: Dispatch): void => {
     dispatch(logoutAction())
     dispatch(push('/login'))
   } catch (error) {
-    errorHandler(error, dispatch)
+    errorShow(error, dispatch)
     }
   }

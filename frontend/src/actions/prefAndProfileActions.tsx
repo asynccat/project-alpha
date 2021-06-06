@@ -6,7 +6,7 @@ import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {operateUserDataRequest} from '../api/HttpClientInstance'
 import {successMessage, errorMessage } from '../constants/errorAndSuccessMessages'
-import { errorHandler } from '../services/ErrorHandler'
+import {errorShow } from '../services/ErrorHandler'
 
 // Define action types
 
@@ -61,7 +61,7 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
     const result = await operateUserDataRequest.fetchUserPreferences()
     dispatch(setUserPreferences(result))
   } catch (error) {
-    errorHandler(error, dispatch)
+    errorShow(error, dispatch)
   }
 }
 
@@ -84,7 +84,7 @@ export const updateUserNickname =
     dispatch(changeUserNickname(result.nickname))
     toast.success(successMessage.successNicknameChange)
   } catch (error) {
-    errorHandler(error, dispatch)
+    errorShow(error, dispatch)
 }
 }
 
@@ -150,6 +150,6 @@ export const updateUserEmail =
     dispatch(changeUserEmailSuccessfull(result.email))
     toast.success(successMessage.successEmailChange)
   } catch (error) {
-    errorHandler(error, dispatch)
+    errorShow(error, dispatch)
   }
 }

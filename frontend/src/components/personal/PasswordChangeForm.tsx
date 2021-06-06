@@ -4,12 +4,10 @@ import { CardActions, Button, TextField} from '@material-ui/core'
 import Collapsible from 'react-collapsible'
 import {useDispatch} from 'react-redux'
 
- import {updateUserPassword,
- userPreferencesRequestFailed} from '../../actions/prefAndProfileActions'
+ import {updateUserPassword } from '../../actions/prefAndProfileActions'
  import {validationSchema} from '../../utils/ValidationSchemes'
-  import {useStyles} from './ProfilePreferencesPage.styles'
-
-
+ import {useStyles} from './ProfilePreferencesPage.styles'
+ import {errorShow} from '../../services/ErrorHandler'
 
 export default function PasswordChangeForm (): React.ReactElement {
     const classes = useStyles()
@@ -26,10 +24,11 @@ export default function PasswordChangeForm (): React.ReactElement {
         try {
           dispatch(updateUserPassword(values))
       } catch (error) {
-          dispatch(userPreferencesRequestFailed(error))
-      }
+          errorShow(error, dispatch)
+        }
       },
     })
+    
     return (
       <Collapsible className="collapsible" trigger="Change Password&nbsp; &gt;">
             <br />

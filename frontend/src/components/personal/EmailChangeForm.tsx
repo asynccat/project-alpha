@@ -4,18 +4,18 @@ import { CardActions, Button, TextField} from '@material-ui/core'
 import {useSelector, useDispatch} from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 
-import {updateUserEmail,
-  userPreferencesRequestFailed} from '../../actions/prefAndProfileActions'
+import {updateUserEmail } from '../../actions/prefAndProfileActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 import {useStyleModal } from './EmailChangeForm.styles'
 import {RootState} from '../../reducers/index'
 import {validationSchema} from '../../utils/ValidationSchemes'
+import {errorShow } from '../../services/ErrorHandler'
 
 
 export default function EmailChangeForm (): React.ReactElement {
   const user = useSelector((state: RootState) => state.operatePreferencesDataReducer)
   const dispatch = useDispatch()
-
+  
   const classes = useStyles()
   const modalClass = useStyleModal()
   
@@ -44,7 +44,7 @@ export default function EmailChangeForm (): React.ReactElement {
         try {
           dispatch(updateUserEmail(values))
       } catch (error) {
-          dispatch(userPreferencesRequestFailed(error))
+        errorShow(error, dispatch)
       }
         handleClose()         
       }

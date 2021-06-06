@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import * as React from 'react'
+export {}
 
 jest.mock('./ErrorHandler')
 
 describe('errorHandler', () => {
-    it ('renders toast if error occurs', () => {
-        const error = {
-            message: '444',
-            field: '222',
-        }
-        //@ts-ignore
+    it ('handles error object with unknown error', () => {
+        const error = { field: 'unknown_error'}
+       
+        // @ts-ignore
         const mMock = jest.fn().mockImplementation(() => error)
         mMock(error)
 
-        expect(mMock).toBeTruthy()
         expect(mMock).toBeCalled()
+        expect(mMock).toBeCalledWith(error)
+
         })
 })
     
