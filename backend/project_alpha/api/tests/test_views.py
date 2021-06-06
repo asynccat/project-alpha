@@ -1,7 +1,11 @@
 import json
+from unittest import mock
+
 from django.urls import reverse
+from django.core.exceptions import ValidationError
+
 from rest_framework.test import APITestCase
-from django.test import override_settings
+
 from project_alpha.web.models import User
 
 
@@ -87,7 +91,7 @@ class UserCreateAPIViewTestCase(APITestCase):
         response = self.client.post(reverse('sign_up'), data=data, format='json')
         return response.status_code, json.loads(response.content)
 
-    def test_success_unique_user_sign_up(self):
+    def test_happy_path_unique_user_sign_up(self):
         status_code, _ = self.request({
             'email': 'test@fortest.test',
             'password': '4321QWERTYaaaaa',
@@ -95,6 +99,7 @@ class UserCreateAPIViewTestCase(APITestCase):
         self.assertEqual(status_code, 201)
 
     def test_not_unique_user_sign_up(self):
+        # pylint: disable=attribute-defined-outside-init
         self.username = 'test@testnotunique.com'
         self.pwd = '1234QWERty'
         self.user = User.objects.create_user(self.username, self.pwd)
@@ -104,12 +109,10 @@ class UserCreateAPIViewTestCase(APITestCase):
         })
         self.assertEqual(status_code, 400)
 
-    @override_settings(AUTH_PASSWORD_VALIDATORS=[
-        {'NAME': 'project_alpha.web.utils.password_validator.FakeValidatorForTestViews',
-         }, ])
-    def test_sign_up(self):
-        status_code, _ = self.request({
-            'email': 'test@testtest.com',
-            'password': '4321QWERTYaaaaa',
-        })
-        self.assertEqual(status_code, 201)
+    def test_mock_if_except_password_validation_error(self):
+        with mock.patch('project_alpha.web.models.User.set_password', side_effect=ValidationError('test')):
+            status_code, _ = self.request({
+                'email': 'test@fort.test',
+                'password': '4321QWERTYaaaaa',
+            })
+            self.assertEqual(status_code, 400)
