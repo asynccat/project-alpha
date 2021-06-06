@@ -91,12 +91,13 @@ class UserCreateAPIViewTestCase(APITestCase):
         response = self.client.post(reverse('sign_up'), data=data, format='json')
         return response.status_code, json.loads(response.content)
 
-    def test_happy_path_unique_user_sign_up(self):
-        status_code, _ = self.request({
-            'email': 'test@fortest.test',
-            'password': '4321QWERTYaaaaa',
-        })
-        self.assertEqual(status_code, 201)
+    def test_mock_happy_path_unique_user_sign_up(self):
+        with mock.patch('project_alpha.web.models.User.validate', return_value=True):
+            status_code, _ = self.request({
+                'email': 'test@fortest.test',
+                'password': '432',
+            })
+            self.assertEqual(status_code, 201)
 
     def test_not_unique_user_sign_up(self):
         # pylint: disable=attribute-defined-outside-init
