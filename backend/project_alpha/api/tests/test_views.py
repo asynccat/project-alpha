@@ -100,10 +100,9 @@ class UserCreateAPIViewTestCase(APITestCase):
             self.assertEqual(status_code, 201)
 
     def test_not_unique_user_sign_up(self):
-        # pylint: disable=attribute-defined-outside-init
-        self.username = 'test@testnotunique.com'
-        self.pwd = '1234QWERty'
-        self.user = User.objects.create_user(self.username, self.pwd)
+        username = 'test@testnotunique.com'
+        pwd = '1234QWERty'
+        User.objects.create_user(username, pwd)
         status_code, _ = self.request({
             'email': 'test@testnotunique.com',
             'password': '4321QWERTYaaaaa',
@@ -112,8 +111,9 @@ class UserCreateAPIViewTestCase(APITestCase):
 
     def test_mock_if_except_password_validation_error(self):
         with mock.patch('project_alpha.web.models.User.set_password', side_effect=ValidationError('test')):
-            status_code, _ = self.request({
+            status_code, content = self.request({
                 'email': 'test@fort.test',
                 'password': '4321QWERTYaaaaa',
             })
+            self.assertIn('test', content['errors'][0]['message'])
             self.assertEqual(status_code, 400)
