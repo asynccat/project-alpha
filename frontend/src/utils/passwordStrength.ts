@@ -1,43 +1,48 @@
+
 const passwordLength = 6;
 
-function checkPasswordStrength(password:String) { 
+function validateMinimalLength(password:string) { 
   return password.length > passwordLength;
  };
  
 
- function hasPasswordDigits(password:String) {
-    
-  let is_digits = false; 
+ function  validateContainsDigit(password:string) {
+
+  let isDigits = false; 
 
   let digits = "0123456789"; 
   
-   
-   for (let i = 0; i < password.length; i++) {
-     if (!is_digits && (digits.includes(password[i])) != false) {
-       is_digits = true;
-     }
-   }
+  let isContainsDigit = password.split('').some(function(item) {
+  	if  (!isDigits && (digits.includes(item)) != false) {
+    	return isDigits = true;
+      }
+    });
+    return isContainsDigit;
+  };
 
-   return (is_digits);
-   
-};
 
-function hasPasswordLowerCaseLetters(password:String) {
-  return password.toUpperCase() != password;
+function validateContainsLowerCaseLetters(password:string) {
+    if(password.match(/[а-яa-z]/)) {
+    	return true;
+    } else {
+      return false;
+    }
+ } 
+
+function validateContainsUpperCaseLetters(password:string) {
+  if(password.match(/[А-ЯA-Z]/)) {
+    return true;
+  } else {
+    return false;}
 }
 
-function hasPasswordUpperCaseLetters(password:String) {
-  return password.toLowerCase() != password;
-}
-
-
-export default checkPasswordStrength;
+export default validateMinimalLength;
 
  export { 
-   checkPasswordStrength,
-   hasPasswordDigits,
-   hasPasswordLowerCaseLetters,
-   hasPasswordUpperCaseLetters,
+  validateMinimalLength,
+  validateContainsDigit,
+   validateContainsLowerCaseLetters,
+   validateContainsUpperCaseLetters,
  }
 
 
