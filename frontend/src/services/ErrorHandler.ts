@@ -19,6 +19,7 @@ export interface IErrorHandlerReturn {
 }
 
 export const errorHandler = (error: IError): IErrorHandlerReturn => {
+    console.log(error)
     try {
         // here we check that error object is in JSON format
         const destructuredMessage = JSON.parse(error.message)
