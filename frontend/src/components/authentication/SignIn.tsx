@@ -8,7 +8,7 @@ import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
 import { login } from '../../actions/authActions'
 
-import {useStyles} from './SignUpSignIn.styles'
+import {useStyles} from './SignIn.styles'
 
 export default function SignInSide(): React.ReactElement {
 
