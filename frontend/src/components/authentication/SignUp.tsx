@@ -1,14 +1,14 @@
 import React, {useCallback, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {CssBaseline, TextField} from '@material-ui/core'
-import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
+import {Button, Avatar, Typography, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import { signUserUp } from '../../actions/authActions'
 import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
 
-import { useStyles } from './SignUpSignIn.styles'
+import { useStyles } from './SignUp.styles'
 
 export default function SignUpSide(): React.ReactElement {
 
@@ -35,8 +35,7 @@ export default function SignUpSide(): React.ReactElement {
 
   return (
     <Grid className={classes.root} component="main" container>
-      <CssBaseline />
-      <Grid className={classes.image} item md={gridSize.SEVEN} sm={gridSize.FOUR} xs={false} />
+      <CssBaseline />    
       <Grid component={Paper}
             elevation={SHADOW_DEPTH_SIX}
             item md={gridSize.FIVE}
@@ -80,12 +79,6 @@ export default function SignUpSide(): React.ReactElement {
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox color="primary" value="allowExtraEmails" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
           </Grid>
           <Button
             className={classes.submit}
@@ -96,16 +89,6 @@ export default function SignUpSide(): React.ReactElement {
             variant="contained"
           >
             Sign Up
-          </Button>
-          <Button
-            className={classes.submit}
-            color="primary"
-            fullWidth
-            onClick={signUp}
-            type="submit"
-            variant="contained"
-          >
-            Sign Up with Google
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
