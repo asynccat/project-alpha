@@ -112,7 +112,8 @@ class UserPreferencesAPIView(APIView):
             'email': user.email,
             'avatar': '/path/to/avatar.png',
             'show_email': user.usersettings.show_email,
-            'send me emails with news from project alpha ': user.usersettings.send_me_emails_with_news_from_project_alpha,
+            'send me emails with news from project alpha ':
+                user.usersettings.send_me_emails_with_news_from_project_alpha,
             'timezone': user.usersettings.timezone,
             'about user': user.usersettings.about_user,
             'send email updates threads': user.usersettings.send_email_updates_threads,
