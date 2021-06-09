@@ -97,4 +97,3 @@ class UserSettings(models.Model):
     send_email_updates_user_quests_reviews = models.BooleanField(_(
         'send email updates user quests reviews'), default=False)
     send_email_updates_messages = models.BooleanField(_('send email updates messages'), default=False)
-
