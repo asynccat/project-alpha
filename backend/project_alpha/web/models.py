@@ -88,12 +88,10 @@ class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, )
     nickname_updated = models.DateTimeField(_('nickname updated'), blank=True, null=True)
     show_email = models.BooleanField(_('show email'), default=False)
-    send_me_emails_with_news_from_project_alpha = models.BooleanField(_(
-        'send me emails with news from project alpha '), default=False)
+    send_emails_with_news = models.BooleanField(_('send_emails_with_news'), default=False)
     timezone = models.CharField(_('timezone'),max_length=50, default='Europe/London')
-    about_user = models.CharField(_('about user'),max_length=500, default=False, blank=True)
-    send_email_updates_threads = models.BooleanField(_('send email updates threads'), default=False)
-    send_email_updates_user_reviews = models.BooleanField(_('send email updates user reviews'), default=False)
-    send_email_updates_user_quests_reviews = models.BooleanField(_(
-        'send email updates user quests reviews'), default=False)
-    send_email_updates_messages = models.BooleanField(_('send email updates messages'), default=False)
+    about_user = models.CharField(_('about_user'),max_length=500, default=False, blank=True)
+    send_updates_threads = models.BooleanField(_('send_updates_threads'), default=False)
+    send_user_reviews = models.BooleanField(_('send_user_reviews'), default=False)
+    send_user_quests_reviews = models.BooleanField(_('send_user_quests_reviews'), default=False)
+    send_updates_messages = models.BooleanField(_('send_updates_messages'), default=False)
