@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
+    marginTop: '3%',
     maxWidth: 1000,
     overflow: 'visible',
     width: '100%',
@@ -11,15 +12,22 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: 200,
+    height: 150,
     width: '100%',
   },
   large: {
     width: 150,
     height: 150,
-    marginTop: 10,
+    marginTop: -100,
     marginLeft: 10,
     margin: 'auto',
+    border: '4px solid white'
+  },
+  header: {
+    '@media (max-width: 600px)': {
+      display: 'flex',
+      flexDirection: 'column',
+    }
   },
   topping: {
     display: 'flex',
@@ -29,11 +37,33 @@ export const useStyles = makeStyles((theme) => ({
   actionButton: {
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: '15px',
-  },
-  nicknameButton: {
     width: 120,
     padding: 10,
+  },
+  passwordChangeButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  logout: {
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: '8%',
+    right: '12%',
+    '@media (max-width: 600px)': {
+      top: '3%',
+      right: '5%',
+    },
+    '@media (min-width: 1200px)': {
+      top: '8%',
+      right: '18%',
+    },
+  },
+  nicknameButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: 120,
   },
   textfields: {
     margin: 15,

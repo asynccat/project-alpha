@@ -14,6 +14,7 @@ import './PreferencesPage.scss'
 import { userLogOut } from '../../actions/authActions'
 import PasswordChangeForm from './PasswordChangeForm'
 import EmailChangeForm from './EmailChangeForm'
+import PreferencesCustomizationForm from './CustomizationForm'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -52,29 +53,36 @@ export default function PreferencesPage (): React.ReactElement {
   const classes = useStyles()
 
   return (
+  <div className="preferencePage-main">
+ <PreferencesCustomizationForm />
+   
     <Card className={classes.root}>
       <Box className={classes.topping}>
+      <CardActions className={classes.logout}>
+        <Button className="buttons logout" color="secondary" onClick={logOut}  type="submit" variant="contained">
+          Logout
+        </Button>
+      </CardActions>
+    <div className="preferences-name-and-avatar">
       <CardMedia
         className={classes.media}
         image="https://source.unsplash.com/random"
         />
-      </Box>
-
-      <div className="avatarName">
-        <CardHeader
-          avatar={
-            <Avatar alt="Remy Sharp" className={classes.large} />
-          }
-          title={
-            <Typography component="div" margin-bottom="large" variant="h5">
+      <CardHeader 
+        avatar={
+          <Avatar alt="Remy Sharp" className={classes.large} />
+        }
+        className={classes.header}
+        title={
+          <Typography component="div" margin-bottom="large" variant="h5">
             {nickname}
-            </Typography>
+          </Typography>
           }
           // eslint-disable-next-line react/jsx-sort-props
           subheader={
             <Box>
               <Typography component="p">
-                Las Vegas, US
+              Las Vegas, US
               </Typography>
               <Typography component="p">
               User
@@ -83,8 +91,12 @@ export default function PreferencesPage (): React.ReactElement {
               # {id}
               </Typography>
             </Box>
-          }
-        />
+        }
+      />
+    </div>
+      </Box>
+
+      <div className="avatarName">
       </div>
       <div className="myDataDetails">
         <div> { loader? <CircularProgress/> : ''} </div>
@@ -97,20 +109,16 @@ export default function PreferencesPage (): React.ReactElement {
                 <Button  className={classes.nicknameButton} color="primary" 
                   data-testid="nickSubmit" onClick={saveNickNameChange}
                   type="submit" variant="contained">
-                  change nickname
+                  change {'\n'} nickname
                 </Button>
               </div>
               <EmailChangeForm />
             </div>
+             
               <PasswordChangeForm />
           </CardContent>
       </div>
-      <CardActions className={classes.actionButton}>
-        <Button className="buttons" color="secondary" onClick={logOut}  type="submit" variant="contained">
-          Logout
-        </Button>
-      </CardActions>
     </Card>
-
+  </div>
   )
 }

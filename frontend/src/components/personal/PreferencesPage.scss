@@ -6,7 +6,7 @@
 body {
     background: #654ea3;
     background: linear-gradient(to right, #e96443, #904e95);
-    min-height: 100vh
+    min-height: 100vh;
 }
 
 .myDataDetails {
@@ -24,12 +24,21 @@ body {
     display: flex;
     flex-direction: row;
     margin-bottom: 5%;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
 }
 
 .emailButton {
     display: flex;
     flex-direction: row;
     width: 50%;
+    align-items: center;
+    justify-content: flex-start;
+    @media (max-width: 600px) {
+       width: 100%;
+    }
 }
 
 .collapsible {
@@ -39,15 +48,12 @@ body {
 
 .nickButton {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 50%;
-}
-
-.emailButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @media (max-width: 600px) {
+        width: 100%;
+     }
 }
 
 .PasswordFields {
@@ -59,10 +65,25 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     text-align: center;
     cursor: pointer;
+    margin: auto;
 }
 
 .modal {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.preferences-name-and-avatar {
+    display: flex;
+    flex-direction: column;
+}
+
+.preferencePage-main {
+    display: flex;
+    flex-direction: row;
+    border-radius: 4px;
+    @media (max-width: 600px) { 
+        flex-direction: column-reverse;
+    }
 }

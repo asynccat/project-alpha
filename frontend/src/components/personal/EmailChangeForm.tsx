@@ -77,7 +77,7 @@ export default function EmailChangeForm (): React.ReactElement {
       <CardActions className={classes.actionButton}>
         <Button  color="primary" data-testid="sbmtEmail" 
           type="submit" variant="contained" >
-          change email
+          change {'\n'} email
         </Button>
       </CardActions>
       <Modal
