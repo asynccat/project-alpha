@@ -69,10 +69,10 @@ export default function PasswordChangeForm (): React.ReactElement {
               value={formik.values.confirmPassword}
               variant="outlined"
             />
-            <CardActions className={classes.actionButton}>
+            <CardActions className={classes.passwordChangeButton}>
                 <Button className="buttons" color="primary" 
                 data-testid="submitButton" type="submit" variant="contained">
-                change Password
+                change {'\n'} Password
                 </Button>
             </CardActions>
             </form>

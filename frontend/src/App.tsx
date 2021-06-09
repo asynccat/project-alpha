@@ -14,14 +14,15 @@ const App: React.FC = () => {
   return (
     <Router history={history}>
       <div >
-        <h1 className="heading">Welcome to Project-alpha!</h1>
         <div className="container page">
         <ToastContainer autoClose={8000} />
           <Switch>
             <Route exact path="/login">
+              <h1 className="heading">Welcome to Project-alpha!</h1>
               <SignInSide />
             </Route>
             <Route exact path="/sign-up">
+              <h1 className="heading">Welcome to Project-alpha!</h1>
               <SignUpSide />
             </Route>
             <Route exact path="/welcome">
