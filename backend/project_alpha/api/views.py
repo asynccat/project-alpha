@@ -112,16 +112,35 @@ class UserPreferencesAPIView(APIView):
             'email': user.email,
             'avatar': '/path/to/avatar.png',
             'show_email': user.usersettings.show_email,
-            'send me emails with news from project alpha ':
-                user.usersettings.send_me_emails_with_news_from_project_alpha,
+            'send_emails_with_news': user.usersettings.send_emails_with_news,
             'timezone': user.usersettings.timezone,
-            'about user': user.usersettings.about_user,
-            'send email updates threads': user.usersettings.send_email_updates_threads,
-            'send email updates user reviews': user.usersettings.send_email_updates_user_reviews,
-            'send email updates user quests reviews': user.usersettings.send_email_updates_user_quests_reviews,
-            'send email updates messages': user.usersettings.send_email_updates_messages,
+            'about_user': user.usersettings.about_user,
+            'send_updates_threads': user.usersettings.send_updates_threads,
+            'send_user_reviews': user.usersettings.send_user_reviews,
+            'send_user_quests_reviews': user.usersettings.send_user_quests_reviews,
+            'send_updates_messages': user.usersettings.send_updates_messages,
         }
         return Response(user_data)
+
+    def perform_update(self, serializer):
+        user = self.get_object()
+        UserSettings.objects.filter(user=user).update(show_email=self.request.user_data.get('show_email'),
+                                                      send_emails_with_news=
+                                                      self.request.user_data.get('send_emails_with_news'),
+                                                      timezone=self.request.user_data.get('timezone'),
+                                                      about_user=self.request.user_data.get('about_user'),
+                                                      send_updates_threads=
+                                                      self.request.user_data.get('send_updates_threads'),
+                                                      send_user_reviews=self.request.user_data.get('send_user_reviews'),
+                                                      send_user_quests_reviews=
+                                                      self.request.user_data.get('send_user_quests_reviews'),
+                                                      send_updates_messages=
+                                                      self.request.user_data.get('send_updates_messages'))
+        serializer.save()
+
+    def post(self):
+        pass
+
 
 
 class ChangeUserPassword(APIView):
