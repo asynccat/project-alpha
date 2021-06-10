@@ -117,3 +117,31 @@ class UserCreateAPIViewTestCase(APITestCase):
             })
             self.assertIn('test', content['errors'][0]['message'])
             self.assertEqual(status_code, 400)
+
+class UserPreferencesAPIViewTestCase(APITestCase):
+
+    def setUp(self):
+        self.username = 'test@example.com'
+        self.pwd = '1234QWERty'
+        self.user = User.objects.create_user(self.username, self.pwd)
+
+    def request(self, data):
+        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        response = self.client.post(reverse('preferences'), data=data, format='json')
+        return response.status_code, json.loads(response.content)
+
+    def test_test(self):
+        status_code, _ = self.request({
+            'nickname': 'abaster',
+            'email': 'abaster@vaster.com',
+            'avatar': '/path/to/avatar123.png',
+            'show_email': True,
+            'send_emails_with_news': True,
+            'timezone': 'Europe/London',
+            'about_user': 'dsdsdsds',
+            'send_updates_threads': True,
+            'send_user_reviews': True,
+            'send_user_quests_reviews': True,
+            'send_updates_messages': True,
+        })
+        self.assertEqual(status_code, 200)

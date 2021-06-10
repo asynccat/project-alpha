@@ -96,16 +96,20 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         return Response(user_data)
 
 
-class UserPreferencesAPIView(APIView):
+class UserPreferencesAPIView(generics.GenericAPIView):
     """
     Retrieve user preferences.
     """
+
+    queryset = User.objects.all()
+    serializer_class = UserPreferencesSerializer
+    #lookup_field = 'user'
+    #lookup_url_kwarg = 'preferences'
     permission_classes = (IsAuthenticated,)
     # TODO: APIView does not have serializer_class
     # Probably need to use Generic views here
-    serializer_class = UserPreferencesSerializer
 
-    def get(self, request):
+    def get(request): # pylint: disable=no-self-argument
         user = request.user
         user_data = {
             'nickname': user.nickname,
@@ -122,25 +126,9 @@ class UserPreferencesAPIView(APIView):
         }
         return Response(user_data)
 
-    def perform_update(self, serializer):
-        user = self.get_object()
-        UserSettings.objects.filter(user=user).update(show_email=self.request.user_data.get('show_email'),
-                                                      send_emails_with_news=
-                                                      self.request.user_data.get('send_emails_with_news'),
-                                                      timezone=self.request.user_data.get('timezone'),
-                                                      about_user=self.request.user_data.get('about_user'),
-                                                      send_updates_threads=
-                                                      self.request.user_data.get('send_updates_threads'),
-                                                      send_user_reviews=self.request.user_data.get('send_user_reviews'),
-                                                      send_user_quests_reviews=
-                                                      self.request.user_data.get('send_user_quests_reviews'),
-                                                      send_updates_messages=
-                                                      self.request.user_data.get('send_updates_messages'))
-        serializer.save()
-
-    def post(self):
-        pass
-
+    def post(self, request):
+        data = request.data
+        return Response(data)
 
 
 class ChangeUserPassword(APIView):
