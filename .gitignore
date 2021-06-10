@@ -3,6 +3,7 @@ venv
 dist
 __pycache__
 db.sqlite3
+*.iml
 
 
 # dynoconf
