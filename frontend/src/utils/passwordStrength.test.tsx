@@ -1,6 +1,6 @@
 
 import passwordStrength, { validateMinimalLength,
-  validateContainsDigit, validateContainsLowerCaseLetters, validateContainsUpperCaseLetters} from './passwordStrength';
+  validateContainsDigit, validateContainsLowerCaseLetters, validateContainsUpperCaseLetters} from './passwordStrength'
 
 describe('Password strength', () => {
   test('returns true if password length is greater than 6', () => {
@@ -18,12 +18,12 @@ describe('Password strength', () => {
 /* testing hasPasswordDigits*/
   
   test('returns true if password has digits', () => {
-    const numbersInPassword = '12345'; 
+    const numbersInPassword = '12345' 
     const result = validateContainsDigit(numbersInPassword) 
     expect(result).toBe(true) 
   })
   test('returns false if password hasn`t digits', () => {
-    const lettersInPassword = 'daslkgl'; 
+    const lettersInPassword = 'daslkgl' 
     const result = validateContainsDigit(lettersInPassword) 
     expect(result).toBe(false) 
   })
@@ -31,13 +31,13 @@ describe('Password strength', () => {
   /* testing hasPasswordLowerCaseLetters*/
 
   test('returns true if password has lowerCase letters', () => {
-    const LowerCaseInPassword = 'abcdef'; 
+    const LowerCaseInPassword = 'abcdef' 
     const result = validateContainsLowerCaseLetters(LowerCaseInPassword) 
     expect(result).toBe(true) 
   })
 
   test('returns false if password hasn`t lowerCase letters', () => {
-    const UpperCaseInPassword = 'ASGJASJNBTJ'; 
+    const UpperCaseInPassword = 'ASGJASJNBTJ' 
     const result = validateContainsLowerCaseLetters(UpperCaseInPassword) 
     expect(result).toBe(false)
   })
@@ -45,13 +45,13 @@ describe('Password strength', () => {
   /* testing hasPasswordUpperCaseLetters*/
 
   test('returns true if password has UpperCase letters', () => {
-    const UpperCaseInPassword = 'SDAGHDHA!@!$'; 
+    const UpperCaseInPassword = 'SDAGHDHA!@!$' 
     const result = validateContainsUpperCaseLetters(UpperCaseInPassword) 
     expect(result).toBe(true) 
   })
 
   test('returns false if password hasn`t UpperCase letters', () => {
-    const lowerCaseInPassword= '1sdgh12423'; 
+    const lowerCaseInPassword= '1sdgh12423' 
     const result = validateContainsUpperCaseLetters(lowerCaseInPassword) 
     expect(result).toBe(false) 
   })
