@@ -35,7 +35,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserPreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'nickname', 'avatar')
+        fields = ['email', 'nickname', 'avatar', 'show_email', 'send_emails_with_news', 'timezone', 'about_user',
+                  'send_updates_threads', 'send_user_reviews', 'send_user_quests_reviews', 'send_updates_messages']
 
 
 class UpdateNicknameSerializer(serializers.ModelSerializer):
