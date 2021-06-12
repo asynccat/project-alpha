@@ -6,6 +6,7 @@ from django.contrib.auth.password_validation import get_password_validators, val
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
 
@@ -60,6 +61,15 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        try:
+            if self.usersettings:
+                pass
+        except ObjectDoesNotExist:
+            usersettings = UserSettings(user=self)
+            usersettings.save()
+
     def validate(self, raw_password):
         validators = get_password_validators(validator_config=settings.AUTH_PASSWORD_VALIDATORS)
         errors_count = []
@@ -86,11 +96,12 @@ class User(AbstractUser):
 
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, )
-    nickname_updated = models.DateTimeField(_('nickname updated'), blank=True, null=True)
-    show_email = models.BooleanField(_('show email'), default=False)
+    avatar = models.FilePathField(_('avatar'), blank=True, null=True)
+    nickname_updated = models.DateTimeField(_('nickname_updated'), blank=True, null=True)
+    show_email = models.BooleanField(_('show_email'), default=False)
     send_emails_with_news = models.BooleanField(_('send_emails_with_news'), default=False)
     timezone = models.CharField(_('timezone'),max_length=50, default='Europe/London')
-    about_user = models.CharField(_('about_user'),max_length=500, default=False, blank=True)
+    about_user = models.CharField(_('about_user'),max_length=500, default='', blank=True)
     send_updates_threads = models.BooleanField(_('send_updates_threads'), default=False)
     send_user_reviews = models.BooleanField(_('send_user_reviews'), default=False)
     send_user_quests_reviews = models.BooleanField(_('send_user_quests_reviews'), default=False)

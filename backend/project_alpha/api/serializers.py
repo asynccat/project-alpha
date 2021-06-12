@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 
+from project_alpha.web.models import UserSettings
+
 from .utils import get_tokens_for_user
 from .validators import NicknameValidator
 
@@ -34,10 +36,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserPreferencesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['email', 'nickname', 'avatar', 'show_email', 'send_emails_with_news', 'timezone', 'about_user',
-                  'send_updates_threads', 'send_user_reviews', 'send_user_quests_reviews', 'send_updates_messages']
-
+        model = UserSettings
+        fields = ('show_email', 'send_emails_with_news', 'timezone', 'about_user',
+                  'send_updates_threads', 'send_user_reviews', 'send_user_quests_reviews', 'send_updates_messages')
 
 class UpdateNicknameSerializer(serializers.ModelSerializer):
     nickname = serializers.CharField(
