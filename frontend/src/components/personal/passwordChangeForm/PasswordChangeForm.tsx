@@ -5,9 +5,9 @@ import Collapsible from 'react-collapsible'
 import {useDispatch} from 'react-redux'
 
  import {updateUserPassword,
- userPreferencesRequestFailed} from '../../actions/prefAndProfileActions'
- import {validationSchema} from '../../utils/ValidationSchemes'
-  import {useStyles} from './ProfilePreferencesPage.styles'
+ userPreferencesRequestFailed} from '../../../actions/prefAndProfileActions'
+ import {validationSchema} from '../../../utils/ValidationSchemes'
+  import {useStyles} from '../profilePage/ProfilePreferencesPage.styles'
 
 
 

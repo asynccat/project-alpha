@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
   Typography, Avatar, Box } from '@material-ui/core'
 
-import { userLogOut } from '../../actions/authActions'
+import { userLogOut } from '../../../actions/authActions'
 import {useStyles} from './ProfilePreferencesPage.styles'
 
 

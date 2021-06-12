@@ -1,38 +1,35 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Button, FormControl, FormGroup, FormControlLabel, Checkbox, Select, 
   InputLabel, MenuItem, TextareaAutosize, Typography } from '@material-ui/core'
 
-import {fetchUserCustomization, successChangeUserCustomization } from '../../actions/customizationActions'
-import {RootState} from '../../reducers/index'
+import {successChangeUserCustomization } from '../../../actions/customizationActions'
+import {RootState} from '../../../reducers/index'
 import {useStyles} from './CustomizationForm.styles'
-import { FIVE } from '../../constants/styles.values'
-import {MINUTES_QTY_TWO_CHARS_LONG, SIXTY_MINUTES_IN_HOUR } from '../../constants/valuableNumbers'
+import { FIVE } from '../../../constants/styles.values'
+import {MINUTES_QTY_TWO_CHARS_LONG, SIXTY_MINUTES_IN_HOUR } from '../../../constants/valuableNumbers'
 
 export default function PreferencesCustomizationForm (): React.ReactElement {
   const dispatch = useDispatch()
   
-  useEffect(() => {
-    dispatch(fetchUserCustomization())
-  }, [dispatch])  
-
   const custom = useSelector((state: RootState) => state.customizationReducer)
 
   const [checkboxState, setCheckboxState] = useState({
-      emailNews: custom? custom.emailNews : true,
-      emailThreads: custom? custom.emailThreads : false,
-      emailMyReviews: custom? custom.emailMyReviews : false,
-      emailQuestReviews: custom? custom.emailQuestReviews : false,
-      emailMessages: custom? custom.emailMessages : false,
+      sendEmailsWithNews: custom? custom.sendEmailsWithNews : true,
+      sendUpdatesThreads: custom? custom.sendUpdatesThreads: false,
+      sendUserReviews: custom? custom.sendUserReviews : false,
+      sendUserQuestsReviews: custom? custom.sendUserQuestsReviews : false,
+      sendUpdatesMessages: custom? custom.sendUpdatesMessages : false,
     })
     
     const [textAndTimeState, setTextAndTimeState] = useState({
-      timeZone: custom? custom.timeZone :'UTC',
-      aboutMe: custom? custom.aboutMe : ''
+      timezone: custom? custom.timezone :'UTC',
+      aboutUser: custom? custom.aboutUser : ''
     })
     
-    const { emailNews, emailThreads, emailMyReviews, emailQuestReviews,  emailMessages} = checkboxState
-    const { timeZone, aboutMe } = textAndTimeState
+    const { sendEmailsWithNews, sendUpdatesThreads, sendUserReviews, sendUserQuestsReviews,  
+      sendUpdatesMessages} = checkboxState
+    const { timezone, aboutUser } = textAndTimeState
     
     const handleCheckboxChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
       setCheckboxState({ ...checkboxState, [event.target.name]: event.target.checked })
@@ -52,7 +49,7 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
     }, [dispatch, checkboxState, textAndTimeState])
 
     const getTime = () => {
-      const zone = textAndTimeState.timeZone
+      const zone = textAndTimeState.timezone
       const time = new Date()
       if (zone === 'GMT') {
         //Make minutes quantity two-digits number even if its below 10
@@ -81,7 +78,7 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
             <Select
               name="timeZone"
               onChange={handleTextAndTimeChange}
-              value={timeZone}
+              value={timezone}
             >
               <MenuItem value={'UTC'}>UTC</MenuItem>
               <MenuItem value={'GMT'}>GMT {getTimeDiffLocalTimeWithGMT()}</MenuItem>
@@ -93,7 +90,8 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
         <FormControl className={classes.formControl} component="fieldset">
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox checked={emailNews} name="emailNews" onChange={handleCheckboxChange} />}
+              control={<Checkbox checked={sendEmailsWithNews} 
+              name="sendEmailsWithNews" onChange={handleCheckboxChange} />}
               label="Send me emails with news from project alpha"
             />
             <br/>
@@ -104,22 +102,24 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
             <br />
             <FormGroup>
                 <FormControlLabel
-                control={<Checkbox checked={emailThreads} name="emailThreads" onChange={handleCheckboxChange} />}
+                control={<Checkbox checked={sendUpdatesThreads} 
+                name="sendUpdatesThreads" onChange={handleCheckboxChange} />}
                 label="Threads I follow"
                 />
                 <FormControlLabel
-                control={<Checkbox checked={emailMyReviews} name="emailMyReviews" onChange={handleCheckboxChange} />}
+                control={<Checkbox checked={sendUserReviews} name="sendUserReviews" onChange={handleCheckboxChange} />}
                 label="My reviews"
                 />
             </FormGroup>
             <FormGroup>
                 <FormControlLabel
-                control={<Checkbox checked={emailQuestReviews} 
-                name="emailQuestReviews" onChange={handleCheckboxChange} />}
+                control={<Checkbox checked={sendUserQuestsReviews} 
+                name="sendUserQuestsReviews" onChange={handleCheckboxChange} />}
                 label="Reviews on my quests"
                 />
                 <FormControlLabel
-                control={<Checkbox checked={emailMessages} name="emailMessages" onChange={handleCheckboxChange} />}
+                control={<Checkbox checked={sendUpdatesMessages} 
+                name="sendUpdatesMessages" onChange={handleCheckboxChange} />}
                 label="New personal messages"
                 />
             </FormGroup>
@@ -129,8 +129,8 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
             About me
         </Typography>  
         <TextareaAutosize aria-label="minimum height" className={classes.textarea}
-          name="aboutMe" onChange={handleTextAndTimeChange} 
-          placeholder="Type there info about you" rowsMin={FIVE} value={aboutMe} />
+          name="aboutUser" onChange={handleTextAndTimeChange} 
+          placeholder="Type there info about you" rowsMin={FIVE} value={aboutUser} />
         <div className={classes.buttonContainer}>
           <Button  className={classes.submitButton} color="primary" onClick={handleSubmit} 
               type="submit" variant="contained">

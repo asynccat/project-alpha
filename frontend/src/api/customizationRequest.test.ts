@@ -20,8 +20,9 @@ describe('use of CustomizationRequest client', () => {
 describe ('test use of post user customization', () => {
   it('test usage of postcustomization method of CustomizeRequest class', () => {
     const spy = jest.spyOn(customizationRequest, 'changeUserCustomization')
-    customizationRequest.changeUserCustomization({ emailNews: true, emailThreads: true, emailMyReviews: true, 
-      aboutMe: '55', timeZone: 'GMT', emailQuestReviews: true, emailMessages: true })
+    customizationRequest.changeUserCustomization({ sendEmailsWithNews: true, sendUpdatesThreads: true, 
+      sendUserReviews: true, 
+      aboutUser: '55', timezone: 'GMT', sendUserQuestsReviews: true, sendUpdatesMessages: true })
   
     expect(spy).toHaveBeenCalled()
     expect(customizationRequest.changeUserCustomization).toHaveBeenCalled()

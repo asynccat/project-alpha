@@ -7,15 +7,15 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
   Typography, Avatar, Box, TextField,  CircularProgress} from '@material-ui/core'
 
-import {updateUserNickname, fetchUserPreferences } from '../../actions/prefAndProfileActions'
-import {useStyles} from './ProfilePreferencesPage.styles'
-import {RootState} from '../../reducers/index'
+import {updateUserNickname, fetchUserPreferences } from '../../../actions/prefAndProfileActions'
+import {useStyles} from '../profilePage/ProfilePreferencesPage.styles'
+import {RootState} from '../../../reducers/index'
 import './PreferencesPage.scss'
-import { userLogOut } from '../../actions/authActions'
-import PasswordChangeForm from './PasswordChangeForm'
-import EmailChangeForm from './EmailChangeForm'
-import PreferencesCustomizationForm from './CustomizationForm'
-import {AchievementsBoard} from './Achievements'
+import { userLogOut } from '../../../actions/authActions'
+import PasswordChangeForm from '../passwordChangeForm/PasswordChangeForm'
+import EmailChangeForm from '../emailChangeFrom/EmailChangeForm'
+import PreferencesCustomizationForm from '../customization/CustomizationForm'
+import {AchievementsBoard} from '../achievements/Achievements'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
