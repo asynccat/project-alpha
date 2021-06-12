@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 from rest_framework.test import APITestCase
 
-from project_alpha.web.models import User
+from project_alpha.web.models import User, UserSettings
 
 
 class ChangePasswordViewTestCase(APITestCase):
@@ -125,23 +125,40 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.pwd = '1234QWERty'
         self.user = User.objects.create_user(self.username, self.pwd)
 
-    def request(self, data):
+    def test_happy_path_update_user_preferences(self):
         self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
-        response = self.client.post(reverse('preferences'), data=data, format='json')
-        return response.status_code, json.loads(response.content)
+        response = self.client.patch(reverse('preferences'), data={'show_email': True,
+                                                                   'send_emails_with_news': True,
+                                                                   'timezone': 'Test/test',
+                                                                   'about_user': 'TEST',
+                                                                   'send_updates_threads': True,
+                                                                   'send_user_reviews': True,
+                                                                   'send_user_quests_reviews': True,
+                                                                   'send_updates_messages': True,
+                                                                   }, format='json')
+        usersettings = UserSettings.objects.get(user=self.user)
 
-    def test_test(self):
-        status_code, _ = self.request({
-            'nickname': 'abaster',
-            'email': 'abaster@vaster.com',
-            'avatar': '/path/to/avatar123.png',
-            'show_email': True,
-            'send_emails_with_news': True,
-            'timezone': 'Europe/London',
-            'about_user': 'dsdsdsds',
-            'send_updates_threads': True,
-            'send_user_reviews': True,
-            'send_user_quests_reviews': True,
-            'send_updates_messages': True,
-        })
-        self.assertEqual(status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(usersettings.show_email)
+        self.assertTrue(usersettings.send_emails_with_news)
+        self.assertEqual(usersettings.timezone, 'Test/test')
+        self.assertEqual(usersettings.about_user, 'TEST')
+        self.assertTrue(usersettings.send_updates_threads)
+        self.assertTrue(usersettings.send_user_reviews)
+        self.assertTrue(usersettings.send_user_quests_reviews)
+        self.assertTrue(usersettings.send_updates_messages)
+
+    def test_happy_path_get_user_preferences(self):
+        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        response = self.client.get(reverse('preferences'), format='json')
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(usersettings.show_email)
+        self.assertFalse(usersettings.send_emails_with_news)
+        self.assertEqual(usersettings.timezone, 'Europe/London')
+        self.assertEqual(usersettings.about_user, '')
+        self.assertFalse(usersettings.send_updates_threads)
+        self.assertFalse(usersettings.send_user_reviews)
+        self.assertFalse(usersettings.send_user_quests_reviews)
+        self.assertFalse(usersettings.send_updates_messages)

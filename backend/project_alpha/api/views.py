@@ -101,20 +101,17 @@ class UserPreferencesAPIView(generics.GenericAPIView):
     Retrieve user preferences.
     """
 
-    queryset = User.objects.all()
+    queryset = UserSettings.objects.all()
     serializer_class = UserPreferencesSerializer
-    #lookup_field = 'user'
-    #lookup_url_kwarg = 'preferences'
     permission_classes = (IsAuthenticated,)
-    # TODO: APIView does not have serializer_class
-    # Probably need to use Generic views here
 
-    def get(request): # pylint: disable=no-self-argument
-        user = request.user
+    def get(self, request):  # pylint: disable=unused-argument
+        user = self.request.user
         user_data = {
             'nickname': user.nickname,
             'email': user.email,
             'avatar': '/path/to/avatar.png',
+            'nickname_updated': user.usersettings.nickname_updated,
             'show_email': user.usersettings.show_email,
             'send_emails_with_news': user.usersettings.send_emails_with_news,
             'timezone': user.usersettings.timezone,
@@ -126,9 +123,11 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         }
         return Response(user_data)
 
-    def post(self, request):
-        data = request.data
-        return Response(data)
+    def patch(self, request):
+        serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid()
+        serializer.update(instance=request.user.usersettings, validated_data=serializer.validated_data)
+        return Response(self.request.data)
 
 
 class ChangeUserPassword(APIView):
