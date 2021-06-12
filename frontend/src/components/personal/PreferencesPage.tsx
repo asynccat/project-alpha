@@ -15,6 +15,7 @@ import { userLogOut } from '../../actions/authActions'
 import PasswordChangeForm from './PasswordChangeForm'
 import EmailChangeForm from './EmailChangeForm'
 import PreferencesCustomizationForm from './CustomizationForm'
+import {AchievementsBoard} from './Achievements'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -53,6 +54,7 @@ export default function PreferencesPage (): React.ReactElement {
   const classes = useStyles()
 
   return (
+  <div>
   <div className="preferencePage-main">
  <PreferencesCustomizationForm />
    
@@ -119,6 +121,8 @@ export default function PreferencesPage (): React.ReactElement {
           </CardContent>
       </div>
     </Card>
+  </div>
+    <AchievementsBoard />
   </div>
   )
 }
