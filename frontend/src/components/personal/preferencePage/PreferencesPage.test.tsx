@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import '@testing-library/jest-dom'
 
 import PreferencesPage from './PreferencesPage'
-import {store} from '../../index'
+import {store} from '../../../index'
 
 
 describe('Preferences', () => {

@@ -5,11 +5,11 @@ import {useSelector, useDispatch} from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 
 import {updateUserEmail,
-  userPreferencesRequestFailed} from '../../actions/prefAndProfileActions'
-import {useStyles} from './ProfilePreferencesPage.styles'
+  userPreferencesRequestFailed} from '../../../actions/prefAndProfileActions'
+import {useStyles} from '../profilePage/ProfilePreferencesPage.styles'
 import {useStyleModal } from './EmailChangeForm.styles'
-import {RootState} from '../../reducers/index'
-import {validationSchema} from '../../utils/ValidationSchemes'
+import {RootState} from '../../../reducers/index'
+import {validationSchema} from '../../../utils/ValidationSchemes'
 
 
 export default function EmailChangeForm (): React.ReactElement {
