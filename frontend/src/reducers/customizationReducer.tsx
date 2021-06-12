@@ -3,13 +3,13 @@ import { CustomizationType, CustomizationActions  } from '../actions/customizati
 import RemoteSource from '../types/RemoteSource'
 
 interface IUserCustomizationState extends RemoteSource {
-    emailNews: boolean
-    emailThreads: boolean
-    emailMyReviews: boolean
-    emailQuestReviews: boolean
-    emailMessages: boolean
-    timeZone: string
-    aboutMe: string
+    sendEmailsWithNews: boolean
+    sendUpdatesThreads: boolean
+    sendUserReviews: boolean
+    sendUserQuestsReviews: boolean
+    sendUpdatesMessages: boolean
+    timezone: string
+    aboutUser: string
 }
 
 export const initialState = {
@@ -17,13 +17,13 @@ export const initialState = {
     init: false,
     isLoading: false,
     status: '',
-    emailNews: false,
-    emailThreads: false,
-    emailMyReviews: true,
-    emailQuestReviews: false,
-    emailMessages: false,
-    timeZone: 'GMT',
-    aboutMe: ''
+    sendEmailsWithNews: false,
+    sendUpdatesThreads: false,
+    sendUserReviews: true,
+    sendUserQuestsReviews: false,
+    sendUpdatesMessages: false,
+    timezone: 'GMT',
+    aboutUser: ''
 }
 
 const customizationReducer = (state: IUserCustomizationState = initialState, action: CustomizationActions ):
@@ -47,13 +47,13 @@ IUserCustomizationState => {
             return {
                 ...state,
                 isLoading: false,
-                emailNews: action.payload.emailNews,
-                emailThreads: action.payload.emailThreads,
-                emailMyReviews: action.payload.emailMyReviews,
-                emailQuestReviews: action.payload.emailQuestReviews,
-                emailMessages: action.payload.emailMessages,
-                timeZone: action.payload.timeZone,
-                aboutMe: action.payload.aboutMe,
+                sendEmailsWithNews: action.payload.sendEmailsWithNews,
+                sendUpdatesThreads: action.payload.sendUpdatesThreads,
+                sendUserReviews: action.payload.sendUserReviews,
+                sendUserQuestsReviews: action.payload.sendUserQuestsReviews,
+                sendUpdatesMessages: action.payload.sendUpdatesMessages,
+                timezone: action.payload.timezone,
+                aboutUser: action.payload.aboutUser,
             }
         default: return state
     }

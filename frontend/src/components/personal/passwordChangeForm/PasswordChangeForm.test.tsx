@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import '@testing-library/jest-dom'
 
-import {store} from '../../index'
+import {store} from '../../../index'
 import PasswordChangeForm from './PasswordChangeForm'
-import * as prefActions from '../../actions/prefAndProfileActions'
+import * as prefActions from '../../../actions/prefAndProfileActions'
 
 describe('PasswordChangeForm', () => {
   it('title in place', () => {

@@ -3,8 +3,8 @@ import {Router, Switch, Route, Redirect } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import SignUpSide from '../src/components/authentication/SignUp'
-import ProfilePage from '../src/components/personal/ProfilePage'
-import PreferencesPage from '../src/components/personal/PreferencesPage'
+import ProfilePage from './components/personal/profilePage/ProfilePage'
+import PreferencesPage from '../src/components/personal/preferencePage/PreferencesPage'
 import SignInSide from './components/authentication/SignIn'
 import {history} from './history'
 

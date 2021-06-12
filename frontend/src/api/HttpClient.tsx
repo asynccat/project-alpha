@@ -20,6 +20,7 @@ export const changedHttpRequestOptions = {
 export interface IHttpClient {
   post: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
   put: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
+  patch: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
   get: <Response>(url:string, options?: IHttpRequestOptions) => Promise<Response>
 }
 
@@ -64,5 +65,9 @@ export class HttpClient {
 
     async put(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
       return await this.execute(url, 'PUT',  payload, options)
+  }
+
+    async patch(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
+      return await this.execute(url, 'PATCH',  payload, options)
   }
 }

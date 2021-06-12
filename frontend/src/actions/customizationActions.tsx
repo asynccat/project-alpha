@@ -37,37 +37,18 @@ export const userCustomizationRequestFailed =
 // Define action creator and thunk for setting/fetching user preferences
 
 export interface IUserCustomizationResponse {
-  emailNews: boolean
-  emailThreads: boolean
-  emailMyReviews: boolean
-  emailQuestReviews: boolean
-  emailMessages: boolean
-  timeZone: string
-  aboutMe: string
+  sendEmailsWithNews: boolean
+  sendUpdatesThreads: boolean
+  sendUserReviews: boolean
+  sendUserQuestsReviews: boolean
+  sendUpdatesMessages: boolean
+  timezone: string
+  aboutUser: string
 }
 
 export const setUserCustomization =
   actionCreator<CustomizationType.SET_USER_CUSTOMIZATION, IUserCustomizationResponse>
   (CustomizationType.SET_USER_CUSTOMIZATION)
-
-export const fetchUserCustomization = () => async (dispatch:Dispatch): Promise<void> => {
-  dispatch(userCustomizationRequestInitiated())
-  try {
-    const result = await customizationRequest.fetchUserCustomization()
-    dispatch(setUserCustomization(result))
-  } catch (error) {
-    const destructuredMessage = JSON.parse(error.message)
-    if (destructuredMessage) {
-      const [messageArrayFromDestructuredError] = destructuredMessage.errors
-      dispatch(userCustomizationRequestFailed(messageArrayFromDestructuredError.message))
-      const errorText = (messageArrayFromDestructuredError.message).toString()
-      toast.error(errorText)
-    } else {
-      dispatch(userCustomizationRequestFailed(errorMessage.errorUnknown))
-      toast.error(errorMessage.errorUnknown)
-    }
-  }
-}
 
 export const successChangeUserCustomization = (payload: IUserCustomizationResponse) => 
   async (dispatch:Dispatch): Promise<void> => {

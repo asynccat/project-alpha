@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import '@testing-library/jest-dom'
 
-import {store} from '../../index'
+import {store} from '../../../index'
 import EmailChangeForm from './EmailChangeForm'
 
 describe('EmailChangeForm', () => {

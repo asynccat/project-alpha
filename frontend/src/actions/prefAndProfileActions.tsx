@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {operateUserDataRequest} from '../api/HttpClientInstance'
+import {setUserCustomization} from './customizationActions'
 import {successMessage, errorMessage } from '../constants/errorAndSuccessMessages'
 
 // Define action types
@@ -49,6 +50,13 @@ export const userPreferencesRequestFailed =
 export interface IUserPreferencesResponse {
   nickname: string
   email: string
+  sendEmailsWithNews: boolean
+  sendUpdatesThreads: boolean
+  sendUserReviews: boolean
+  sendUserQuestsReviews: boolean
+  sendUpdatesMessages: boolean
+  timezone: string
+  aboutUser: string
 }
 
 export const setUserPreferences =
@@ -59,14 +67,19 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
   try {
     const result = await operateUserDataRequest.fetchUserPreferences()
     dispatch(setUserPreferences(result))
+    const camelizedResponse = humps.camelizeKeys(result)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    dispatch(setUserCustomization(camelizedResponse))
   } catch (error) {
-    const destructuredMessage = JSON.parse(error.message)
-    if (destructuredMessage) {
+    console.log(error)
+    try {
+      const destructuredMessage = JSON.parse(error.message)
       const [messageArrayFromDestructuredError] = destructuredMessage.errors
       dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError.message))
       const errorText = (messageArrayFromDestructuredError.message).toString()
       toast.error(errorText)
-    } else {
+    } catch(e) {
       dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
       toast.error(errorMessage.errorUnknown)
     }
