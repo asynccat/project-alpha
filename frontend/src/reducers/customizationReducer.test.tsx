@@ -1,7 +1,7 @@
 import { CustomizationType } from '../actions/customizationActions'
 import reducer, {initialState} from './customizationReducer'
 
-describe('operatePreferencesDataReducer', () => {
+describe('customizationReducer', () => {
   it('should handle SET_USER_CUSTOMIZATION', () => {
     expect(
       reducer(initialState, {

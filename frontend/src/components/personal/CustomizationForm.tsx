@@ -7,6 +7,7 @@ import {fetchUserCustomization, successChangeUserCustomization } from '../../act
 import {RootState} from '../../reducers/index'
 import {useStyles} from './CustomizationForm.styles'
 import { FIVE } from '../../constants/styles.values'
+import {MINUTES_QTY_TWO_CHARS_LONG, SIXTY_MINUTES_IN_HOUR } from '../../constants/valuableNumbers'
 
 export default function PreferencesCustomizationForm (): React.ReactElement {
   const dispatch = useDispatch()
@@ -54,14 +55,22 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
       const zone = textAndTimeState.timeZone
       const time = new Date()
       if (zone === 'GMT') {
-        const now = `${time.getHours()} : ${time.getMinutes()}`
+        //Make minutes quantity two-digits number even if its below 10
+        const minutes = String(time.getMinutes()).padStart(MINUTES_QTY_TWO_CHARS_LONG, '0')
+        const now = `${time.getHours()} : ${minutes}`
         return now
       }
-      const now = `${time.getUTCHours()} : ${time.getUTCMinutes()}`
+       //Make minutes quantity two-digits number even if its below 10
+      const minutes = String(time.getUTCMinutes()).padStart(MINUTES_QTY_TWO_CHARS_LONG, '0')
+      const now = `${time.getUTCHours()} : ${minutes}`
       return now
     }
 
-    getTime()
+    const getTimeDiffLocalTimeWithGMT = () => {
+      const time = new Date()
+      const offset = -time.getTimezoneOffset()/SIXTY_MINUTES_IN_HOUR 
+      return offset > 0 ? `+ ${offset}` : `- ${offset}`
+    }
     
     const classes = useStyles()
 
@@ -75,7 +84,7 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
               value={timeZone}
             >
               <MenuItem value={'UTC'}>UTC</MenuItem>
-              <MenuItem value={'GMT'}>GMT</MenuItem>
+              <MenuItem value={'GMT'}>GMT {getTimeDiffLocalTimeWithGMT()}</MenuItem>
             </Select>
         </FormControl>
         <Typography className={classes.timeText} component="p">
