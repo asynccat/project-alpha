@@ -1,8 +1,9 @@
 import { IHttpClient} from './HttpClient'
-import { IUserCustomizationResponse } from '../actions/customizationActions'
+import { IUserCustomizationDecamelizedResponse } from '../actions/customizationActions'
 
 export interface IUserCustomizationReq {
-  changeUserCustomization: (payload: IUserCustomizationResponse) => Promise<IUserCustomizationResponse>
+  changeUserCustomization: (payload: IUserCustomizationDecamelizedResponse ) => 
+    Promise<IUserCustomizationDecamelizedResponse  >
 }
 
 export class CustomizationRequest implements IUserCustomizationReq {
@@ -12,7 +13,8 @@ export class CustomizationRequest implements IUserCustomizationReq {
     this.client = client
   }
 
-    async changeUserCustomization(payload: IUserCustomizationResponse): Promise<IUserCustomizationResponse> {
+    async changeUserCustomization(payload: IUserCustomizationDecamelizedResponse): 
+      Promise<IUserCustomizationDecamelizedResponse > {
       return await this.client.patch('preferences', payload)
     }
 }

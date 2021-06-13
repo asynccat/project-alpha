@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
-import { makeStyles, createStyles } from '@material-ui/core/styles'
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
@@ -21,6 +21,12 @@ export const useStyles = makeStyles(() =>
             marginRight: 10,
             marginLeft: 10,
           }
-    }
+    },
+    popover: {
+      pointerEvents: 'none',
+    },
+    paper: {
+      padding: theme.spacing(1),
+    },
     })
 )
