@@ -1,13 +1,13 @@
-import React, {useState, useCallback} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {Button, FormControl, FormGroup, FormControlLabel, Checkbox, Select, 
+import React, { useState, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, FormControl, FormGroup, FormControlLabel, Checkbox, Select, 
   InputLabel, MenuItem, TextareaAutosize, Typography } from '@material-ui/core'
 
-import {successChangeUserCustomization } from '../../../actions/customizationActions'
-import {RootState} from '../../../reducers/index'
-import {useStyles} from './CustomizationForm.styles'
+import { successChangeUserCustomization } from '../../../actions/customizationActions'
+import { RootState } from '../../../reducers/index'
+import { useStyles } from './CustomizationForm.styles'
 import { FIVE } from '../../../constants/styles.values'
-import {MINUTES_QTY_TWO_CHARS_LONG, SIXTY_MINUTES_IN_HOUR } from '../../../constants/valuableNumbers'
+import { MINUTES_QTY_TWO_CHARS_LONG, SIXTY_MINUTES_IN_HOUR } from '../../../constants/valuableNumbers'
 
 export default function PreferencesCustomizationForm (): React.ReactElement {
   const dispatch = useDispatch()
@@ -21,11 +21,25 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
       sendUserQuestsReviews: custom? custom.sendUserQuestsReviews : false,
       sendUpdatesMessages: custom? custom.sendUpdatesMessages : false,
     })
-    
+
     const [textAndTimeState, setTextAndTimeState] = useState({
       timezone: custom? custom.timezone :'UTC',
       aboutUser: custom? custom.aboutUser : ''
     })
+
+    useEffect(() => {
+      setCheckboxState({
+        sendEmailsWithNews: custom? custom.sendEmailsWithNews : true,
+        sendUpdatesThreads: custom? custom.sendUpdatesThreads: false,
+        sendUserReviews: custom? custom.sendUserReviews : false,
+        sendUserQuestsReviews: custom? custom.sendUserQuestsReviews : false,
+        sendUpdatesMessages: custom? custom.sendUpdatesMessages : false,
+      })
+      setTextAndTimeState({
+        timezone: custom? custom.timezone :'UTC',
+        aboutUser: custom? custom.aboutUser : ''
+      })
+   },[custom])
     
     const { sendEmailsWithNews, sendUpdatesThreads, sendUserReviews, sendUserQuestsReviews,  
       sendUpdatesMessages} = checkboxState
@@ -76,7 +90,7 @@ export default function PreferencesCustomizationForm (): React.ReactElement {
         <FormControl className={classes.formControl}>
             <InputLabel>My Timezone</InputLabel>
             <Select
-              name="timeZone"
+              name="timezone"
               onChange={handleTextAndTimeChange}
               value={timezone}
             >

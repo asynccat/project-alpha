@@ -10,6 +10,7 @@ import {TokenStorage} from '../services/TokenStorage'
 import {jwtDecode, IToken, autoRefresh } from '../services/TokenRefresh'
 import { MILLISECONDS_IN_SECOND, TEN_SECONDS_BEFORE_TOKEN_EXPIRE} from '../constants/valuableNumbers'
 import {errorMessage } from '../constants/errorAndSuccessMessages'
+import { achievementMessage } from '../constants/achievementMessages'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -62,6 +63,7 @@ export const signUserUp = (payload: IUserDetails) =>
       autoRefresh(expirationTime)
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
+      toast.info(achievementMessage.register)
     } catch (error) {
       const destructuredMessage = JSON.parse(error.message)
       if (destructuredMessage) {

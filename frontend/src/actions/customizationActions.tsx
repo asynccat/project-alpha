@@ -1,9 +1,10 @@
-import {Dispatch} from 'redux'
+import { Dispatch } from 'redux'
 import { toast } from 'react-toastify'
+import humps from 'humps'
 
-import {Action} from '../types/action'
-import {actionCreator} from '../redux-utils/actionCreator'
-import {customizationRequest} from '../api/HttpClientInstance'
+import { Action } from '../types/action'
+import { actionCreator } from '../redux-utils/actionCreator'
+import { customizationRequest } from '../api/HttpClientInstance'
 import { errorMessage } from '../constants/errorAndSuccessMessages'
 
 // Define action types
@@ -46,6 +47,16 @@ export interface IUserCustomizationResponse {
   aboutUser: string
 }
 
+export interface IUserCustomizationDecamelizedResponse {
+  about_user: string
+  send_emails_with_news: boolean
+  send_updates_messages: boolean
+  send_updates_threads: boolean
+  send_user_quests_reviews: boolean
+  send_user_reviews: boolean
+  timezone: string
+}
+
 export const setUserCustomization =
   actionCreator<CustomizationType.SET_USER_CUSTOMIZATION, IUserCustomizationResponse>
   (CustomizationType.SET_USER_CUSTOMIZATION)
@@ -54,9 +65,15 @@ export const successChangeUserCustomization = (payload: IUserCustomizationRespon
   async (dispatch:Dispatch): Promise<void> => {
     dispatch(userCustomizationRequestInitiated())
     try {
-      const result = await customizationRequest.changeUserCustomization(payload)
-      console.log(payload)
-      dispatch(setUserCustomization(result))
+      const decamelizedPayload = humps.decamelizeKeys(payload)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      const result = await customizationRequest.changeUserCustomization(decamelizedPayload)
+      const camelizedResponse = humps.camelizeKeys(result)
+      console.log(camelizedResponse)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      dispatch(setUserCustomization(camelizedResponse))
     } catch (error) {
       const destructuredMessage = JSON.parse(error.message)
       if (destructuredMessage) {
