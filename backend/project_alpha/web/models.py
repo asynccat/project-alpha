@@ -100,7 +100,7 @@ class UserSettings(models.Model):
     nickname_updated = models.DateTimeField(_('nickname_updated'), blank=True, null=True)
     show_email = models.BooleanField(_('show_email'), default=False)
     send_emails_with_news = models.BooleanField(_('send_emails_with_news'), default=False)
-    timezone = models.CharField(_('timezone'),max_length=50, default='Europe/London')
+    timezone = models.CharField(_('timezone'),max_length=50, default='UTC')
     about_user = models.CharField(_('about_user'),max_length=500, default='', blank=True)
     send_updates_threads = models.BooleanField(_('send_updates_threads'), default=False)
     send_user_reviews = models.BooleanField(_('send_user_reviews'), default=False)

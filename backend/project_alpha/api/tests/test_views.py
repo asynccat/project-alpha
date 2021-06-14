@@ -156,7 +156,7 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(usersettings.show_email)
         self.assertFalse(usersettings.send_emails_with_news)
-        self.assertEqual(usersettings.timezone, 'Europe/London')
+        self.assertEqual(usersettings.timezone, 'UTC')
         self.assertEqual(usersettings.about_user, '')
         self.assertFalse(usersettings.send_updates_threads)
         self.assertFalse(usersettings.send_user_reviews)
