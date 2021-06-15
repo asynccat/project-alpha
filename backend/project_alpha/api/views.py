@@ -100,8 +100,6 @@ class UserPreferencesAPIView(generics.GenericAPIView):
     """
     Retrieve user preferences.
     """
-
-    queryset = UserSettings.objects.all()
     serializer_class = UserPreferencesSerializer
     permission_classes = (IsAuthenticated,)
 
