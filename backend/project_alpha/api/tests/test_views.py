@@ -119,6 +119,7 @@ class UserCreateAPIViewTestCase(APITestCase):
             self.assertEqual(status_code, 400)
 
 class UserPreferencesAPIViewTestCase(APITestCase):
+    # pylint: disable=no-member
 
     def setUp(self):
         self.username = 'test@example.com'
@@ -126,7 +127,7 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.user = User.objects.create_user(self.username, self.pwd)
 
     def test_happy_path_update_user_preferences(self):
-        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        self.client.force_authenticate(user=self.user)
         response = self.client.patch(reverse('preferences'), data={'show_email': True,
                                                                    'send_emails_with_news': True,
                                                                    'timezone': 'Test/test',
@@ -138,7 +139,6 @@ class UserPreferencesAPIViewTestCase(APITestCase):
                                                                    }, format='json')
         usersettings = UserSettings.objects.get(user=self.user)
 
-        self.assertEqual(response.status_code, 200)
         self.assertTrue(usersettings.show_email)
         self.assertTrue(usersettings.send_emails_with_news)
         self.assertEqual(usersettings.timezone, 'Test/test')
@@ -147,13 +147,13 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.assertTrue(usersettings.send_user_reviews)
         self.assertTrue(usersettings.send_user_quests_reviews)
         self.assertTrue(usersettings.send_updates_messages)
+        self.assertEqual(response.status_code, 200)
 
     def test_happy_path_get_user_preferences(self):
-        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(reverse('preferences'), format='json')
         usersettings = UserSettings.objects.get(user=self.user)
 
-        self.assertEqual(response.status_code, 200)
         self.assertFalse(usersettings.show_email)
         self.assertFalse(usersettings.send_emails_with_news)
         self.assertEqual(usersettings.timezone, 'UTC')
@@ -162,3 +162,51 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.assertFalse(usersettings.send_user_reviews)
         self.assertFalse(usersettings.send_user_quests_reviews)
         self.assertFalse(usersettings.send_updates_messages)
+        self.assertEqual(response.status_code, 200)
+
+    def test_request_data_does_not_match_type(self):
+        self.client.force_authenticate(user=self.user)
+
+        default_usersettings = {'show_email': False,
+                                     'send_emails_with_news': False,
+                                     'timezone': 'UTC',
+                                     'about_user': '',
+                                     'send_updates_threads': False,
+                                     'send_user_reviews': False,
+                                     'send_user_quests_reviews': False,
+                                     'send_updates_messages': False,
+                                     }
+
+        response = self.client.patch(reverse('preferences'), data={'show_email': 'test',
+                                                                   'send_emails_with_news': 'test',
+                                                                   'timezone': True,
+                                                                   'about_user': 123,
+                                                                   'send_updates_threads': 54,
+                                                                   'send_user_reviews': 'test',
+                                                                   'send_user_quests_reviews': 21,
+                                                                   'send_updates_messages': 'test',
+                                                                   }, format='json')
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertEqual(usersettings.show_email, default_usersettings['show_email'])
+        self.assertFalse(usersettings.send_emails_with_news, default_usersettings['send_emails_with_news'])
+        self.assertEqual(usersettings.timezone, default_usersettings['timezone'])
+        self.assertEqual(usersettings.about_user, default_usersettings['about_user'])
+        self.assertEqual(usersettings.send_updates_threads,  default_usersettings['send_updates_threads'])
+        self.assertEqual(usersettings.send_user_reviews, default_usersettings['send_user_reviews'])
+        self.assertEqual(usersettings.send_user_quests_reviews, default_usersettings['send_user_quests_reviews'])
+        self.assertEqual(usersettings.send_updates_messages, default_usersettings['send_updates_messages'])
+        self.assertEqual(response.status_code, 200)
+
+    def test_request_data_does_not_match_fields(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(reverse('preferences'), data={'user': 'test@test.com',
+                                                                   'nickname': 'Nicolas Cage',
+                                                                   'nickname_updated': '01.01.2001',
+                                                                   }, format='json')
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertNotEqual(self.user, 'test@test.com')
+        self.assertNotEqual(self.user.nickname, 'Nicolas Cage')
+        self.assertNotEqual(usersettings.nickname_updated, '01.01.2001')
+        self.assertEqual(response.status_code, 200)
