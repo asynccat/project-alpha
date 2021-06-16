@@ -1,21 +1,21 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Typography, Popover } from '@material-ui/core'
 import EmojiEventsOutlinedIcon from '@material-ui/icons/EmojiEventsOutlined'
 
 import { useStyles } from './Achievements.styles'
 
 export const AchievementsBoard = (): React.ReactElement => {
-    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+    const [popoverElement, setPopoverElement] = useState<HTMLElement | null>(null)
 
     const handlePopoverOpen = useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        setAnchorEl(event.currentTarget)
-    }, [setAnchorEl])
+        setPopoverElement(event.currentTarget)
+    }, [setPopoverElement])
 
     const handlePopoverClose = useCallback(() => {
-        setAnchorEl(null)
-    }, [setAnchorEl])
+        setPopoverElement(null)
+    }, [setPopoverElement])
 
-    const open = Boolean(anchorEl)
+    const open = Boolean(popoverElement)
 
     const classes = useStyles()
 
@@ -32,7 +32,7 @@ export const AchievementsBoard = (): React.ReactElement => {
             <EmojiEventsOutlinedIcon className={classes.icon} />
             </Typography>
             <Popover
-                anchorEl={anchorEl}
+                anchorEl={popoverElement}
                 anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',

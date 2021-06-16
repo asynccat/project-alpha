@@ -1,6 +1,4 @@
 
-/* eslint-disable react/jsx-no-bind */
-
 import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -14,7 +12,7 @@ import './PreferencesPage.scss'
 import { userLogOut } from '../../../actions/authActions'
 import PasswordChangeForm from '../passwordChangeForm/PasswordChangeForm'
 import EmailChangeForm from '../emailChangeFrom/EmailChangeForm'
-import PreferencesCustomizationForm from '../customization/CustomizationForm'
+import PreferencesNotificationForm from '../notificationForm/NotificationForm'
 import {AchievementsBoard} from '../achievements/Achievements'
 
 export default function PreferencesPage (): React.ReactElement {
@@ -56,7 +54,7 @@ export default function PreferencesPage (): React.ReactElement {
   return (
   <div>
   <div className="preferencePage-main">
- <PreferencesCustomizationForm />
+ <PreferencesNotificationForm />
    
     <Card className={classes.root}>
       <Box className={classes.topping}>

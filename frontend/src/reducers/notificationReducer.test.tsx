@@ -1,11 +1,25 @@
-import { CustomizationType } from '../actions/customizationActions'
-import reducer, {initialState} from './customizationReducer'
+import { NotificationType } from '../actions/notificationActions'
+import reducer from './notificationReducer'
 
 describe('customizationReducer', () => {
   it('should handle SET_USER_CUSTOMIZATION', () => {
+    const initialState = {
+        sendEmailsWithNews: false,
+        sendUpdatesThreads: false,
+        sendUserReviews: true,
+        sendUserQuestsReviews: false,
+        sendUpdatesMessages: true,
+        timezone: 'UTC',
+        aboutUser: '',
+        error: '',
+        init: false,
+        isLoading: false,
+        status: ''
+    }
+
     expect(
       reducer(initialState, {
-        type: CustomizationType.SET_USER_CUSTOMIZATION,
+        type: NotificationType.SET_USER_NOTIFICATION,
         payload: {
           sendEmailsWithNews: false,
           sendUpdatesThreads: false,
@@ -17,7 +31,7 @@ describe('customizationReducer', () => {
           error: '',
           init: false,
           isLoading: false,
-        
+          status: ''
         }
       })
     ).toEqual({
