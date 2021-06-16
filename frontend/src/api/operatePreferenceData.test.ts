@@ -26,4 +26,18 @@ describe ('use of updateNickname method', () => {
     expect(operateUserDataRequest.updateNickname).toHaveBeenCalled()
     spy.mockRestore()
   })
+
+
+  describe ('test use of post user customization', () => {
+    it('test usage of postcustomization method of CustomizeRequest class', () => {
+      const changeUserNotificationSpy = jest.spyOn(operateUserDataRequest, 'changeUserNotification')
+      operateUserDataRequest.changeUserNotification({ sendEmailsWithNews: true, sendUpdatesThreads: true, 
+        sendUserReviews: true, 
+        aboutUser: '55', timezone: 'GMT', sendUserQuestsReviews: true, sendUpdatesMessages: true })
+    
+      expect(changeUserNotificationSpy).toHaveBeenCalled()
+      expect(operateUserDataRequest.changeUserNotification).toHaveBeenCalled()
+      changeUserNotificationSpy.mockRestore()
+    })
+  })
 })
