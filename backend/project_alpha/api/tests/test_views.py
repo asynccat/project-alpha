@@ -154,14 +154,14 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         response = self.client.get(reverse('preferences'), format='json')
         usersettings = UserSettings.objects.get(user=self.user)
 
-        self.assertFalse(usersettings.show_email)
-        self.assertFalse(usersettings.send_emails_with_news)
-        self.assertEqual(usersettings.timezone, 'UTC')
-        self.assertEqual(usersettings.about_user, '')
-        self.assertFalse(usersettings.send_updates_threads)
-        self.assertFalse(usersettings.send_user_reviews)
-        self.assertFalse(usersettings.send_user_quests_reviews)
-        self.assertFalse(usersettings.send_updates_messages)
+        self.assertEqual(usersettings.show_email, response.data['show_email'])
+        self.assertEqual(usersettings.send_emails_with_news, response.data['send_emails_with_news'])
+        self.assertEqual(usersettings.timezone, response.data['timezone'])
+        self.assertEqual(usersettings.about_user, response.data['about_user'])
+        self.assertEqual(usersettings.send_updates_threads, response.data['send_updates_threads'])
+        self.assertEqual(usersettings.send_user_reviews, response.data['send_user_reviews'])
+        self.assertEqual(usersettings.send_user_quests_reviews, response.data['send_user_quests_reviews'])
+        self.assertEqual(usersettings.send_updates_messages, response.data['send_updates_messages'])
         self.assertEqual(response.status_code, 200)
 
     def test_request_data_does_not_match_type(self):
@@ -196,17 +196,4 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.assertEqual(usersettings.send_user_reviews, default_usersettings['send_user_reviews'])
         self.assertEqual(usersettings.send_user_quests_reviews, default_usersettings['send_user_quests_reviews'])
         self.assertEqual(usersettings.send_updates_messages, default_usersettings['send_updates_messages'])
-        self.assertEqual(response.status_code, 200)
-
-    def test_request_data_does_not_match_fields(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.patch(reverse('preferences'), data={'user': 'test@test.com',
-                                                                   'nickname': 'Nicolas Cage',
-                                                                   'nickname_updated': '01.01.2001',
-                                                                   }, format='json')
-        usersettings = UserSettings.objects.get(user=self.user)
-
-        self.assertNotEqual(self.user, 'test@test.com')
-        self.assertNotEqual(self.user.nickname, 'Nicolas Cage')
-        self.assertNotEqual(usersettings.nickname_updated, '01.01.2001')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
