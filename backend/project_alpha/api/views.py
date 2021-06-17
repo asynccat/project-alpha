@@ -123,7 +123,7 @@ class UserPreferencesAPIView(generics.GenericAPIView):
 
     def patch(self, request):
         serializer = self.get_serializer(data=self.request.data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
         serializer.update(instance=request.user.usersettings, validated_data=serializer.validated_data)
         return Response(self.request.data)
 
