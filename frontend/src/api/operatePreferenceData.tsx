@@ -2,12 +2,15 @@ import { IHttpClient} from './HttpClient'
 import { IUserPreferencesResponse, IUpdateNicknameActionPayload, 
   IUpdatePasswordActionPayload,
   IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionPayload } from '../actions/prefAndProfileActions'
+  import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
 
 export interface IUserPreferenceOperateData {
   fetchUserPreferences: () => Promise<IUserPreferencesResponse>
   updateNickname: (payload: IUpdateNicknameActionPayload) => Promise<INicknameUpdateResponse>
-  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IPasswordUpdateResponse >
-  updateEmail: (payload: IUpdateEmailActionPayload) => Promise<IEmailUpdateResponse >
+  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IPasswordUpdateResponse>
+  updateEmail: (payload: IUpdateEmailActionPayload) => Promise<IEmailUpdateResponse>
+  changeUserNotification: (payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse ) => 
+  Promise<IUserNotificationDecamelizedResponse>
 }
 
 interface INicknameUpdateResponse {
@@ -47,5 +50,10 @@ export class OperateUserData implements IUserPreferenceOperateData {
     async updateEmail(payload: IUpdateEmailActionPayload): 
       Promise<IEmailUpdateResponse  > {
       return await this.client.post('change_email', payload) 
+    }
+
+    async changeUserNotification(payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse): 
+      Promise<IUserNotificationDecamelizedResponse> {
+      return await this.client.patch('preferences', payload)
     }
 }

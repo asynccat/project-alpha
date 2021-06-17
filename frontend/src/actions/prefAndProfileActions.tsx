@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import {Action} from '../types/action'
 import {actionCreator} from '../redux-utils/actionCreator'
 import {operateUserDataRequest} from '../api/HttpClientInstance'
-import {setUserCustomization} from './customizationActions'
+import {IUserNotificationResponse, setUserNotification} from './notificationActions'
 import {successMessage, errorMessage } from '../constants/errorAndSuccessMessages'
 
 // Define action types
@@ -47,16 +47,9 @@ export const userPreferencesRequestFailed =
 
 // Define action creator and thunk for setting/fetching user preferences
 
-export interface IUserPreferencesResponse {
+export interface IUserPreferencesResponse extends IUserNotificationResponse {
   nickname: string
   email: string
-  sendEmailsWithNews: boolean
-  sendUpdatesThreads: boolean
-  sendUserReviews: boolean
-  sendUserQuestsReviews: boolean
-  sendUpdatesMessages: boolean
-  timezone: string
-  aboutUser: string
 }
 
 export const setUserPreferences =
@@ -70,7 +63,7 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
     const camelizedResponse = humps.camelizeKeys(result)
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    dispatch(setUserCustomization(camelizedResponse))
+    dispatch(setUserNotification(camelizedResponse))
   } catch (error) {
     console.log(error)
     try {
