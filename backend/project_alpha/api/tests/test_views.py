@@ -126,7 +126,7 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.pwd = '1234QWERty'
         self.user = User.objects.create_user(self.username, self.pwd)
 
-    def test_happy_path_update_user_preferences(self):
+    def test_happy_path_update_all_user_preferences(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.patch(reverse('preferences'), data={'show_email': True,
                                                                    'send_emails_with_news': True,
@@ -147,6 +147,21 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.assertTrue(usersettings.send_user_reviews)
         self.assertTrue(usersettings.send_user_quests_reviews)
         self.assertTrue(usersettings.send_updates_messages)
+        self.assertEqual(response.status_code, 200)
+
+    def test_happy_path_update_not_all_user_preferences(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(reverse('preferences'), data={'show_email': True,
+                                                                   'send_emails_with_news': True,
+                                                                   'timezone': 'Test/test',
+                                                                   'about_user': 'TEST',
+                                                                   }, format='json')
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertTrue(usersettings.show_email)
+        self.assertTrue(usersettings.send_emails_with_news)
+        self.assertEqual(usersettings.timezone, 'Test/test')
+        self.assertEqual(usersettings.about_user, 'TEST')
         self.assertEqual(response.status_code, 200)
 
     def test_happy_path_get_user_preferences(self):
@@ -197,3 +212,17 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         self.assertEqual(usersettings.send_user_quests_reviews, default_usersettings['send_user_quests_reviews'])
         self.assertEqual(usersettings.send_updates_messages, default_usersettings['send_updates_messages'])
         self.assertEqual(response.status_code, 400)
+
+    def test_request_blank_field_in_data(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(reverse('preferences'), data={'timezone': ''}, format='json')
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertNotEqual(usersettings.timezone, '')
+        self.assertEqual(response.status_code, 400)
+
+    def test_request_empty_data(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(reverse('preferences'), data={}, format='json')
+
+        self.assertEqual(response.status_code, 200)
