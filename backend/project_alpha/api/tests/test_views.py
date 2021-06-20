@@ -234,6 +234,10 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         self.pwd = '1234QWERty'
         self.user = User.objects.create_user(self.username, self.pwd)
 
+        self.second_username = 'notunique@test.com'
+        self.second_pwd = 'Test1234567'
+        self.second_user = User.objects.create_user(self.second_username, self.second_pwd)
+
     def request(self, data):
         self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
         response = self.client.post(reverse('change_email'), data=data, format='json')
@@ -270,10 +274,11 @@ class UpdateEmailAPIViewTestCase(APITestCase):
 
     def test_unsuccess_change_email_is_not_unique(self):
         status_code, content = self.request({
-            'email': 'test@example.com',
+            'email': 'notunique@test.com',
             'confirm_password': '1234QWERty',
         })
 
+        self.assertEqual(self.user.email, 'test@example.com')
         self.assertEqual(content['errors'][0]['message'][0], 'Email already exists')
         self.assertEqual(status_code, 400)
 
