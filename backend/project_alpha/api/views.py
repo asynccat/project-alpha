@@ -23,6 +23,7 @@ from .serializers import (
     UserPreferencesSerializer,
     UpdateNicknameSerializer,
     ChangeUserPasswordSerializer,
+    ChangeEmailSerializer,
 )
 
 
@@ -74,6 +75,22 @@ class UpdateNicknameAPIView(generics.UpdateAPIView):
         user = self.get_object()
         UserSettings.objects.filter(user=user).update(nickname_updated=timezone.now())
         serializer.save()
+
+class ChangeEmailAPIView(generics.UpdateAPIView):
+    serializer_class = ChangeEmailSerializer
+    permission_classes = (IsOwner, IsAuthenticated,)
+
+    def post(self, request):
+        user = self.request.user
+        serializer = self.get_serializer(data=self.request.data)
+        confirm_password = request.data.get('confirm_password')
+
+        if not user.check_password(confirm_password):
+            return Response({'message': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.update(instance=request.user, validated_data=serializer.validated_data)
+        return Response(self.request.data)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):

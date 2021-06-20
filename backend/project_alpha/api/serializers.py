@@ -52,6 +52,13 @@ class UpdateNicknameSerializer(serializers.ModelSerializer):
         model = User
         fields = ('nickname',)
 
+class ChangeEmailSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(validators=[UniqueValidator(User.objects.all(), message=_('Email already exists')),])
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
 
 class ChangeUserPasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True, allow_blank=False, allow_null=False)

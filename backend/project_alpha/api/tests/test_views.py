@@ -226,3 +226,53 @@ class UserPreferencesAPIViewTestCase(APITestCase):
         response = self.client.patch(reverse('preferences'), data={}, format='json')
 
         self.assertEqual(response.status_code, 200)
+
+class UpdateEmailAPIViewTestCase(APITestCase):
+
+    def setUp(self):
+        self.username = 'test@example.com'
+        self.pwd = '1234QWERty'
+        self.user = User.objects.create_user(self.username, self.pwd)
+
+    def request(self, data):
+        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        response = self.client.post(reverse('change_email'), data=data, format='json')
+        return response.status_code, json.loads(response.content)
+
+    def test_success_change_email(self):
+        status_code, _ = self.request({
+            'email': 'email@change.com',
+            'confirm_password': '1234QWERty',
+        })
+
+        self.assertEqual(self.user.email, 'email@change.com')
+        self.assertEqual(status_code, 200)
+
+    def test_unsuccess_change_email_invalid_password(self):
+        status_code, content = self.request({
+            'email': 'email@newchange.com',
+            'confirm_password': 'TstTest12345',
+        })
+
+        self.assertEqual(self.user.email, 'test@example.com')
+        self.assertEqual(content['message'], 'Invalid password')
+        self.assertEqual(status_code, 400)
+
+    def test_unsuccess_change_email_data_is_not_email(self):
+        status_code, content = self.request({
+            'email': 'emailnew',
+            'confirm_password': '1234QWERty',
+        })
+
+        self.assertEqual(self.user.email, 'test@example.com')
+        self.assertEqual(content['errors'][0]['message'][0], 'Enter a valid email address.')
+        self.assertEqual(status_code, 400)
+
+    def test_unsuccess_change_email_is_not_unique(self):
+        status_code, content = self.request({
+            'email': 'test@example.com',
+            'confirm_password': '1234QWERty',
+        })
+
+        self.assertEqual(content['errors'][0]['message'][0], 'Email already exists')
+        self.assertEqual(status_code, 400)
