@@ -281,4 +281,3 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         self.assertEqual(self.user.email, 'test@example.com')
         self.assertEqual(content['errors'][0]['message'][0], 'Email already exists')
         self.assertEqual(status_code, 400)
-
