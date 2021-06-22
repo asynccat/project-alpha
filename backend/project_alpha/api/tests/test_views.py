@@ -246,7 +246,7 @@ class UpdateEmailAPIViewTestCase(APITestCase):
     def test_success_change_email(self):
         status_code, _ = self.request({
             'email': 'email@change.com',
-            'confirm_password': '1234QWERty',
+            'confirm_password': self.pwd,
         })
 
         self.assertEqual(self.user.email, 'email@change.com')
@@ -265,7 +265,7 @@ class UpdateEmailAPIViewTestCase(APITestCase):
     def test_unsuccess_change_email_data_is_not_email(self):
         status_code, content = self.request({
             'email': 'emailnew',
-            'confirm_password': '1234QWERty',
+            'confirm_password': self.pwd,
         })
 
         self.assertEqual(self.user.email, 'test@example.com')
@@ -274,8 +274,8 @@ class UpdateEmailAPIViewTestCase(APITestCase):
 
     def test_unsuccess_change_email_is_not_unique(self):
         status_code, content = self.request({
-            'email': 'notunique@test.com',
-            'confirm_password': '1234QWERty',
+            'email': self.second_username,
+            'confirm_password': self.pwd,
         })
 
         self.assertEqual(self.user.email, 'test@example.com')
