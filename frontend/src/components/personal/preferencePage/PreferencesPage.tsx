@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -58,12 +57,12 @@ export default function PreferencesPage (): React.ReactElement {
    
     <Card className={classes.root}>
       <Box className={classes.topping}>
+    <div className="preferences-name-and-avatar">
       <CardActions className={classes.logout}>
         <Button className="buttons logout" color="secondary" onClick={logOut}  type="submit" variant="contained">
           Logout
         </Button>
       </CardActions>
-    <div className="preferences-name-and-avatar">
       <CardMedia
         className={classes.media}
         image="https://source.unsplash.com/random"

@@ -4,13 +4,15 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: '3%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       backgroundColor: 'plum',
       fontFamily: 'Roboto',
       fontSize: 14,
+      boxShadow:'0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+      overflow: 'visible',
+      alignItems: 'stretch',
     },
     formControl: {
       margin: theme.spacing(3),

@@ -1,6 +1,6 @@
-
 @import './components/personal/preferencePage/PreferencesPage.scss';
 @import './App.scss';
 @import 'react-toastify/dist/ReactToastify.css';
-@import './variables';
-@import './components/personal/notificationForm/NotificationForm.scss'
+@import './scss-utils/variables';
+@import './components/personal/notificationForm/NotificationForm.scss';
+@import './scss-utils/mixins';
