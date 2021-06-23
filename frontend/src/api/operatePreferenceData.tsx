@@ -1,16 +1,18 @@
 import { IHttpClient} from './HttpClient'
 import { IUserPreferencesResponse, IUpdateNicknameActionPayload, 
   IUpdatePasswordActionPayload,
-  IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionPayload } from '../actions/prefAndProfileActions'
-  import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
+  IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionCamelizedPayload, IUpdateEmailActionDecamelizedPayload } 
+  from '../actions/prefAndProfileActions'
+import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
 
 export interface IUserPreferenceOperateData {
   fetchUserPreferences: () => Promise<IUserPreferencesResponse>
   updateNickname: (payload: IUpdateNicknameActionPayload) => Promise<INicknameUpdateResponse>
   updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IPasswordUpdateResponse>
-  updateEmail: (payload: IUpdateEmailActionPayload) => Promise<IEmailUpdateResponse>
+  updateEmail: (payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ) => 
+    Promise<IEmailUpdateResponse>
   changeUserNotification: (payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse ) => 
-  Promise<IUserNotificationDecamelizedResponse>
+    Promise<IUserNotificationDecamelizedResponse>
 }
 
 interface INicknameUpdateResponse {
@@ -47,9 +49,9 @@ export class OperateUserData implements IUserPreferenceOperateData {
       return await this.client.post('change_password', payload) 
     }
 
-    async updateEmail(payload: IUpdateEmailActionPayload): 
+    async updateEmail(payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ): 
       Promise<IEmailUpdateResponse  > {
-      return await this.client.post('change_email', payload) 
+      return await this.client.post('user/change_email', payload) 
     }
 
     async changeUserNotification(payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse): 
