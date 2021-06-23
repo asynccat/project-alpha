@@ -33,14 +33,14 @@ export default function EmailChangeForm (): React.ReactElement {
     enableReinitialize: true,
     initialValues: {
       email: user? user.email : '',
-      password: '',
+      confirmPassword: '',
     },
     validationSchema: validationSchema.validationEmail,
     onSubmit: (values) => {
-      if (values.email && !values.password) {
+      if (values.email && !values.confirmPassword) {
         handleOpen()
       }
-      if (values.email && values.password) {
+      if (values.email && values.confirmPassword) {
         try {
           dispatch(updateUserEmail(values))
       } catch (error) {
@@ -58,7 +58,7 @@ export default function EmailChangeForm (): React.ReactElement {
         Please confirm by entering password
       </h3>
       <form className="modal" onSubmit={formik.handleSubmit} >
-        <TextField className={classes.textfields} id="password" onChange={formik.handleChange}
+        <TextField className={classes.textfields} id="confirmPassword" onChange={formik.handleChange}
             variant="outlined" />
         <Button color="primary" type="submit" variant="contained"  >Submit</Button>
       </form>

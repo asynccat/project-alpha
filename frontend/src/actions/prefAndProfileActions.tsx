@@ -61,8 +61,6 @@ export const fetchUserPreferences = () => async (dispatch:Dispatch): Promise<voi
     const result = await operateUserDataRequest.fetchUserPreferences()
     dispatch(setUserPreferences(result))
     const camelizedResponse = humps.camelizeKeys(result)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     dispatch(setUserNotification(camelizedResponse))
   } catch (error) {
     console.log(error)
@@ -114,16 +112,16 @@ export const updateUserNickname =
 
 export interface IUpdatePasswordActionPayload {
   // the way it comes from user input
-  oldPassword: string
-  newPassword: string
-  confirmPassword: string
+  oldPassword?: string
+  newPassword?: string
+  confirmPassword?: string
 }
 
 export interface IUpdatePasswordActionPayloadSnakeCase {
   // the way its transformed for backend
-  old_password: string
-  new_password: string
-  confirm_password: string
+  old_password?: string
+  new_password?: string
+  confirm_password?: string
 }
 
 export const changeUserPasswordSuccessfull =
@@ -135,8 +133,6 @@ export const updateUserPassword =
 
   dispatch(userPreferencesRequestInitiated())
   try {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const payloadToSnakeCase : IUpdatePasswordActionPayloadSnakeCase = humps.decamelizeKeys(payload)
 
     const result = await operateUserDataRequest.updatePassword(payloadToSnakeCase)
@@ -156,21 +152,28 @@ export const updateUserPassword =
   }
 }
 
-export interface IUpdateEmailActionPayload {
-  email: string
-  password: string
+export interface IUpdateEmailActionCamelizedPayload {
+  email?: string
+  confirmPassword?: string
+}
+
+export interface IUpdateEmailActionDecamelizedPayload  {
+  email?: string
+  confirm_password?: string
 }
 
 export const changeUserEmailSuccessfull =
   actionCreator<PrefActionType.CHANGE_EMAIL, string>(PrefActionType.CHANGE_EMAIL)
 
 export const updateUserEmail =
-  (payload: IUpdateEmailActionPayload ) => 
+  (payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ) => 
   async (dispatch:Dispatch): Promise<void> => {
 
   dispatch(userPreferencesRequestInitiated())
   try {
-    const result = await operateUserDataRequest.updateEmail(payload)
+    const payloadToSnakeCase = humps.decamelizeKeys(payload)
+    console.log(payloadToSnakeCase)
+    const result = await operateUserDataRequest.updateEmail(payloadToSnakeCase)
     dispatch(changeUserEmailSuccessfull(result.email))
     toast.success(successMessage.successEmailChange)
   } catch (error) {
