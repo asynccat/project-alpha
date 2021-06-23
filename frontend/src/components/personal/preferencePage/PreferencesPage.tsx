@@ -82,9 +82,6 @@ export default function PreferencesPage (): React.ReactElement {
           subheader={
             <Box>
               <Typography component="p">
-              Las Vegas, US
-              </Typography>
-              <Typography component="p">
               User
               </Typography>
               <Typography component="p">
