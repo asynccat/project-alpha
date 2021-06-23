@@ -3,12 +3,14 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: '3%',
     maxWidth: 1000,
     overflow: 'visible',
     width: '100%',
   '& > * + *': {
     marginTop: theme.spacing(2),
+    },
+    '@media (max-width: 600px)': {
+      marginTop: 0,
     },
   },
   media: {
@@ -33,6 +35,7 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    position: 'relative',
   },
   actionButton: {
     display: 'flex',
@@ -49,16 +52,15 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     position: 'absolute',
-    top: '8%',
-    right: '12%',
-    '@media (max-width: 600px)': {
-      top: '3%',
-      right: '5%',
-    },
-    '@media (min-width: 1200px)': {
-      top: '8%',
-      right: '18%',
-    },
+    right: '5%',
+    // '@media (max-width: 600px)': {
+    //   top: '3%',
+    //   right: '5%',
+    // },
+    // '@media (min-width: 1200px)': {
+    //   top: '8%',
+    //   right: '18%',
+    // },
   },
   nicknameButton: {
     display: 'flex',
