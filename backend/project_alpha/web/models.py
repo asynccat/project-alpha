@@ -96,7 +96,7 @@ class User(AbstractUser):
 
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, )
-    avatar = models.FilePathField(_('avatar'), blank=True, null=True)
+    avatar = models.ImageField(_('avatar'), upload_to='avatar', blank=True, null=True)
     nickname_updated = models.DateTimeField(_('nickname_updated'), blank=True, null=True)
     show_email = models.BooleanField(_('show_email'), default=False)
     send_emails_with_news = models.BooleanField(_('send_emails_with_news'), default=False)

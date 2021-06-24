@@ -125,7 +125,6 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         user_data = {
             'nickname': user.nickname,
             'email': user.email,
-            'avatar': '/path/to/avatar.png',
             'nickname_updated': user.usersettings.nickname_updated,
             'show_email': user.usersettings.show_email,
             'send_emails_with_news': user.usersettings.send_emails_with_news,
@@ -143,6 +142,11 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.update(instance=request.user.usersettings, validated_data=serializer.validated_data)
         return Response(self.request.data)
+
+class UploadUserAvatarAPIView(generics.GenericAPIView):
+    #TODO: make this view
+    pass
+
 
 
 class ChangeUserPassword(APIView):

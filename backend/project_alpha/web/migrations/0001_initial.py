@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             name='UserSettings',
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='web.user')),
-                ('avatar', models.FilePathField(blank=True, null=True, verbose_name='avatar')),
+                ('avatar', models.ImageField(blank=True, null=True, upload_to='avatar', verbose_name='avatar')),
                 ('nickname_updated', models.DateTimeField(blank=True, null=True, verbose_name='nickname_updated')),
                 ('show_email', models.BooleanField(default=False, verbose_name='show_email')),
                 ('send_emails_with_news', models.BooleanField(default=False, verbose_name='send_emails_with_news')),

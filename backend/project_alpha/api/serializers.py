@@ -4,6 +4,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 
 from project_alpha.web.models import UserSettings
+from project_alpha.web.utils.avatar_validator import ImageSizeValidator, ImageFormatValidator
 
 from .utils import get_tokens_for_user
 from .validators import NicknameValidator
@@ -33,8 +34,19 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'nickname', 'avatar')
 
+class UserUploadAvatarImageSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(allow_null=True, use_url=True, validators=[ImageSizeValidator(),
+                                                                               ImageFormatValidator(),
+                                                                               ]
+                                    )
+
+    class Meta:
+        model = UserSettings
+        fields = ('avatar',)
+
 
 class UserPreferencesSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = UserSettings
         fields = ('show_email', 'send_emails_with_news', 'timezone', 'about_user',
