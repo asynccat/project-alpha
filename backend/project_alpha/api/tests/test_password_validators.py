@@ -6,6 +6,7 @@ from project_alpha.web.utils.password_validator import (MinimumLengthValidator,
                                                         LowercaseValidator,
                                                         UppercaseValidator)
 
+# pylint: disable=E1111
 
 class MinimumLengthValidatorTestCase(TestCase):
 
