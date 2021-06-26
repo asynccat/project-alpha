@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +23,32 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: -100,
     marginLeft: 10,
     margin: 'auto',
-    border: '4px solid white'
+    border: '4px solid white',
+    position: 'relative',
+  
   },
+  manipulationVisible: {
+    visibility: 'visible',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    display: 'flex',
+    color: 'white',
+    fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    justifyContent: 'center',
+    padding: 10,
+    position: 'absolute',
+    marginLeft: 10,
+    marginTop: -44,
+    zIndex: 10,
+},
+  manipulationHidden: {
+    visibility: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 10,
+    position: 'absolute',
+    marginLeft: 10,
+    marginTop: -44,
+},
   header: {
     '@media (max-width: 600px)': {
       display: 'flex',
@@ -72,5 +96,20 @@ export const useStyles = makeStyles((theme) => ({
   },
 }))
 
- 
+export const useStyleModal = makeStyles((theme: Theme) =>
+ createStyles({
+   paper: {
+     position: 'absolute',
+     width: 500,
+     backgroundColor: theme.palette.background.paper,
+     border: '1px dotted #000',
+     boxShadow: theme.shadows[5],
+     padding: theme.spacing(2, 4, 3),
+     fontFamily: 'Roboto',
+     lineHeight: '1.5rem',
+     left: '36%',
+     top: '20%'
+   },
+ }),
+)
 

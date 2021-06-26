@@ -19,7 +19,11 @@ interface INicknameUpdateResponse {
   nickname: string
 }
 
-interface IPasswordUpdateResponse {
+interface INewAvatar {
+  file: string
+}
+
+interface IUpdateResponseStatus {
   status: string
 }
 
@@ -45,7 +49,7 @@ export class OperateUserData implements IUserPreferenceOperateData {
     }
     
     async updatePassword(payload: IUpdatePasswordActionPayload | IUpdatePasswordActionPayloadSnakeCase): 
-      Promise<IPasswordUpdateResponse > {
+      Promise<IUpdateResponseStatus > {
       return await this.client.post('change_password', payload) 
     }
 
@@ -58,4 +62,9 @@ export class OperateUserData implements IUserPreferenceOperateData {
       Promise<IUserNotificationDecamelizedResponse> {
       return await this.client.patch('preferences', payload)
     }
+
+    async uploadNewAvatar(payload: INewAvatar): 
+    Promise<IUpdateResponseStatus> {
+    return await this.client.patch('preferences', payload)
+  }
 }

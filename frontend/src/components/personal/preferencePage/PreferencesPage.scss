@@ -89,4 +89,10 @@ body {
     @include for-phone-only {
         flex-direction: column-reverse;
     }
+
+    .avatarAndButton {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
