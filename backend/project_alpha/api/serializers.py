@@ -34,16 +34,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'nickname', 'avatar')
 
-class UserUploadAvatarImageSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField(allow_null=True, use_url=True, validators=[ImageSizeValidator(),
-                                                                               ImageFormatValidator(),
-                                                                               ]
-                                    )
-
-    class Meta:
-        model = UserSettings
-        fields = ('avatar',)
-
 
 class UserPreferencesSerializer(serializers.ModelSerializer):
 
