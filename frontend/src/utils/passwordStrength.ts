@@ -15,7 +15,7 @@ import React from "react";
   const isContainsDigit = () => {
     return digits.test(password);
   };
-
+ };
 
 function validateContainsLowerCaseLetters(password:string) {
     const regexp = /[a-z]/;
@@ -32,4 +32,4 @@ function validateContainsUpperCaseLetters(password:string) {
   validateContainsDigit,
    validateContainsLowerCaseLetters,
    validateContainsUpperCaseLetters,
- };
+ }

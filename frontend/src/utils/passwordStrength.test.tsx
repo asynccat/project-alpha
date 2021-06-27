@@ -1,17 +1,20 @@
 
-import passwordStrength, { validateMinimalLength,
-  validateContainsDigit, validateContainsLowerCaseLetters, validateContainsUpperCaseLetters} from './passwordStrength'
+import passwordStrength from './passwordStrength'
+import validateMinimalLength from './passwordStrength'
+import  validateContainsDigit from './passwordStrength' 
+import validateContainsLowerCaseLetters from './passwordStrength'
+import validateContainsUpperCaseLetters from './passwordStrength'
 
 describe('Password strength', () => {
   test('returns true if password length is greater than 6', () => {
     const longPassword = '1234567' 
-    const result = passwordStrength(longPassword) 
+    const result = validateMinimalLength(longPassword) 
     expect(result).toBe(true) 
   })
 
   test('returns false if password length is less than 6', () => {
     const shortPassword = 'ldfk' 
-    const result = passwordStrength(shortPassword) 
+    const result = validateMinimalLength(shortPassword) 
     expect(result).toBe(false) 
   })
 
