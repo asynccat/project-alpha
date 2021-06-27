@@ -1,10 +1,13 @@
 import json
+import tempfile
 from unittest import mock
 
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 
 from rest_framework.test import APITestCase
+
+from PIL import Image
 
 from project_alpha.web.models import User, UserSettings
 

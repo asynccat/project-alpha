@@ -144,8 +144,22 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         return Response(self.request.data)
 
 class UploadUserAvatarAPIView(generics.GenericAPIView):
-    #TODO: make this view
-    pass
+    # pylint: disable=unused-argument
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = self.request.user
+        user_data = {'avatar': user.usersettings.avatar}
+        return Response(user_data)
+
+    def post(self, request):
+        user = self.request.user
+        #validator = ValidateUsersAvatar()
+        #if not validator.validate(self.request.FILES):
+        user.usersettings.avatar = self.request.data.get('avatar')
+        user.save()
+        return Response(self.request.data)
+
 
 
 

@@ -4,7 +4,6 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 
 from project_alpha.web.models import UserSettings
-from project_alpha.web.utils.avatar_validator import ImageSizeValidator, ImageFormatValidator
 
 from .utils import get_tokens_for_user
 from .validators import NicknameValidator

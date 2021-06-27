@@ -4,15 +4,15 @@ from django.conf import settings
 
 from PIL import Image
 
-# pylint: disable=unused-argument
 
-class ImageSizeValidator:
-    """
-    Checks for image size not more than we need
-    """
+class ValidateUsersAvatar:
     limit_mb = settings.UPLOAD_IMAGE_MAX_SIZE_MB
+    allowed_image_formats = settings.ALLOWED_IMAGE_FORMATS
 
-    def __call__(self, image):
+    def validate_image_size(self, image):
+        """
+        Checks for image size not more than we need
+        """
         file_size = image.file.size
         if file_size > self.limit_mb * 1024 * 1024:
             raise ValidationError(_("Max size of file is %(limit_mb)d MB"),
@@ -20,16 +20,25 @@ class ImageSizeValidator:
                                   params={'limit_mb': self.limit_mb},
                                   )
 
-class ImageFormatValidator:
-    """
-    Checks for image size not more than we need
-    """
-
-    allowed_image_formats = settings.ALLOWED_IMAGE_FORMATS
-
-    def __call__(self, image):
+    def validate_image_format(self, image):
+        """
+        Checks for image size not more than we need
+        """
         user_avatar = Image.open(image)
         if user_avatar.format not in self.allowed_image_formats:
             raise ValidationError(_("Invalid file format"),
                                   code='invalid_file_format',
                                   )
+
+    def validate(self, image):
+        """
+        Checks image is not valid
+        """
+        validators = [self.validate_image_size, self.validate_image_format]
+        errors_count = []
+        for validator in validators:
+            try:
+                validator(image)
+            except ValidationError as error:
+                errors_count.append(error)
+        return len(errors_count) > 0
