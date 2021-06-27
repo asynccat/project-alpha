@@ -56,5 +56,3 @@ describe('Password strength', () => {
     expect(result).toBe(false) 
   })
 })
-  
-

@@ -1,49 +1,35 @@
+import React from "react";
+  
+  const passwordLength = /{6, 20}/;
 
-const passwordLength = 6;
-
-function validateMinimalLength(password:string) { 
-  return password.length > passwordLength;
- };
- 
+  function validateMinimalLength(password:string) { 
+    return passwordLength.test(password);
+  };
+  
 
 
  function  validateContainsDigit(password:string) {
 
-  let isDigits = false; 
-
-  const digits = "0123456789"; 
+  const digits = /0123456789/; 
   
-  const arrayPassword  = function convertStr() {
-  	return password.split('');
-  }
-  
-  const isContainsDigit = arrayPassword.call().some(function(item) {
-  	if  (!isDigits && (digits.includes(item)) !== false) {
-    		isDigits = true;
-      }
-      return isDigits;
-    });
-    return isContainsDigit;
+  const isContainsDigit = () => {
+    return digits.test(password);
   };
 
 
 function validateContainsLowerCaseLetters(password:string) {
     const regexp = /[a-z]/;
-    return (regexp.test(password)) 
-}
+    return (regexp.test(password)); 
+};
 
 function validateContainsUpperCaseLetters(password:string) {
     const regexp = /[A-Z]/;
     return(regexp.test(password));
-}
+};
 
-export default validateMinimalLength;
-
- export { 
+ export default { 
   validateMinimalLength,
   validateContainsDigit,
    validateContainsLowerCaseLetters,
    validateContainsUpperCaseLetters,
- }
-
-
+ };
