@@ -85,7 +85,8 @@ class ChangeEmailAPIView(generics.UpdateAPIView):
         serializer = self.get_serializer(data=self.request.data)
         confirm_password = request.data.get('confirm_password')
         if not user.check_password(confirm_password):
-            return Response({'message': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'errors':[{'field':'confirm_password', 'message':['Invalid password']}]},
+                            status=status.HTTP_400_BAD_REQUEST)
         serializer.is_valid(raise_exception=True)
         user.email = request.data.get('email')
         user.save()

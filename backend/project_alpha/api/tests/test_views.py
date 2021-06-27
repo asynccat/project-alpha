@@ -259,7 +259,7 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         })
 
         self.assertEqual(self.user.email, 'test@example.com')
-        self.assertEqual(content['message'], 'Invalid password')
+        self.assertEqual(content['errors'][0]['message'][0], 'Invalid password')
         self.assertEqual(status_code, 400)
 
     def test_unsuccess_change_email_data_is_not_email(self):
