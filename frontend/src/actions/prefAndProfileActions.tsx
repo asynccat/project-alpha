@@ -180,9 +180,10 @@ export const updateUserEmail =
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     if (destructuredMessage) {
-      const messageArrayFromDestructuredError = destructuredMessage.error
-      dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
-      toast.error(messageArrayFromDestructuredError)
+      const messageArrayFromDestructuredError = destructuredMessage.errors
+      const message = (messageArrayFromDestructuredError[0].message).toString()
+      dispatch(userPreferencesRequestFailed(message))
+      toast.error(message)
     } else {
       dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
       toast.error(errorMessage.errorUnknown)
