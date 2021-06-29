@@ -8,28 +8,28 @@ import React from "react";
   
 
 
- function  validateContainsDigit(password:string) {
+  const validatePassword = (password:string) => {
 
-  const digits = /0123456789/; 
+    const validateContainsDigit = () => {
+      const digits = /0123456789/; 
+      return digits.test(password);
+    };
   
-  const isContainsDigit = () => {
-    return digits.test(password);
-  };
- };
+    const validateContainsLowerCaseLetters= () => {
+        const regexp = /[a-z]/;
+        return (regexp.test(password)); 
+    };
+  
+    const validateContainsUpperCaseLetters = () => {
+        const regexp = /[A-Z]/;
+        return(regexp.test(password));
+    };
+  
+    return(validateContainsDigit(), validateContainsLowerCaseLetters(), validateContainsUpperCaseLetters());
+  }
 
-function validateContainsLowerCaseLetters(password:string) {
-    const regexp = /[a-z]/;
-    return (regexp.test(password)); 
-};
 
-function validateContainsUpperCaseLetters(password:string) {
-    const regexp = /[A-Z]/;
-    return(regexp.test(password));
-};
-
- export default { 
+ export { 
   validateMinimalLength,
-  validateContainsDigit,
-   validateContainsLowerCaseLetters,
-   validateContainsUpperCaseLetters,
+  validatePassword
  }

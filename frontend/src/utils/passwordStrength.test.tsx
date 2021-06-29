@@ -1,9 +1,5 @@
 
-import passwordStrength from './passwordStrength'
-import validateMinimalLength from './passwordStrength'
-import  validateContainsDigit from './passwordStrength' 
-import validateContainsLowerCaseLetters from './passwordStrength'
-import validateContainsUpperCaseLetters from './passwordStrength'
+import {passwordStrength, validateMinimalLength, validatePassword} from './passwordStrength'
 
 describe('Password strength', () => {
   test('returns true if password length is greater than 6', () => {
