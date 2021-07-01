@@ -24,6 +24,8 @@ class ValidateUsersAvatar:
         """
         Checks for image size not more than we need
         """
+
+        image = image.file
         user_avatar = Image.open(image)
         if user_avatar.format not in self.allowed_image_formats:
             raise ValidationError(_("Invalid file format"),

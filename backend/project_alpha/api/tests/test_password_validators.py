@@ -5,7 +5,10 @@ from project_alpha.web.utils.password_validator import (MinimumLengthValidator,
                                                         NumberValidator,
                                                         LowercaseValidator,
                                                         UppercaseValidator)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3ce5961... feature(PA-83) change UploadUserAvatarAPIView
 # pylint: disable=E1111
 
 class MinimumLengthValidatorTestCase(TestCase):
