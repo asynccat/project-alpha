@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.backends import ModelBackend, UserModel
 from django.contrib.auth.models import AbstractBaseUser
 
@@ -15,6 +16,7 @@ from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
+#from project_alpha.web.utils.avatar_validator import ValidateUsersAvatar
 
 from .permissions import IsOwner, NicknameUpdateAllowed
 from .serializers import (
@@ -155,10 +157,14 @@ class UploadUserAvatarAPIView(generics.GenericAPIView):
     def post(self, request):
         user = self.request.user
         #validator = ValidateUsersAvatar()
-        #if not validator.validate(self.request.FILES):
-        user.usersettings.avatar = self.request.data.get('avatar')
-        user.save()
-        return Response(self.request.data)
+        user_avatar = self.request.FILES['avatar']
+        #if validator.validate(user_avatar):
+        file_system = FileSystemStorage()
+        image_name = file_system.save(user_avatar.name, user_avatar)
+        uploaded_avatar_url = file_system.url(image_name)
+        user.usersettings.avatar = uploaded_avatar_url
+        user.usersettings.save()
+        return Response({'uploaded_avatar_url': uploaded_avatar_url})
 
 
 

@@ -13,7 +13,7 @@ class ValidateUsersAvatar:
         """
         Checks for image size not more than we need
         """
-        file_size = image.file.size
+        file_size = image.size
         if file_size > self.limit_mb * 1024 * 1024:
             raise ValidationError(_("Max size of file is %(limit_mb)d MB"),
                                   code='mage_is_too_large',
@@ -41,4 +41,4 @@ class ValidateUsersAvatar:
                 validator(image)
             except ValidationError as error:
                 errors_count.append(error)
-        return len(errors_count) > 0
+        return len(errors_count) == 0
