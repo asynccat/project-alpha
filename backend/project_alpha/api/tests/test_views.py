@@ -1,9 +1,8 @@
-from io import BytesIO
 import json
+import tempfile
 from unittest import mock
 
 from PIL import Image
-from django.core.files.base import File
 
 from django.urls import reverse
 from django.core.exceptions import ValidationError

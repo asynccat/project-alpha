@@ -24,12 +24,11 @@ class ValidateUsersAvatar:
         """
         Checks for image size not more than we need
         """
-
-        image = image.file
         user_avatar = Image.open(image)
         if user_avatar.format not in self.allowed_image_formats:
-            raise ValidationError(_("Invalid file format"),
+            raise ValidationError(_("Invalid file format. Allowed image formats: %(allowed_image_formats)s"),
                                   code='invalid_file_format',
+                                  params={'allowed_image_formats': ', '.join(self.allowed_image_formats)}
                                   )
 
     def validate(self, image):
@@ -37,10 +36,11 @@ class ValidateUsersAvatar:
         Checks image is not valid
         """
         validators = [self.validate_image_size, self.validate_image_format]
-        errors_count = []
+        errors = []
         for validator in validators:
             try:
                 validator(image)
             except ValidationError as error:
-                errors_count.append(error)
-        return len(errors_count) == 0
+                errors.append(error)
+        if errors:
+            raise ValidationError(errors)

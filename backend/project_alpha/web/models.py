@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
+from project_alpha.web.utils.generate_avatar_folder_name import generate_avatar_folder_name
 
 
 class CustomUserManager(BaseUserManager):
@@ -93,10 +94,10 @@ class User(AbstractUser):
     class Meta:
         app_label = 'web'
 
-
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, )
-    avatar = models.ImageField(_('avatar'), upload_to='user_profile_image', blank=True, null=True)
+    avatar = models.ImageField(_('avatar'), upload_to=generate_avatar_folder_name, blank=True, null=True)
+    avatar_url = models.URLField(_('avatar_url'), max_length=500, default='', blank=True)
     nickname_updated = models.DateTimeField(_('nickname_updated'), blank=True, null=True)
     show_email = models.BooleanField(_('show_email'), default=False)
     send_emails_with_news = models.BooleanField(_('send_emails_with_news'), default=False)
