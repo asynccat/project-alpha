@@ -38,7 +38,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='web.user')),
                 ('avatar', models.ImageField(blank=True, null=True, upload_to=project_alpha.web.utils.generate_avatar_folder_name.generate_avatar_folder_name, verbose_name='avatar')),
-                ('avatar_url', models.URLField(blank=True, default='', max_length=500, verbose_name='avatar_url')),
                 ('nickname_updated', models.DateTimeField(blank=True, null=True, verbose_name='nickname_updated')),
                 ('show_email', models.BooleanField(default=False, verbose_name='show_email')),
                 ('send_emails_with_news', models.BooleanField(default=False, verbose_name='send_emails_with_news')),

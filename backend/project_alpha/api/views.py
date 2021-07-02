@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.contrib.auth.backends import ModelBackend, UserModel
 from django.contrib.auth.models import AbstractBaseUser
 
@@ -164,9 +165,8 @@ class UploadUserAvatarAPIView(generics.GenericAPIView):
 
         user.usersettings.avatar = user_avatar_file
         user.usersettings.save()
-        user.usersettings.avatar_url = user.usersettings.avatar.url
-        user.usersettings.save()
-        return Response({'status': 'success', 'uploaded_avatar_url': user.usersettings.avatar_url})
+        uploaded_avatar_url = settings.MEDIA_URL + str(user.usersettings.avatar)
+        return Response({'status': 'success', 'uploaded_avatar_url': uploaded_avatar_url})
 
 class ChangeUserPassword(APIView):
     permission_classes = (IsAuthenticated,)

@@ -5,6 +5,7 @@ from unittest import mock
 from PIL import Image
 
 from django.urls import reverse
+from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from rest_framework.test import APITestCase
