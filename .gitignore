@@ -14,4 +14,4 @@ db.sqlite3
 */setup.cfg
 
 .vscode
-/backend/media/
+backend/media/
