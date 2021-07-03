@@ -320,5 +320,5 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         self.assertEqual(status_code, 400)
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         shutil.rmtree(settings.MEDIA_URL)
