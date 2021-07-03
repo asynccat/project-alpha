@@ -4,3 +4,6 @@ test:
     - 'testserver'
   UPLOAD_IMAGE_MAX_SIZE_MB: 2.0
   ALLOWED_IMAGE_FORMATS: [ 'JPG', 'PNG', 'JPEG' ]
+  MEDIA_URL: 'tmp_for_test/'
+  MEDIA_ROOT: 'tmp_for_test'
+
