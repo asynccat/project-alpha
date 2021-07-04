@@ -63,8 +63,7 @@ export class OperateUserData implements IUserPreferenceOperateData {
       return await this.client.patch('preferences', payload)
     }
 
-    async uploadNewAvatar(payload: INewAvatar): 
-    Promise<IUpdateResponseStatus> {
-    return await this.client.patch('preferences', payload)
-  }
+    async uploadNewAvatar(payload: INewAvatar): Promise<IUpdateResponseStatus> {
+      return await this.client.postFile('preferences', payload)
+    }
 }
