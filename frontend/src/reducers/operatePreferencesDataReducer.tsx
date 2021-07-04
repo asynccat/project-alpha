@@ -41,6 +41,7 @@ IUserPreferencesState => {
                 isLoading: false,
                 nickname: action.payload.nickname,
                 email: action.payload.email,
+                avatar: action.payload.avatar,
             }
 
         case PrefActionType.CHANGE_NICK:

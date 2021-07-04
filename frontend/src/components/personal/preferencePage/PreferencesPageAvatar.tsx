@@ -4,15 +4,18 @@ import React, { useState, useCallback } from 'react'
 import { Avatar, Button, Typography } from '@material-ui/core'
 import Modal from '@material-ui/core/Modal'
 import { useFormik } from 'formik'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector } from 'react-redux'
 
 import { useStyles, useStyleModal } from '../profilePage/ProfilePreferencesPage.styles'
 import {validationSchema} from '../../../utils/ValidationSchemes'
 import {updateUserAvatar,
   userPreferencesRequestFailed} from '../../../actions/prefAndProfileActions'
+  import {RootState} from '../../../reducers/index'
 
 export const PreferencesPageAvatar = (): React.ReactElement => {
+    const avatar = useSelector((state: RootState) => state.operatePreferencesDataReducer.avatar)  
     const dispatch = useDispatch() 
+    
     const [enter, setEnter] = useState(false)
     const [open, setOpen] = useState(false)
   
@@ -100,7 +103,7 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
           onMouseEnter={mouseEnter} 
           onMouseLeave={mouseLeave}
           >
-          <Avatar className={classes.large} />
+          <Avatar className={classes.large} src={avatar} />
           <div className={enter ? classes.manipulationVisible : classes.manipulationHidden} 
               onClick={updateAvatar}> Update avatar 
           </div>
