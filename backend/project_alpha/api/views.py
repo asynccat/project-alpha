@@ -127,6 +127,7 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         user_data = {
             'nickname': user.nickname,
             'email': user.email,
+            'avatar': settings.MEDIA_URL + str(user.usersettings.avatar),
             'nickname_updated': user.usersettings.nickname_updated,
             'show_email': user.usersettings.show_email,
             'send_emails_with_news': user.usersettings.send_emails_with_news,
@@ -165,8 +166,7 @@ class UploadUserAvatarAPIView(generics.GenericAPIView):
 
         user.usersettings.avatar = user_avatar_file
         user.usersettings.save()
-        uploaded_avatar_url = settings.MEDIA_URL + str(user.usersettings.avatar)
-        return Response({'status': 'success', 'uploaded_avatar_url': uploaded_avatar_url})
+        return Response({'status': 'success', 'uploaded_avatar_url': user.usersettings.avatar.url})
 
 class ChangeUserPassword(APIView):
     permission_classes = (IsAuthenticated,)
