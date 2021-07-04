@@ -108,7 +108,7 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         user = self.get_object()
         user_data = {
             'nickname': user.nickname,
-            'avatar': user.usersettings.avatar_url,
+            'avatar': settings.MEDIA_URL + str(user.usersettings.avatar),
         }
         if user.usersettings.show_email:
             user_data['email'] = user.email
