@@ -1,4 +1,6 @@
 export const config = {
   baseUrl: process.env.REACT_APP_DJANGO_SERVER,
-  apiV1: '/api/v1'
+  apiV1: '/api/v1',
+  MIN_PASSWORD_LEN: 6,
+  MINIMAL_VALIDATION_NUMBER: 3,
 }
