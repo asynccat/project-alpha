@@ -195,7 +195,7 @@ export const updateUserEmail =
 }
 
 export interface IUpdateAvatarActionPayload {
-  data:  FormData
+  data: FormData
 }
 
 export const changeUserAvatarSuccessfull =

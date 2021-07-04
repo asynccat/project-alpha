@@ -39,12 +39,11 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
       },
       validationSchema: validationSchema.validationFile,
       onSubmit: (values) => {
-        const data: FormData = new FormData()
+        const data = new FormData()
         if (values.file !== null) {
           //@ts-ignore
-          data.append('avatar', values.file)
+          data.append('avatar', values.file, values.file.name)
         }
-
         try {
           //@ts-ignore
           dispatch(updateUserAvatar(data))
@@ -61,8 +60,8 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
           Please, upload your new avatar
         </h2>
         <Typography component="p">
-        {/*@ts-ignore*/}
-          {formik.values.file ? formik.values.file.name : ''}
+       {/*@ts-ignore*/}
+          {formik.values.file ? formik?.values?.file?.name : ''}
         </Typography>
         <br />
         <form className="modal" encType="multipart/form-data" onSubmit={formik.handleSubmit} >
@@ -72,9 +71,10 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
           id="icon-button-file" 
           name="avatar"
           onChange={(event) => {
-          //@ts-ignore
+          if (event.currentTarget.files !== null) {
             formik.setFieldValue('file', event.currentTarget.files[0])
             formik.setFieldTouched('avatar', true, false )
+          }
           }}
             style={{ display: 'none', }}
             type="file"

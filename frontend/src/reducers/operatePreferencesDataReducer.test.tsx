@@ -41,6 +41,7 @@ describe('operatePreferencesDataReducer', () => {
     ).toEqual({
             nickname: '',
             email: '',
+            avatar: '',
             error: {
               email: 'test@email.com',
               nickname: 'kate',
@@ -70,6 +71,7 @@ describe('operatePreferencesDataReducer', () => {
             status: 'success',
             email: '',
             error: '',
+            avatar: '',
            init: false,
             isLoading: false,
             nickname: '',

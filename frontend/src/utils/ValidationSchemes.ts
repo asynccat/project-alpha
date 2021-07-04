@@ -32,5 +32,5 @@ export const validationSchema = {
     }),
 }
 
-const FILE_SIZE = 1000000
-const SUPPORTED_FORMATS = ['jpg', 'jpeg', 'svg', 'png', 'webp']
+const FILE_SIZE = 2000000
+const SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png', 'gif']
