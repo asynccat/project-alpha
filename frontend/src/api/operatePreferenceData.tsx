@@ -19,12 +19,12 @@ interface INicknameUpdateResponse {
   nickname: string
 }
 
-interface INewAvatar {
-  file: string
-}
-
 interface IUpdateResponseStatus {
   status: string
+}
+
+interface IUpdateAvatarResponse extends IUpdateResponseStatus {
+  uploaded_avatar_url: string
 }
 
 interface IEmailUpdateResponse {
@@ -63,7 +63,7 @@ export class OperateUserData implements IUserPreferenceOperateData {
       return await this.client.patch('preferences', payload)
     }
 
-    async uploadNewAvatar(payload: INewAvatar): Promise<IUpdateResponseStatus> {
-      return await this.client.postFile('preferences', payload)
+    async uploadNewAvatar(payload: IUpdateAvatarActionPayload): Promise<IUpdateAvatarResponse> {
+      return await this.client.postFile('preferences/profile_image', payload)
     }
 }
