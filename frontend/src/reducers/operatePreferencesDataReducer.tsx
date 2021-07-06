@@ -73,7 +73,6 @@ IUserPreferencesState => {
                 ...state,
                 isLoading: false,
                 avatar: action.payload,
-                status: action.payload,
                 error: ''
                 }   
         default: return state

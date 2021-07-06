@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react/jsx-no-bind */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import React, { useState, useCallback } from 'react'
 import { Avatar, Button, Typography } from '@material-ui/core'
 import Modal from '@material-ui/core/Modal'
@@ -10,8 +11,8 @@ import { useStyles, useStyleModal } from '../profilePage/ProfilePreferencesPage.
 import {validationSchema} from '../../../utils/ValidationSchemes'
 import {updateUserAvatar,
   userPreferencesRequestFailed} from '../../../actions/prefAndProfileActions'
-  import {RootState} from '../../../reducers/index'
-
+import {RootState} from '../../../reducers/index'
+  
 export const PreferencesPageAvatar = (): React.ReactElement => {
     const avatar = useSelector((state: RootState) => state.operatePreferencesDataReducer.avatar)  
     const dispatch = useDispatch() 
@@ -35,14 +36,14 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
     const formik = useFormik({
       enableReinitialize: true,
       initialValues: {
-        file: null
+        file: '',
       },
       validationSchema: validationSchema.validationFile,
       onSubmit: (values) => {
+        console.log(values)
         const data = new FormData()
         if (values.file !== null) {
-          //@ts-ignore
-          data.append('avatar', values.file, values.file.name)
+          data.append('avatar', values.file)
         }
         try {
           //@ts-ignore
@@ -59,10 +60,12 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
         <h2 id="simple-modal-title">
           Please, upload your new avatar
         </h2>
+        {formik.values.file ? 
         <Typography component="p">
-       {/*@ts-ignore*/}
-          {formik.values.file ? formik?.values?.file?.name : ''}
+        {/*@ts-ignore*/}
+          {formik?.values?.file.name }
         </Typography>
+           : ''}
         <br />
         <form className="modal" encType="multipart/form-data" onSubmit={formik.handleSubmit} >
           <input

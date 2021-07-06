@@ -54,7 +54,6 @@ export class HttpClient {
         ) : Promise<AbstractApiData> {
          const token = localStorage.getItem('token')
          const header = {
-          // 'Content-Type': 'multipart/form-data',
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +69,6 @@ export class HttpClient {
             throw new Error(e)
           }
 
-    // eslint-disable-next-line
     async post(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
       return await this.execute(url, 'POST',  payload, options)
     }

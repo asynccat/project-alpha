@@ -194,6 +194,10 @@ export const updateUserEmail =
   }
 }
 
+export interface FormData {
+  avatar: string
+}
+
 export interface IUpdateAvatarActionPayload {
   data: FormData
 }
@@ -204,11 +208,8 @@ export const changeUserAvatarSuccessfull =
 export const updateUserAvatar =
   (payload: IUpdateAvatarActionPayload ) => 
   async (dispatch:Dispatch): Promise<void> => {
-
   dispatch(userPreferencesRequestInitiated())
   try {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const result = await operateUserDataRequest.uploadNewAvatar(payload)
     dispatch(changeUserAvatarSuccessfull(result.uploaded_avatar_url))
     toast.success(successMessage.successAvatarChange)
