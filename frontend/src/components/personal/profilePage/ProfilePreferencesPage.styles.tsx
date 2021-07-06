@@ -77,14 +77,6 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     position: 'absolute',
     right: '5%',
-    // '@media (max-width: 600px)': {
-    //   top: '3%',
-    //   right: '5%',
-    // },
-    // '@media (min-width: 1200px)': {
-    //   top: '8%',
-    //   right: '18%',
-    // },
   },
   nicknameButton: {
     display: 'flex',
@@ -108,8 +100,13 @@ export const useStyleModal = makeStyles((theme: Theme) =>
      fontFamily: 'Roboto',
      lineHeight: '1.5rem',
      left: '36%',
-     top: '20%'
-   },
- }),
+     top: '20%',
+   '@media (max-width: 600px)': {
+    width: '100%',
+    top: '20%',
+    left: 0,
+   }
+ }
+}),
 )
 

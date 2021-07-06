@@ -1,18 +1,20 @@
 import { IHttpClient} from './HttpClient'
 import { IUserPreferencesResponse, IUpdateNicknameActionPayload, 
   IUpdatePasswordActionPayload,
-  IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionCamelizedPayload, IUpdateEmailActionDecamelizedPayload } 
+  IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionCamelizedPayload, IUpdateEmailActionDecamelizedPayload, 
+  IUpdateAvatarActionPayload } 
   from '../actions/prefAndProfileActions'
-import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
+  import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
 
 export interface IUserPreferenceOperateData {
   fetchUserPreferences: () => Promise<IUserPreferencesResponse>
   updateNickname: (payload: IUpdateNicknameActionPayload) => Promise<INicknameUpdateResponse>
-  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IPasswordUpdateResponse>
-  updateEmail: (payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ) => 
+  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IUpdateResponseStatus>
+  updateEmail: (payload:  IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload) => 
     Promise<IEmailUpdateResponse>
   changeUserNotification: (payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse ) => 
-    Promise<IUserNotificationDecamelizedResponse>
+  Promise<IUserNotificationDecamelizedResponse>
+  uploadNewAvatar: (payload: IUpdateAvatarActionPayload) => Promise<IUpdateAvatarResponse>
 }
 
 interface INicknameUpdateResponse {
@@ -54,9 +56,9 @@ export class OperateUserData implements IUserPreferenceOperateData {
     }
 
     async updateEmail(payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ): 
-      Promise<IEmailUpdateResponse  > {
-      return await this.client.post('user/change_email', payload) 
-    }
+    Promise<IEmailUpdateResponse  > {
+    return await this.client.post('user/change_email', payload) 
+  }
 
     async changeUserNotification(payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse): 
       Promise<IUserNotificationDecamelizedResponse> {
