@@ -248,32 +248,15 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         response = self.client.post(reverse('change_email'), data=data, format='json')
         return response.status_code, json.loads(response.content)
 
-<<<<<<< HEAD
     def test_success_change_email(self):
         status_code, _ = self.request({
             'email': 'email@change.com',
             'confirm_password': self.pwd,
         })
-=======
-    def create_image(self, schema, size, suffix):
-        image = Image.new(schema, size=size)
-        file = tempfile.NamedTemporaryFile(suffix=suffix)
-        image.save(file)
-        return file
-
-    def test_success_upload_image(self):
-        image = self.create_image(schema='RGB', size=(1, 1), suffix='.jpg')
-
-        with open(image.name, 'rb') as user_avatar:
-            status_code, content = self.request({'avatar': user_avatar})
-
-        usersettings = UserSettings.objects.get(user=self.user)
->>>>>>> 3147ea2... feature(PA-83) correct settings and tests as review
 
         self.assertEqual(self.user.email, 'email@change.com')
         self.assertEqual(status_code, 200)
 
-<<<<<<< HEAD
     def test_unsuccess_change_email_invalid_password(self):
         status_code, content = self.request({
             'email': 'email@newchange.com',
@@ -283,13 +266,6 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         self.assertEqual(self.user.email, 'test@example.com')
         self.assertEqual(content['errors'][0]['message'][0], 'Invalid password')
         self.assertEqual(status_code, 400)
-=======
-    def test_upload_image_format_not_allowed(self):
-        image = self.create_image(schema='RGB', size=(1, 1), suffix='.gif')
-
-        with open(image.name, 'rb') as user_avatar:
-            status_code, content = self.request({'avatar': user_avatar})
->>>>>>> 3147ea2... feature(PA-83) correct settings and tests as review
 
     def test_unsuccess_change_email_data_is_not_email(self):
         status_code, content = self.request({
@@ -301,22 +277,58 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         self.assertEqual(content['errors'][0]['message'][0], 'Enter a valid email address.')
         self.assertEqual(status_code, 400)
 
-<<<<<<< HEAD
     def test_unsuccess_change_email_is_not_unique(self):
         status_code, content = self.request({
             'email': self.second_username,
             'confirm_password': self.pwd,
         })
-=======
-    def test_upload_image_size_too_big(self):
-        image = self.create_image(schema='CMYK', size=(7000, 7000), suffix='.jpg')
-
-        with open(image.name, 'rb') as user_avatar:
-            status_code, content = self.request({'avatar': user_avatar})
->>>>>>> 3147ea2... feature(PA-83) correct settings and tests as review
 
         self.assertEqual(self.user.email, 'test@example.com')
         self.assertEqual(content['errors'][0]['message'][0], 'Email already exists')
+        self.assertEqual(status_code, 400)
+
+class UploadUserAvatarAPIViewTestCase(APITestCase):
+
+    def setUp(self):
+        self.username = 'test@example.com'
+        self.pwd = '1234QWERty'
+        self.user = User.objects.create_user(self.username, self.pwd)
+
+    def request(self, data):
+        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        response = self.client.post(reverse('profile_image'), data=data, format='multipart')
+        return response.status_code, json.loads(response.content)
+
+    def create_image(self, schema, size, suffix):
+        image = Image.new(schema, size=size)
+        file = tempfile.NamedTemporaryFile(suffix=suffix)
+        image.save(file)
+        return file
+
+    def test_success_upload_image(self):
+        image = self.create_image(schema='RGB', size=(1, 1), suffix='.jpg')
+        with open(image.name, 'rb') as user_avatar:
+            status_code, _ = self.request({'avatar': user_avatar})
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertEqual(settings.MEDIA_URL + str(usersettings.avatar), usersettings.avatar.url)
+        self.assertEqual(status_code, 200)
+
+    def test_upload_image_format_not_allowed(self):
+        image = self.create_image(schema='RGB', size=(1, 1), suffix='.gif')
+        with open(image.name, 'rb') as user_avatar:
+            status_code, content = self.request({'avatar': user_avatar})
+        error_message = 'Invalid file format. Allowed image formats: JPG, PNG, JPEG'
+
+        self.assertEqual(content['errors'][0]['message'][0], error_message)
+        self.assertEqual(status_code, 400)
+
+    def test_upload_image_size_too_big(self):
+        image = self.create_image(schema='CMYK', size=(7000, 7000), suffix='.jpg')
+        with open(image.name, 'rb') as user_avatar:
+            status_code, content = self.request({'avatar': user_avatar})
+
+        self.assertEqual(content['errors'][0]['message'][0], 'Max size of file is 2 MB')
         self.assertEqual(status_code, 400)
 
     @classmethod
