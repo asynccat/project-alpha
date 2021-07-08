@@ -26,11 +26,11 @@ export const validationSchema = {
         .nullable()
         .notRequired()
         .test('FILE_SIZE', 'Uploaded file is too big.', 
-            value => !value || (value && value.size <= FILE_SIZE))
-        // .test('FILE_FORMAT', 'Uploaded file has unsupported format.', 
-        //     value => !value || (value && SUPPORTED_FORMATS.includes(value.type)))
+            value => !value || value.size <= FILE_SIZE_IN_BYTES)
+        .test('FILE_FORMAT', 'Uploaded file has unsupported format.', 
+            value => !value || SUPPORTED_FORMATS.includes(value.type))
     }),
 }
 
-const FILE_SIZE = 2000000
-const SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png', 'gif']
+const FILE_SIZE_IN_BYTES = 2_000_000
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png']

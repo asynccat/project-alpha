@@ -5,14 +5,13 @@ import React, { useState, useCallback } from 'react'
 import { Avatar, Button, Typography } from '@material-ui/core'
 import Modal from '@material-ui/core/Modal'
 import { useFormik } from 'formik'
-import {useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useStyles, useStyleModal } from '../profilePage/ProfilePreferencesPage.styles'
-import {validationSchema} from '../../../utils/ValidationSchemes'
-import {updateUserAvatar,
-  userPreferencesRequestFailed} from '../../../actions/prefAndProfileActions'
-import {RootState} from '../../../reducers/index'
-  
+import { validationSchema } from '../../../utils/ValidationSchemes'
+import { updateUserAvatar } from '../../../actions/prefAndProfileActions'
+import { RootState } from '../../../reducers/index'
+
 export const PreferencesPageAvatar = (): React.ReactElement => {
     const avatar = useSelector((state: RootState) => state.operatePreferencesDataReducer.avatar)  
     const dispatch = useDispatch() 
@@ -27,7 +26,6 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
     const modalClass = useStyleModal()
     
     const handleOpen = useCallback(() => setOpen(true), [setOpen])
-    const handleClose = useCallback(() => setOpen(false), [setOpen])
 
     const updateAvatar = useCallback(() => {
         handleOpen()
@@ -41,19 +39,21 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
       validationSchema: validationSchema.validationFile,
       onSubmit: (values) => {
         console.log(values)
-        const data = new FormData()
+        const data : FormData = new FormData()
         if (values.file !== null) {
           data.append('avatar', values.file)
         }
-        try {
           //@ts-ignore
           dispatch(updateUserAvatar(data))
-          } catch (error) {
-          dispatch(userPreferencesRequestFailed(error))
-          }
           handleClose()
       }
     })
+
+    const handleClose = useCallback(() => {
+      setOpen(false)
+    // if file does not pass validation and modal window is closed, form is cleared
+      formik.resetForm()
+    }, [setOpen, formik])
 
     const body = (
       <div  className={modalClass.paper} >
@@ -69,35 +69,39 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
         <br />
         <form className="modal" encType="multipart/form-data" onSubmit={formik.handleSubmit} >
           <input
-          accept="image/*"
-          color="primary"
-          id="icon-button-file" 
-          name="avatar"
-          onChange={(event) => {
-          if (event.currentTarget.files !== null) {
-            formik.setFieldValue('file', event.currentTarget.files[0])
-            formik.setFieldTouched('avatar', true, false )
-          }
-          }}
+            accept="image/*"
+            color="primary" 
+            id="file"
+            name="file"
+            onBlur={formik.handleBlur}
+            onChange={(event) => {
+              if (event.currentTarget.files !== null) {
+                formik.setFieldValue('file', event.currentTarget.files[0])
+              }
+            }}
             style={{ display: 'none', }}
             type="file"
-            />
-        <label htmlFor="icon-button-file">
+          />
+        <label htmlFor="file">
           <Button
             color="primary"
             component="span"
             size="large"
             variant="contained"
-          > Upload new avatar
+            > Upload new avatar
           </Button> &nbsp; &nbsp;
         </label>
         { formik.values.file? 
             <Button  color="primary"
-                size="large"
-                type="submit"
-                variant="contained">Save new avatar
+            size="large"
+            type="submit"
+            variant="contained">Save new avatar
             </Button> : '' }
         </form>
+        <br/>
+        <Typography className={classes.errorMessage}>
+        { formik.errors ? formik.errors.file : ''}
+        </Typography>
       </div>
       )
 

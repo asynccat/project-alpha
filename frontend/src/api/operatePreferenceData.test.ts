@@ -35,14 +35,19 @@ describe ('use of updateNickname method', () => {
   })
 })
 
+export type FormData = {
+  avatar: string
+}
+
 describe ('test use of change avatar', () => {
   it('test usage of upload new avatar method of OperateUserData class', () => {
-    const payload = new FormData()
-    payload.append('avatar', 'hello.png')
+    const data = new FormData()
+    data.append('avatar', 'hello.png')
+    
     const avatarUploadSpy = jest.spyOn(operateUserDataRequest, 'uploadNewAvatar')
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    operateUserDataRequest.uploadNewAvatar(payload)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+    operateUserDataRequest.uploadNewAvatar(data)
   
     expect(avatarUploadSpy).toHaveBeenCalled()
     expect(operateUserDataRequest.uploadNewAvatar).toHaveBeenCalled()

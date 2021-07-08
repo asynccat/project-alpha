@@ -195,11 +195,11 @@ export const updateUserEmail =
 }
 
 export interface FormData {
-  avatar: string
+  data: FormData
 }
 
 export interface IUpdateAvatarActionPayload {
-  data: FormData
+  avatar: FormData
 }
 
 export const changeUserAvatarSuccessfull =
@@ -217,9 +217,11 @@ export const updateUserAvatar =
     const destructuredError = {error}
     const destructuredMessage = JSON.parse(destructuredError.error.message)
     if (destructuredMessage) {
-      const messageArrayFromDestructuredError = destructuredMessage.error
-      dispatch(userPreferencesRequestFailed(messageArrayFromDestructuredError))
-      toast.error(messageArrayFromDestructuredError)
+      const messageArrayFromDestructuredError = destructuredMessage.errors
+      const [message] = messageArrayFromDestructuredError
+      console.log(message.message)
+      dispatch(userPreferencesRequestFailed(message.message))
+      message.message.map((item: string) => toast.error(item))
     } else {
       dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
       toast.error(errorMessage.errorUnknown)

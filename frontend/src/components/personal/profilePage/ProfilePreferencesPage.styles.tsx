@@ -86,6 +86,9 @@ export const useStyles = makeStyles((theme) => ({
   textfields: {
     margin: 15,
   },
+  errorMessage: {
+    color: 'red',
+  },
 }))
 
 export const useStyleModal = makeStyles((theme: Theme) =>
