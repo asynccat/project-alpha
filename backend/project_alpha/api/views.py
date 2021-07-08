@@ -152,7 +152,7 @@ class UploadUserAvatarAPIView(generics.GenericAPIView):
 
     def get(self, request):
         user = self.request.user
-        user_data = {'avatar': user.usersettings.avatar}
+        user_data = {'avatar': settings.MEDIA_URL + str(user.usersettings.avatar)}
         return Response(user_data)
 
     def post(self, request):
