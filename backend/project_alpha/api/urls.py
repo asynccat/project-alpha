@@ -27,4 +27,8 @@ urlpatterns = [
     path('v1/preferences/profile_image/', UploadUserAvatarAPIView.as_view(), name='profile_image'),
     path('v1/change_password/', ChangeUserPassword.as_view(), name='change_password'),
     path('v1/', include(v1_router.urls)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
