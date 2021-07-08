@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-
 import React, { useState, useCallback } from 'react'
 import { Avatar, Button, Typography } from '@material-ui/core'
 import Modal from '@material-ui/core/Modal'
@@ -49,6 +47,10 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
       }
     })
 
+    const handleChange = useCallback((e) => {
+          formik.setFieldValue('file', e.currentTarget.files[0])
+    },[formik])
+
     const handleClose = useCallback(() => {
       setOpen(false)
     // if file does not pass validation and modal window is closed, form is cleared
@@ -61,10 +63,10 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
           Please, upload your new avatar
         </h2>
         {formik.values.file ? 
-        <Typography component="p">
-        {/*@ts-ignore*/}
-          {formik?.values?.file.name }
-        </Typography>
+          <Typography component="p">
+            {/*@ts-ignore*/}
+            {formik?.values?.file.name }
+          </Typography>
            : ''}
         <br />
         <form className="modal" encType="multipart/form-data" onSubmit={formik.handleSubmit} >
@@ -74,11 +76,7 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
             id="file"
             name="file"
             onBlur={formik.handleBlur}
-            onChange={(event) => {
-              if (event.currentTarget.files !== null) {
-                formik.setFieldValue('file', event.currentTarget.files[0])
-              }
-            }}
+            onChange={handleChange}
             style={{ display: 'none', }}
             type="file"
           />
@@ -100,7 +98,7 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
         </form>
         <br/>
         <Typography className={classes.errorMessage}>
-        { formik.errors ? formik.errors.file : ''}
+          { formik.errors ? formik.errors.file : ''}
         </Typography>
       </div>
       )
