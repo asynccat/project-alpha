@@ -104,11 +104,9 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         TODO
         '''
         recovery_message = 'We’ve sent you an email to recover your password. Please check out your mailbox.'
-        
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         email = body['email']
-        
         user = get_user_by_email(email)
         if user is not None:
             send_recovery_email(user)
@@ -121,9 +119,9 @@ def get_user_by_email(email):
     P.S. We need user's data to personnalize the password recovery e-mail.
     '''
     users = User.objects.all()
-    for u in users:
-        if u.email == email:
-            return u
+    for user in users:
+        if user.email == email:
+            return user
     return None
 
 def send_recovery_email(user):
