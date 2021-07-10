@@ -92,6 +92,38 @@ class ChangeEmailAPIView(generics.UpdateAPIView):
         user.save()
         return Response(self.request.data)
 
+class UserRecoverAPIView(generics.RetrieveAPIView):
+    '''
+    Recover user account
+    '''
+
+    def post(self, request: Request) -> Response:
+        '''
+        This request initiates the password recovery process.
+        TODO
+        '''
+        recovery_message = 'We’ve sent you an email to recover your password. Please check out your mailbox.'
+        #email = request.body.message
+        #user = get_user_by_email(email)
+        #send_recovery_email(user)
+        return Response({'message': recovery_message}, status=status.HTTP_200_OK)
+
+    def get_user_by_email(self, email) -> User:
+        '''
+        Returns user if he exists in the database.
+        Error otherwise.
+        P.S. We need user's data to personnalize the password recovery e-mail.
+        TODO
+        '''
+        pass
+
+    def send_recovery_email(self, user):
+        '''
+        Sends personnalized password recovery e-mail to user.
+        P.S. Should be async.
+        TODO
+        '''
+        pass
 
 class UserProfileAPIView(generics.RetrieveAPIView):
     """

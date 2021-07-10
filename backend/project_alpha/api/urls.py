@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import (
     UserCreateAPIView,
+    UserRecoverAPIView,
     UserProfileAPIView,
     UserPreferencesAPIView,
     UpdateNicknameAPIView,
@@ -15,6 +16,7 @@ v1_router = DefaultRouter()
 
 urlpatterns = [
     path('v1/sign-up/', UserCreateAPIView.as_view(), name='sign_up'),
+    path('v1/recover/', UserRecoverAPIView.as_view(), name='recover'),
     path('v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('v1/user/<str:nickname>/nickname/update/', UpdateNicknameAPIView.as_view(), name='nickname_update'),
