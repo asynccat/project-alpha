@@ -25,6 +25,7 @@ from .serializers import (
     ChangeUserPasswordSerializer,
 )
 
+import json
 
 User = get_user_model()
 
@@ -80,33 +81,41 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
     Recover user account
     '''
 
-    def post(self) -> Response:
+    def post(self, request) -> Response:
         '''
         This request initiates the password recovery process.
         TODO
         '''
         recovery_message = 'We’ve sent you an email to recover your password. Please check out your mailbox.'
-        #email = request.body.message
-        #user = get_user_by_email(email)
-        #send_recovery_email(user)
+        
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        email = body['email']
+        
+        user = get_user_by_email(email)
+        if user is not None:
+            send_recovery_email(user)
         return Response({'message': recovery_message}, status=status.HTTP_200_OK)
 
-    #def get_user_by_email(self):
-        #'''
-        #Returns user if he exists in the database.
-        #Error otherwise.
-        #P.S. We need user's data to personnalize the password recovery e-mail.
-        #TODO
-        #'''
-        #pass
+def get_user_by_email(email):
+    '''
+    Returns user if he exists in the database.
+    Error otherwise.
+    P.S. We need user's data to personnalize the password recovery e-mail.
+    '''
+    users = User.objects.all()
+    for u in users:
+        if u.email == email:
+            return u
+    return None
 
-    #def send_recovery_email(self):
-        #'''
-        #Sends personnalized password recovery e-mail to user.
-        #P.S. Should be async.
-        #TODO
-        #'''
-        #pass
+def send_recovery_email(user):
+    '''
+    Sends personnalized password recovery e-mail to user.
+    P.S. Should be async.
+    TODO
+    '''
+    print("Send e-mail to " + str(user.email))
 
 class UserProfileAPIView(generics.RetrieveAPIView):
     """

@@ -1,14 +1,15 @@
 import React, {useState, useCallback} from 'react'
 import {useDispatch} from 'react-redux'
 import {CssBaseline, TextField} from '@material-ui/core'
-import {Button, Avatar, Typography, FormControlLabel, Checkbox, Link, Paper, Grid }  from '@material-ui/core'
+import {Button, Avatar, Typography, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import { useFormik } from 'formik'
 
 import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
 import { recover } from '../../actions/authActions'
-
-import {useStyles} from './ForgotPassword.styles'
+import {validationSchema} from '../../utils/ValidationSchemes'
+import {useStyles} from './SignUp.styles'
 
 export default function ForgotPasswordSide(): React.ReactElement {
 
@@ -21,13 +22,11 @@ export default function ForgotPasswordSide(): React.ReactElement {
   
     const recoverPassword = useCallback((e) => {
       e.preventDefault()
-      // eslint-disable-next-line
-      // @ts-ignore
       dispatch(recover({email}))
     }, [dispatch, email])
   
     const classes = useStyles()
-  
+
     return (
       <Grid className={classes.root} component="main" container>
         <CssBaseline />    
@@ -46,10 +45,12 @@ export default function ForgotPasswordSide(): React.ReactElement {
             Recover password
           </Typography>
           <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
+            <Grid alignItems="center" container direction="column" justify="center" spacing={2}>
               <Grid item xs={12}>
                 Enter your e-mail to recover your password.
               </Grid>
+            </Grid>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="email"
