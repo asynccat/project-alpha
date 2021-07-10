@@ -108,7 +108,7 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         #send_recovery_email(user)
         return Response({'message': recovery_message}, status=status.HTTP_200_OK)
 
-    def get_user_by_email(self, email) -> User:
+    def get_user_by_email(self):
         '''
         Returns user if he exists in the database.
         Error otherwise.
@@ -117,7 +117,7 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         '''
         pass
 
-    def send_recovery_email(self, user):
+    def send_recovery_email(self):
         '''
         Sends personnalized password recovery e-mail to user.
         P.S. Should be async.
