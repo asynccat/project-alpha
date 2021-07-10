@@ -3,12 +3,10 @@ import {useDispatch} from 'react-redux'
 import {CssBaseline, TextField} from '@material-ui/core'
 import {Button, Avatar, Typography, Link, Paper, Grid }  from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { useFormik } from 'formik'
 
 import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
 import { recover } from '../../actions/authActions'
-import {validationSchema} from '../../utils/ValidationSchemes'
 import {useStyles} from './SignUp.styles'
 
 export default function ForgotPasswordSide(): React.ReactElement {

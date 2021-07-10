@@ -17,6 +17,8 @@ from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
+from project_alpha.web.utils.send_email_utils import send_recovery_email
+from project_alpha.web.utils.user_utils import get_user_by_email
 
 from .permissions import IsOwner, NicknameUpdateAllowed
 from .serializers import (
@@ -95,26 +97,6 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         if user is not None:
             send_recovery_email(user)
         return Response({'message': recovery_message}, status=status.HTTP_200_OK)
-
-def get_user_by_email(email):
-    '''
-    Returns user if he exists in the database.
-    Error otherwise.
-    P.S. We need user's data to personnalize the password recovery e-mail.
-    '''
-    users = User.objects.all()
-    for user in users:
-        if user.email == email:
-            return user
-    return None
-
-def send_recovery_email(user):
-    '''
-    Sends personnalized password recovery e-mail to user.
-    P.S. Should be async.
-    TODO
-    '''
-    print("Send e-mail to " + str(user.email))
 
 class ChangeEmailAPIView(generics.UpdateAPIView):
     serializer_class = ChangeEmailSerializer

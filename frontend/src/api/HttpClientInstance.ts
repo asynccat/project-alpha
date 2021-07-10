@@ -1,5 +1,4 @@
 import {HttpClient} from './HttpClient'
-import { HttpClientWithInterceptors } from './httpClientWithInterceptors'
 import {OperateUserData} from './operatePreferenceData'
 
 export const httpClient = new HttpClient()
