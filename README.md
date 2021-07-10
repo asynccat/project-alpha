@@ -1,6 +1,6 @@
 # project-alpha
 
-## Pre-requisitions
+## Pre-requisites
  - python3.8
  - python3.8-venv
 
@@ -45,7 +45,19 @@ python manage.py runserver
 
 To get the project up and running, and view components in the browser, complete the following steps:
 
-* Download and install Node: [nodejs.org](https://nodejs.org/)
+* Download and install Node: [nodejs.org](https://nodejs.org/).
+
+Or use the command line to do it:
+```sudo apt-get update```
+```sudo apt-get install nodejs npm```
+
+To manage node versions:
+```sudo npm install -g n```
+```sudo n lts```
+
+Check the currently installed version with:
+```node -v```
+
 * Go to "frontend" folder
 * Copy `.env.sample` to `.env`
 * Install project dependencies: `npm install`

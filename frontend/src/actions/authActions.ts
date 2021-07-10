@@ -36,6 +36,14 @@ export interface IUserAuthApiLoginResponse {
     id: number
 }
 
+export interface IUserEmail {
+  email: string
+}
+
+export interface IMessageResponse {
+  message: string
+}
+
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
 
@@ -65,14 +73,7 @@ export const signUserUp = (payload: IUserDetails) =>
       dispatch(push('/welcome'))
       toast.info(achievementMessage.register)
     } catch (error) {
-      const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+      handleError(error)
     }
   }
 
@@ -95,14 +96,7 @@ export const login = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (error) {
-      const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+      handleError(error)
     }
 }
 
@@ -114,6 +108,25 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     dispatch(logoutAction())
     dispatch(push('/login'))
   } catch (error) {
+    handleError(error)
+    }
+}
+
+export const recover = (payload: IUserEmail) =>
+  async (dispatch:Dispatch<logoutUserAction | CallHistoryMethodAction>): Promise<void> => {
+    const authApiClient = new AuthApiClient()
+
+    try {
+      const result = await authApiClient.recover(payload)
+      const {message} = result
+      toast.error(message)
+      dispatch(push('/login'))
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
+  const handleError = (error: { message: string }) => {
     const destructuredMessage = JSON.parse(error.message)
       if (destructuredMessage) {
         const [messageArrayFromDestructuredError] = destructuredMessage.errors
@@ -122,5 +135,4 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
       } else {
         toast.error(errorMessage.errorUnknown)
       }
-    }
   }
