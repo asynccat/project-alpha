@@ -1,3 +1,5 @@
+@import '../../../scss-utils/variables';
+@import '../../../scss-utils/mixins';
 
 .profile-head {
     transform: translateY(5rem)
@@ -24,20 +26,21 @@ body {
     display: flex;
     flex-direction: row;
     margin-bottom: 5%;
-
-    @media (max-width: 600px) {
-        flex-direction: column;
-    }
+    @include for-phone-only {
+        flex-direction: column
+    } 
 }
 
 .emailButton {
     display: flex;
     flex-direction: row;
     width: 50%;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
-    @media (max-width: 600px) {
+    @include for-phone-only {
        width: 100%;
+       align-items: center;
+       justify-content: center;
     }
 }
 
@@ -51,7 +54,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     width: 50%;
-    @media (max-width: 600px) {
+    @include for-phone-only {
         width: 100%;
      }
 }
@@ -83,7 +86,7 @@ body {
     display: flex;
     flex-direction: row;
     border-radius: 4px;
-    @media (max-width: 600px) { 
+    @include for-phone-only {
         flex-direction: column-reverse;
     }
 }
