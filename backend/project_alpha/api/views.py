@@ -104,7 +104,8 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         This request initiates the password recovery process.
         TODO
         '''
-        recovery_message = 'We’ve sent you an email. Please check your mailbox. If you haven\'t received anything, make sure the address is correct.'
+        recovery_message = 'We’ve sent you an email. Please check your mailbox. '
+        + 'If you haven\'t received anything, make sure the address is correct.'
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         email = body['email']
