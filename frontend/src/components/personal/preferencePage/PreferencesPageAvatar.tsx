@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { useStyles, useStyleModal } from '../profilePage/ProfilePreferencesPage.styles'
 import { validationSchema } from '../../../utils/ValidationSchemes'
-import { updateUserAvatar } from '../../../actions/prefAndProfileActions'
+import { updateUserAvatar, IUpdateAvatarActionPayload } from '../../../actions/prefAndProfileActions'
 import { RootState } from '../../../reducers/index'
 
 export const PreferencesPageAvatar = (): React.ReactElement => {
@@ -37,11 +37,8 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
       validationSchema: validationSchema.validationFile,
       onSubmit: (values) => {
         console.log(values)
-        const data : FormData = new FormData()
-        if (values.file !== null) {
-          data.append('avatar', values.file)
-        }
-          //@ts-ignore
+        if (values.file === null) { return }
+        const data : IUpdateAvatarActionPayload = {avatarBlob: values.file}
           dispatch(updateUserAvatar(data))
           handleClose()
       }
@@ -64,8 +61,9 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
         </h2>
         {formik.values.file ? 
           <Typography component="p">
-            {/*@ts-ignore*/}
-            {formik?.values?.file.name }
+        {/*use ts-ignore here as we dont type formik file values in before*/}
+          {/*@ts-ignore */}
+            {formik.values.file.name }
           </Typography>
            : ''}
         <br />

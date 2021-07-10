@@ -194,12 +194,8 @@ export const updateUserEmail =
   }
 }
 
-export interface FormData {
-  data: FormData
-}
-
 export interface IUpdateAvatarActionPayload {
-  avatar: FormData
+  avatarBlob: string
 }
 
 export const changeUserAvatarSuccessfull =

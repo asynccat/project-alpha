@@ -66,6 +66,8 @@ export class OperateUserData implements IUserPreferenceOperateData {
     }
 
     async uploadNewAvatar(payload: IUpdateAvatarActionPayload): Promise<IUpdateAvatarResponse> {
-      return await this.client.postFile('preferences/profile_image', payload)
+      const data = new FormData()
+      data.append('avatar', payload.avatarBlob)
+      return await this.client.postFile('preferences/profile_image', data)
     }
 }

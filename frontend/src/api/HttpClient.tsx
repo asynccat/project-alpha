@@ -22,7 +22,7 @@ export interface IHttpClient {
   put: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
   patch: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
   get: <Response>(url:string, options?: IHttpRequestOptions) => Promise<Response>
-  postFile: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
+  postFile: <Response>(url:string, payload: FormData, options?: IHttpRequestOptions) => Promise<Response>
 }
 
 export class HttpClient {
@@ -85,7 +85,7 @@ export class HttpClient {
       return await this.execute(url, 'PATCH',  payload, options)
   }
 
-  async postFile(url:string, payload: AbstractApiData): Promise<AbstractApiData> {
+  async postFile(url:string, payload: FormData): Promise<AbstractApiData> {
     return await this.uploadFile(url, 'POST',  payload)
   }
 
