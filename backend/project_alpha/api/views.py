@@ -17,6 +17,8 @@ from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
+from project_alpha.web.utils.send_email_utils import send_recovery_email
+from project_alpha.web.utils.user_utils import get_user_by_email
 
 from .permissions import IsOwner, NicknameUpdateAllowed
 from .serializers import (
@@ -131,6 +133,21 @@ def send_recovery_email(user):
     TODO
     '''
     print("Send e-mail to " + str(user.email))
+class ChangeEmailAPIView(generics.UpdateAPIView):
+    serializer_class = ChangeEmailSerializer
+    permission_classes = (IsOwner, IsAuthenticated,)
+
+    def post(self, request):
+        user = self.request.user
+        serializer = self.get_serializer(data=self.request.data)
+        confirm_password = request.data.get('confirm_password')
+        if not user.check_password(confirm_password):
+            return Response({'errors':[{'field':'confirm_password', 'message':['Invalid password']}]},
+                            status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        user.email = request.data.get('email')
+        user.save()
+        return Response(self.request.data)
 
 class UserProfileAPIView(generics.RetrieveAPIView):
     """
