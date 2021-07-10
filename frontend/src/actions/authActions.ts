@@ -15,7 +15,8 @@ import { emailFormatIsValid } from '../utils/FormatVerifications'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
-  SET_USER = 'auth/SET_USER'
+  SET_USER = 'auth/SET_USER',
+  RECEIVE_RECOVERY_MESSAGE = 'auth/RECEIVE_RECOVERY_MESSAGE'
 }
 
 export interface IUserDetails {
@@ -43,16 +44,19 @@ export interface IUserEmail {
 
 export interface IMessageResponse {
   message: string
+  error: boolean
 }
 
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
+export type receiveRecoveryMessageAction = Action<AuthActionType.RECEIVE_RECOVERY_MESSAGE, IMessageResponse>
 
-export type AuthActions = fetchUserAction | logoutUserAction
+export type AuthActions = fetchUserAction | logoutUserAction | receiveRecoveryMessageAction
 
 export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthActionType.SET_USER)
-
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
+export const receiveRecoveryMessageActionValue =
+  actionCreator<AuthActionType.RECEIVE_RECOVERY_MESSAGE, IMessageResponse>(AuthActionType.RECEIVE_RECOVERY_MESSAGE)
 
 export const signUserUp = (payload: IUserDetails) => 
   async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
@@ -113,24 +117,21 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     }
 }
 
-
-
 export const recover = (payload: IUserEmail) =>
-  async (dispatch:Dispatch<logoutUserAction | CallHistoryMethodAction>): Promise<void> => {
+  async (dispatch: Dispatch<receiveRecoveryMessageAction | CallHistoryMethodAction>): Promise<void> => {
     const authApiClient = new AuthApiClient()
-
     try {
       const {email} = payload
       if (emailFormatIsValid(email)) {
         const result = await authApiClient.recover(payload)
         const {message} = result
-        toast.info(message)
-        dispatch(push('/login'))
+        dispatch(receiveRecoveryMessageActionValue({message: message, error: false}))
       } else {
-        toast.error('Invalid e-mail format.')
+        dispatch(receiveRecoveryMessageActionValue({message: 'Invalid e-mail format.', error: true}))
       }
     } catch (error) {
-      handleError(error)
+      // handleError(error)
+      dispatch(receiveRecoveryMessageActionValue({message: 'Request failed.', error: true}))
     }
   }
 

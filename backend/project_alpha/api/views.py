@@ -79,24 +79,25 @@ class UpdateNicknameAPIView(generics.UpdateAPIView):
         UserSettings.objects.filter(user=user).update(nickname_updated=timezone.now())
         serializer.save()
 
+
 class UserRecoverAPIView(generics.RetrieveAPIView):
     '''
     Recover user account
     '''
-
     def post(self, request) -> Response:
         '''
         This request initiates the password recovery process.
         TODO
         '''
-        recovery_message = 'We’ve sent you an email to recover your password. Please check out your mailbox.'
+        recovery_message = 'We’ve sent you an email. Please check your mailbox. If you haven\'t received anything, make sure the address is correct.'
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         email = body['email']
         user = get_user_by_email(email)
         if user is not None:
             send_recovery_email(user)
-        return Response({'message': recovery_message}, status=status.HTTP_200_OK)
+        return Response({'message': recovery_message, 'error': False}, status=status.HTTP_200_OK)
+
 
 class ChangeEmailAPIView(generics.UpdateAPIView):
     serializer_class = ChangeEmailSerializer
