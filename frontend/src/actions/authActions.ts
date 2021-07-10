@@ -11,6 +11,7 @@ import {jwtDecode, IToken, autoRefresh } from '../services/TokenRefresh'
 import { MILLISECONDS_IN_SECOND, TEN_SECONDS_BEFORE_TOKEN_EXPIRE} from '../constants/valuableNumbers'
 import {errorMessage } from '../constants/errorAndSuccessMessages'
 import { achievementMessage } from '../constants/achievementMessages'
+import { StringLocale } from 'yup/lib/locale'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -112,15 +113,25 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     }
 }
 
+const validEmail = (email: string) => {
+  const re = /\S+@\S+\.\S+/
+  return re.test(email)
+}
+
 export const recover = (payload: IUserEmail) =>
   async (dispatch:Dispatch<logoutUserAction | CallHistoryMethodAction>): Promise<void> => {
     const authApiClient = new AuthApiClient()
 
     try {
-      const result = await authApiClient.recover(payload)
-      const {message} = result
-      toast.error(message)
-      dispatch(push('/login'))
+      const {email} = payload
+      if (validEmail(email)) {
+        const result = await authApiClient.recover(payload)
+        const {message} = result
+        toast.info(message)
+        dispatch(push('/login'))
+      } else {
+        toast.error('Invalid e-mail format.')
+      }
     } catch (error) {
       handleError(error)
     }
