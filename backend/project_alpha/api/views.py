@@ -97,7 +97,7 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
     Recover user account
     '''
 
-    def post(self, request: Request) -> Response:
+    def post(self) -> Response:
         '''
         This request initiates the password recovery process.
         TODO
@@ -108,22 +108,22 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         #send_recovery_email(user)
         return Response({'message': recovery_message}, status=status.HTTP_200_OK)
 
-    def get_user_by_email(self):
-        '''
-        Returns user if he exists in the database.
-        Error otherwise.
-        P.S. We need user's data to personnalize the password recovery e-mail.
-        TODO
-        '''
-        pass
+    #def get_user_by_email(self):
+        #'''
+        #Returns user if he exists in the database.
+        #Error otherwise.
+        #P.S. We need user's data to personnalize the password recovery e-mail.
+        #TODO
+        #'''
+        #pass
 
-    def send_recovery_email(self):
-        '''
-        Sends personnalized password recovery e-mail to user.
-        P.S. Should be async.
-        TODO
-        '''
-        pass
+    #def send_recovery_email(self):
+        #'''
+        #Sends personnalized password recovery e-mail to user.
+        #P.S. Should be async.
+        #TODO
+        #'''
+        #pass
 
 class UserProfileAPIView(generics.RetrieveAPIView):
     """
