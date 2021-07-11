@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
   '& > * + *': {
     marginTop: theme.spacing(2),
     },
-    '@media (max-width: 600px)': {
+    '@media (max-width: 700px)': {
       marginTop: 0,
     },
   },
@@ -50,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: -44,
 },
   header: {
-    '@media (max-width: 600px)': {
+    '@media (max-width: 700px)': {
       display: 'flex',
       flexDirection: 'column',
     }
@@ -89,11 +89,17 @@ export const useStyles = makeStyles((theme) => ({
   errorMessage: {
     color: 'red',
   },
+  imageThumb: {
+    width: 400,
+  }
 }))
 
 export const useStyleModal = makeStyles((theme: Theme) =>
  createStyles({
    paper: {
+     display: 'flex',
+     flexDirection: 'column',
+     alignItems: 'center',
      position: 'absolute',
      width: 500,
      backgroundColor: theme.palette.background.paper,
@@ -103,11 +109,12 @@ export const useStyleModal = makeStyles((theme: Theme) =>
      fontFamily: 'Roboto',
      lineHeight: '1.5rem',
      left: '36%',
-     top: '20%',
-   '@media (max-width: 600px)': {
-    width: '100%',
-    top: '20%',
-    left: 0,
+     top: '15%',
+   '@media (max-width: 700px)': {
+    width: '85%',
+    margin: 0,
+    top: '15%',
+    left: '1%',
    }
  }
 }),

@@ -41,6 +41,7 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
         const data : IUpdateAvatarActionPayload = {avatarBlob: values.file}
           dispatch(updateUserAvatar(data))
           handleClose()
+          setEnter(false)
       }
     })
 
@@ -98,6 +99,8 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
         <Typography className={classes.errorMessage}>
           { formik.errors ? formik.errors.file : ''}
         </Typography>
+        {formik.values.file ? <img className={classes.imageThumb} 
+          src={URL.createObjectURL(formik.values.file)} /> : '' }
       </div>
       )
 
@@ -106,7 +109,7 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
           onMouseEnter={mouseEnter} 
           onMouseLeave={mouseLeave}
           >
-          <Avatar className={classes.large} src={avatar} />
+          <Avatar className={classes.large} src={`http://localhost:8000${avatar}`} />
           <div className={enter ? classes.manipulationVisible : classes.manipulationHidden} 
               onClick={updateAvatar}> Update avatar 
           </div>
