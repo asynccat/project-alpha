@@ -94,7 +94,6 @@ class ChangeEmailAPIView(generics.UpdateAPIView):
         return Response(self.request.data)
 
 class UserRecoverAPIView(generics.RetrieveAPIView):
-    
     def post(self, request) -> Response:
         recovery_message = '''We’ve sent you an email. Please check your mailbox.
         If you haven\'t received anything, make sure the address is correct.'''
