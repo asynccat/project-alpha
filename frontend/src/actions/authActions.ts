@@ -14,8 +14,7 @@ import { achievementMessage } from '../constants/achievementMessages'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
-  SET_USER = 'auth/SET_USER',
-  RECEIVE_RECOVERY_MESSAGE = 'auth/RECEIVE_RECOVERY_MESSAGE'
+  SET_USER = 'auth/SET_USER'
 }
 
 export interface IUserDetails {
@@ -46,14 +45,11 @@ export interface IMessageResponse {
 
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
-export type receiveRecoveryMessageAction = Action<AuthActionType.RECEIVE_RECOVERY_MESSAGE, IMessageResponse>
 
-export type AuthActions = fetchUserAction | logoutUserAction | receiveRecoveryMessageAction
+export type AuthActions = fetchUserAction | logoutUserAction
 
 export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthActionType.SET_USER)
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
-export const receiveRecoveryMessageActionInstance =
-  actionCreator<AuthActionType.RECEIVE_RECOVERY_MESSAGE, IMessageResponse>(AuthActionType.RECEIVE_RECOVERY_MESSAGE)
 
 export const signUserUp = (payload: IUserDetails) => 
   async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
@@ -82,7 +78,6 @@ export const signUserUp = (payload: IUserDetails) =>
 export const login = (payload: IUserDetails) => 
   async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
     const authApiClient = new AuthApiClient()
-
     try {
       const result = await authApiClient.login(payload)
       const tokenStorage = new TokenStorage()
@@ -103,7 +98,6 @@ export const login = (payload: IUserDetails) =>
 }
 
 export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHistoryMethodAction>): void => {
-
   try {
     const tokenStorage = new TokenStorage()
     tokenStorage.removeToken()
@@ -111,28 +105,16 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     dispatch(push('/login'))
   } catch (error) {
     handleError(error)
-    }
+  }
 }
 
-export const recover = (email: UserEmail) =>
-  async (dispatch: Dispatch<receiveRecoveryMessageAction | CallHistoryMethodAction>): Promise<void> => {
-    const authApiClient = new AuthApiClient()
-    try {
-      const result = await authApiClient.recover(email)
-      const {message} = result
-      dispatch(receiveRecoveryMessageActionInstance({message: message, error: false}))
-    } catch (error) {
-      dispatch(receiveRecoveryMessageActionInstance({message: 'Request failed.', error: true}))
-    }
+const handleError = (error: { message: string }) => {
+  const destructuredMessage = JSON.parse(error.message)
+  if (destructuredMessage) {
+    const [messageArrayFromDestructuredError] = destructuredMessage.errors
+    const errorText = (messageArrayFromDestructuredError.message).toString()
+    toast.error(errorText)
+  } else {
+    toast.error(errorMessage.errorUnknown)
   }
-
-  const handleError = (error: { message: string }) => {
-    const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
-  }
+}

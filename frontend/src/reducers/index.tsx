@@ -2,7 +2,6 @@
 import userReducer from './userReducer'
 import operatePreferencesDataReducer from './operatePreferencesDataReducer'
 import notificationReducer from './notificationReducer'
-import authReducer from './authReducer'
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import {store} from '../index'
@@ -13,8 +12,7 @@ export const rootReducer = (history) => combineReducers({
     router: connectRouter(history),
     userReducer,
     operatePreferencesDataReducer,
-    notificationReducer,
-    authReducer
+    notificationReducer
 })
 
 export type RootState = ReturnType<typeof store.getState>
