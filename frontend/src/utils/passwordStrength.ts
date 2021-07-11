@@ -6,7 +6,12 @@ import {config} from "../config"
     const passLength = password.split("").length;
     return passLength > config.MIN_PASSWORD_LEN; 
   };
-   
+
+  const createLenghtValidator = (userLength:number) => {
+    return config.MIN_PASSWORD_LEN = userLength;
+ }
+
+    
     const validateContainsDigit = (password:string) => {
       const digits = /[0-9]/; 
       return digits.test(password);
@@ -32,35 +37,35 @@ import {config} from "../config"
       return(regexp.test(password));
     };
      
-    const createLenghtValidator = validateMinimalLength;
-  
-    const createValidator = (arr, minimalValidators:number) => {
-      let result = [];
+ 
+    
+    // const createValidator = (arr, minimalValidators:number) => {
+    //   let result = [];
 
-      for(let func of arr) {
-        result.push(func());
-      }
-      if(result.filter(Boolean).length == minimalValidators) {
-        return true;
-      }
+    //   for(let func of arr) {
+    //     result.push(func());
+    //   }
+    //   if(result.filter(Boolean).length == minimalValidators) {
+    //     return true;
+    //   }
       
-    }
+    // }
  
 
-    const myCustomPasswordValidator = createValidator([
-      createLenghtValidator(config.MIN_PASSWORD_LEN),
-      validateContainsDigit,
-      validateContainsLowerCaseLetters,
-      validateContainsUpperCaseLetters
-      ], config.MINIMAL_VALIDATION_NUMBER); 
+    // const myCustomPasswordValidator = createValidator([
+    //   createLenghtValidator(config.MIN_PASSWORD_LEN),
+    //   validateContainsDigit,
+    //   validateContainsLowerCaseLetters,
+    //   validateContainsUpperCaseLetters
+    //   ], config.MINIMAL_VALIDATION_NUMBER); 
       
     
-    const superStrongPasswordValidator = createValidator([
-    createLenghtValidator(config.MIN_ADMIN_PASSWORD_LEN),
-    validateContainsDigit,
-    validateContainsLowerCaseLetters,
-    validateContainsUpperCaseLetters
-    ], config.MINIMAL_VALIDATION_NUMBER); 
+    // const superStrongPasswordValidator = createValidator([
+    // createLenghtValidator(config.MIN_ADMIN_PASSWORD_LEN),
+    // validateContainsDigit,
+    // validateContainsLowerCaseLetters,
+    // validateContainsUpperCaseLetters
+    // ], config.MINIMAL_VALIDATION_NUMBER); 
   
 
  export { 
@@ -68,6 +73,6 @@ import {config} from "../config"
   validateContainsLowerCaseLetters,
   validateContainsUpperCaseLetters,
   validateContainsSpecialSymbols,
-  validateContainsWhitespace
-  
+  validateContainsWhitespace,
+  createLenghtValidator
  }

@@ -1,5 +1,8 @@
 import {validateMinimalLength, validateContainsDigit, validateContainsLowerCaseLetters,
-  validateContainsUpperCaseLetters, validateContainsSpecialSymbols, validateContainsWhitespace} from './passwordStrength'
+  validateContainsUpperCaseLetters, validateContainsSpecialSymbols, validateContainsWhitespace, createLenghtValidator} from './passwordStrength'
+
+import {config} from "../config" 
+
 
 describe('Password strength', () => {
   test('returns true if password length is greater than 6', () => {
@@ -7,6 +10,12 @@ describe('Password strength', () => {
     const result = validateMinimalLength(longPassword) 
     expect(result).toBe(true) 
   })
+  test('returns true if password length is less than 6', () => {
+    const longPassword = '1xzvc' 
+    const result = validateMinimalLength(longPassword) 
+    expect(result).toBe(false) 
+  })
+
 describe('testing hasPasswordDigits', () => {
   
   test('returns true if password has digits', () => {
@@ -75,10 +84,18 @@ describe('testing hasPasswordDigits', () => {
       const result = validateContainsWhitespace(whitespaceInPassword)
       expect(result).toBe(false)
     })
+
+    describe('does createLenghtValidator get number and change config.MIN_PASSWORD_LEN', () => {
+
+      test('returns true if createLenghtValidator get number and change config.MIN_PASSWORD_LEN', () => {
+        const numberIncreateLenghtValidator = 10;
+        const result = createLenghtValidator(numberIncreateLenghtValidator) === config.MIN_PASSWORD_LEN;
+        expect(result).toBe(true)
+      })
           })
         })
       })
     })
   })
 })  
-
+})
