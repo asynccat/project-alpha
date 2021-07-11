@@ -2,7 +2,7 @@ import {HttpClient, changedHttpRequestOptions} from './HttpClient'
 import {IUserDetails,
   IUserAuthApiRegisterResponse,
   IUserAuthApiLoginResponse,
-  IUserEmail,
+  UserEmail,
   IMessageResponse}
  from '../actions/authActions'
 import {ITokenSendType, ITokenRefreshType} from '../services/TokenRefresh'
@@ -11,7 +11,7 @@ export interface IAuthApiClient {
     register: (payload: IUserDetails) => Promise<IUserAuthApiRegisterResponse>
     login: (payload: IUserDetails) => Promise<IUserAuthApiLoginResponse>
     postRefresh: (payload: ITokenSendType) => Promise<ITokenRefreshType>
-    recover: (payload: IUserEmail) => Promise<IMessageResponse>
+    recover: (payload: UserEmail) => Promise<IMessageResponse>
 }
 
 export class AuthApiClient extends HttpClient implements IAuthApiClient {
@@ -28,7 +28,7 @@ export class AuthApiClient extends HttpClient implements IAuthApiClient {
     return await this.post('token/refresh', payload, changedHttpRequestOptions) as ITokenRefreshType
   }
 
-  async recover(payload: IUserEmail): Promise<IMessageResponse> {
+  async recover(payload: UserEmail): Promise<IMessageResponse> {
     return await this.post('recover', payload, changedHttpRequestOptions) as IMessageResponse
   }
 }

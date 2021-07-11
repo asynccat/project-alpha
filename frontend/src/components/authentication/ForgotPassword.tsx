@@ -6,13 +6,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import * as gridSize from '../../constants/styles.values'
 import {SIX as SHADOW_DEPTH_SIX} from '../../constants/styles.values'
-import { recover } from '../../actions/authActions'
+import { recover, receiveRecoveryMessageActionInstance } from '../../actions/authActions'
+import { emailFormatIsValid } from '../../utils/FormatVerifications'
 import { RootState } from '../../reducers/index'
 import {useStyles} from './SignUp.styles'
 
 export default function ForgotPasswordSide(): React.ReactElement {
 
-  const custom = useSelector((state: RootState) => state.authReducer)
+  const authState = useSelector((state: RootState) => state.authReducer)
 
     const [email, setEmail] = useState('')
     const onChangeEmail = useCallback((e) => {
@@ -23,21 +24,19 @@ export default function ForgotPasswordSide(): React.ReactElement {
   
     const recoverPassword = useCallback((e) => {
       e.preventDefault()
-      dispatch(recover({email}))
+      if (emailFormatIsValid(email)) {
+        dispatch(recover(email))
+      } else {
+        dispatch(receiveRecoveryMessageActionInstance({ message: 'Invalid e-mail format.', error: true} ))
+      }
     }, [dispatch, email])
   
     const classes = useStyles()
 
     const showMessage = () => {
-      const res = custom.passwordRecoveryResponse
-      let color = 'info.main'
-      let msg = ''
-      if (res) {
-        msg = res.message
-        if (res.error) {
-          color = 'error.main'
-        }
-      }
+      const res = authState.passwordRecoveryResponse
+      const msg = res?.message || ''
+      const color = res?.error ? 'error.main' : 'info.main'
       return (<Box color={color}>{msg}</Box>)
     }
 
@@ -97,7 +96,7 @@ export default function ForgotPasswordSide(): React.ReactElement {
             <Grid container justify="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
-                  Go back
+                  Go to Sign In page
                 </Link>
               </Grid>
             </Grid>

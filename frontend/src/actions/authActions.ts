@@ -11,7 +11,6 @@ import {jwtDecode, IToken, autoRefresh } from '../services/TokenRefresh'
 import { MILLISECONDS_IN_SECOND, TEN_SECONDS_BEFORE_TOKEN_EXPIRE} from '../constants/valuableNumbers'
 import {errorMessage } from '../constants/errorAndSuccessMessages'
 import { achievementMessage } from '../constants/achievementMessages'
-import { emailFormatIsValid } from '../utils/FormatVerifications'
 
 export enum AuthActionType {
   LOG_OUT = 'auth/LOG_OUT',
@@ -38,9 +37,7 @@ export interface IUserAuthApiLoginResponse {
     id: number
 }
 
-export interface IUserEmail {
-  email: string
-}
+export type UserEmail = string
 
 export interface IMessageResponse {
   message: string
@@ -55,7 +52,7 @@ export type AuthActions = fetchUserAction | logoutUserAction | receiveRecoveryMe
 
 export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthActionType.SET_USER)
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
-export const receiveRecoveryMessageActionValue =
+export const receiveRecoveryMessageActionInstance =
   actionCreator<AuthActionType.RECEIVE_RECOVERY_MESSAGE, IMessageResponse>(AuthActionType.RECEIVE_RECOVERY_MESSAGE)
 
 export const signUserUp = (payload: IUserDetails) => 
@@ -117,21 +114,15 @@ export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHisto
     }
 }
 
-export const recover = (payload: IUserEmail) =>
+export const recover = (email: UserEmail) =>
   async (dispatch: Dispatch<receiveRecoveryMessageAction | CallHistoryMethodAction>): Promise<void> => {
     const authApiClient = new AuthApiClient()
     try {
-      const {email} = payload
-      if (emailFormatIsValid(email)) {
-        const result = await authApiClient.recover(payload)
-        const {message} = result
-        dispatch(receiveRecoveryMessageActionValue({message: message, error: false}))
-      } else {
-        dispatch(receiveRecoveryMessageActionValue({message: 'Invalid e-mail format.', error: true}))
-      }
+      const result = await authApiClient.recover(email)
+      const {message} = result
+      dispatch(receiveRecoveryMessageActionInstance({message: message, error: false}))
     } catch (error) {
-      // handleError(error)
-      dispatch(receiveRecoveryMessageActionValue({message: 'Request failed.', error: true}))
+      dispatch(receiveRecoveryMessageActionInstance({message: 'Request failed.', error: true}))
     }
   }
 
