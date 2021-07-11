@@ -29,6 +29,6 @@ export class AuthApiClient extends HttpClient implements IAuthApiClient {
   }
 
   async recover(payload: UserEmail): Promise<IMessageResponse> {
-    return await this.post('recover', payload, changedHttpRequestOptions) as IMessageResponse
+    return await this.post('recover', { email: payload }, changedHttpRequestOptions) as IMessageResponse
   }
 }

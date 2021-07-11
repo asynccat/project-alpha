@@ -95,9 +95,10 @@ class ChangeEmailAPIView(generics.UpdateAPIView):
 
 class UserRecoverAPIView(generics.RetrieveAPIView):
     def post(self, request) -> Response:
-        recovery_message = '''We’ve sent you an email. Please check your mailbox.
-        If you haven\'t received anything, make sure the address is correct.'''
-        email = request.POST
+        email = request.POST.get('email')
+        recovery_message = '''An e-mail with instructions for resetting your password is on its way 
+        to {address}. If haven't received the e-mail, make sure the address you entered is correct or 
+        check your spam folder.'''.format(address = email)
         user = get_user_by_email(email)
         if user:
             send_recovery_email(user)
