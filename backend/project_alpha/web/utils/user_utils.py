@@ -7,5 +7,5 @@ def get_user_by_email(email) -> Optional[User]:
     try:
         user = User.objects.get(email=email)
         return user
-    except: 
+    except User.DoesNotExist: 
         return None
