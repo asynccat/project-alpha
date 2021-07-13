@@ -9,6 +9,7 @@ import { useStyles, useStyleModal } from '../profilePage/ProfilePreferencesPage.
 import { validationSchema } from '../../../utils/ValidationSchemes'
 import { updateUserAvatar, IUpdateAvatarActionPayload } from '../../../actions/prefAndProfileActions'
 import { RootState } from '../../../reducers/index'
+import {config} from '../../../config'
 
 export const PreferencesPageAvatar = (): React.ReactElement => {
     const avatar = useSelector((state: RootState) => state.operatePreferencesDataReducer.avatar)  
@@ -109,7 +110,7 @@ export const PreferencesPageAvatar = (): React.ReactElement => {
           onMouseEnter={mouseEnter} 
           onMouseLeave={mouseLeave}
           >
-          <Avatar className={classes.large} src={`http://localhost:8000${avatar}`} />
+          <Avatar className={classes.large} src={(avatar === '/media/') ? '' : (config.baseUrl + avatar)} />
           <div className={enter ? classes.manipulationVisible : classes.manipulationHidden} 
               onClick={updateAvatar}> Update avatar 
           </div>
