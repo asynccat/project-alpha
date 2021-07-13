@@ -35,6 +35,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserPreferencesSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = UserSettings
         fields = ('show_email', 'send_emails_with_news', 'timezone', 'about_user',

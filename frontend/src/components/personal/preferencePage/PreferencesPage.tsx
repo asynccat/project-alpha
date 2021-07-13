@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Button, 
-  Typography, Avatar, Box, TextField,  CircularProgress} from '@material-ui/core'
+  Typography, Box, TextField,  CircularProgress} from '@material-ui/core'
 
 import {updateUserNickname, fetchUserPreferences } from '../../../actions/prefAndProfileActions'
 import {useStyles} from '../profilePage/ProfilePreferencesPage.styles'
@@ -13,6 +13,7 @@ import PasswordChangeForm from '../passwordChangeForm/PasswordChangeForm'
 import EmailChangeForm from '../emailChangeFrom/EmailChangeForm'
 import PreferencesNotificationForm from '../notificationForm/NotificationForm'
 import {AchievementsBoard} from '../achievements/Achievements'
+import { PreferencesPageAvatar } from './PreferencesPageAvatar'
 
 export default function PreferencesPage (): React.ReactElement {
   const dispatch = useDispatch()
@@ -69,7 +70,7 @@ export default function PreferencesPage (): React.ReactElement {
         />
       <CardHeader 
         avatar={
-          <Avatar alt="Remy Sharp" className={classes.large} />
+          <PreferencesPageAvatar />
         }
         className={classes.header}
         title={

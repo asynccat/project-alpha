@@ -22,6 +22,7 @@ export interface IHttpClient {
   put: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
   patch: <Payload, Response>(url:string, payload: Payload, options?: IHttpRequestOptions) => Promise<Response>
   get: <Response>(url:string, options?: IHttpRequestOptions) => Promise<Response>
+  postFile: <Response>(url:string, payload: FormData, options?: IHttpRequestOptions) => Promise<Response>
 }
 
 export class HttpClient {
@@ -48,17 +49,30 @@ export class HttpClient {
         const e = await response.text()
         throw new Error(e)
       }
-    /*
-    * We're using Promise<any> here, to avoid extra code
-    * for casting from 'unknown' to required type.
-    * */
 
-    // eslint-disable-next-line
+      protected async uploadFile (url:string, method: string, payload?: AbstractApiData
+        ) : Promise<AbstractApiData> {
+         const token = localStorage.getItem('token')
+         const header = {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+            const response = await fetch(`${baseURL}/${url}/`, {
+              method: method,
+              headers: header,
+              body: payload,
+            })
+            if (response.ok) {
+              return await response.json()
+            }
+            const e = await response.text()
+            throw new Error(e)
+          }
+
     async post(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
       return await this.execute(url, 'POST',  payload, options)
     }
 
-    // eslint-disable-next-line
     async get(url:string, options?: IHttpRequestOptions): Promise<AbstractApiData> {
         return await this.execute(url, 'GET', options)
     }
@@ -70,4 +84,9 @@ export class HttpClient {
     async patch(url:string, payload: AbstractApiData, options?: IHttpRequestOptions): Promise<AbstractApiData> {
       return await this.execute(url, 'PATCH',  payload, options)
   }
+
+  async postFile(url:string, payload: FormData): Promise<AbstractApiData> {
+    return await this.uploadFile(url, 'POST',  payload)
+  }
+
 }

@@ -1,7 +1,12 @@
+import shutil
 import json
+import tempfile
 from unittest import mock
 
+from PIL import Image
+
 from django.urls import reverse
+from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from rest_framework.test import APITestCase
@@ -281,3 +286,51 @@ class UpdateEmailAPIViewTestCase(APITestCase):
         self.assertEqual(self.user.email, 'test@example.com')
         self.assertEqual(content['errors'][0]['message'][0], 'Email already exists')
         self.assertEqual(status_code, 400)
+
+class UploadUserAvatarAPIViewTestCase(APITestCase):
+
+    def setUp(self):
+        self.username = 'test@example.com'
+        self.pwd = '1234QWERty'
+        self.user = User.objects.create_user(self.username, self.pwd)
+
+    def request(self, data):
+        self.client.force_authenticate(user=self.user)  # pylint: disable=no-member
+        response = self.client.post(reverse('profile_image'), data=data, format='multipart')
+        return response.status_code, json.loads(response.content)
+
+    def create_image(self, schema, size, suffix):
+        image = Image.new(schema, size=size)
+        file = tempfile.NamedTemporaryFile(suffix=suffix)
+        image.save(file)
+        return file
+
+    def test_success_upload_image(self):
+        image = self.create_image(schema='RGB', size=(1, 1), suffix='.jpg')
+        with open(image.name, 'rb') as user_avatar:
+            status_code, _ = self.request({'avatar': user_avatar})
+        usersettings = UserSettings.objects.get(user=self.user)
+
+        self.assertEqual(settings.MEDIA_URL + str(usersettings.avatar), usersettings.avatar.url)
+        self.assertEqual(status_code, 200)
+
+    def test_upload_image_format_not_allowed(self):
+        image = self.create_image(schema='RGB', size=(1, 1), suffix='.gif')
+        with open(image.name, 'rb') as user_avatar:
+            status_code, content = self.request({'avatar': user_avatar})
+        error_message = 'Invalid file format. Allowed image formats: JPG, PNG, JPEG'
+
+        self.assertEqual(content['errors'][0]['message'][0], error_message)
+        self.assertEqual(status_code, 400)
+
+    def test_upload_image_size_too_big(self):
+        image = self.create_image(schema='CMYK', size=(7000, 7000), suffix='.jpg')
+        with open(image.name, 'rb') as user_avatar:
+            status_code, content = self.request({'avatar': user_avatar})
+
+        self.assertEqual(content['errors'][0]['message'][0], 'Max size of file is 2 MB')
+        self.assertEqual(status_code, 400)
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(settings.MEDIA_URL)

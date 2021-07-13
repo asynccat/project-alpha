@@ -9,15 +9,28 @@ export const validationSchema = {
             .required('Enter your new Email')
             .email('This is not email')
         }),
-      validationPassword: 
-        Yup.object({
-            oldPassword: Yup.string()
-            .required('Enter your old password'),
-            newPassword: Yup.string()
-            .required('Enter your new password')
-            .notOneOf([Yup.ref('oldPassword')], 'Old and new passwords must be different'),
-            confirmPassword: Yup.string()
-            .required('Confirm your password')
-            .oneOf([Yup.ref('newPassword')], 'Passwords do not match')
-            }),
+    validationPassword: 
+    Yup.object({
+        oldPassword: Yup.string()
+        .required('Enter your old password'),
+        newPassword: Yup.string()
+        .required('Enter your new password')
+        .notOneOf([Yup.ref('oldPassword')], 'Old and new passwords must be different'),
+        confirmPassword: Yup.string()
+        .required('Confirm your password')
+        .oneOf([Yup.ref('newPassword')], 'Passwords do not match')
+        }),
+    validationFile: 
+    Yup.object({
+        file: Yup.mixed()
+        .nullable()
+        .notRequired()
+        .test('FILE_SIZE', 'Uploaded file is too big.', 
+            value => !value || value.size <= FILE_SIZE_IN_BYTES)
+        .test('FILE_FORMAT', 'Uploaded file has unsupported format.', 
+            value => !value || SUPPORTED_FORMATS.includes(value.type))
+    }),
 }
+
+const FILE_SIZE_IN_BYTES = 2_000_000
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png']

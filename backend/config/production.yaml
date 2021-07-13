@@ -1,2 +1,4 @@
 production:
   DEBUG: False
+  UPLOAD_IMAGE_MAX_SIZE_MB: 2.0
+  ALLOWED_IMAGE_FORMATS: [ 'JPG', 'PNG', 'JPEG' ]

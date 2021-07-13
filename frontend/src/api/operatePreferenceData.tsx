@@ -1,26 +1,32 @@
 import { IHttpClient} from './HttpClient'
 import { IUserPreferencesResponse, IUpdateNicknameActionPayload, 
   IUpdatePasswordActionPayload,
-  IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionCamelizedPayload, IUpdateEmailActionDecamelizedPayload } 
+  IUpdatePasswordActionPayloadSnakeCase, IUpdateEmailActionCamelizedPayload, IUpdateEmailActionDecamelizedPayload, 
+  IUpdateAvatarActionPayload } 
   from '../actions/prefAndProfileActions'
-import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
+  import { IUserNotificationDecamelizedResponse, IUserNotificationResponse } from '../actions/notificationActions'
 
 export interface IUserPreferenceOperateData {
   fetchUserPreferences: () => Promise<IUserPreferencesResponse>
   updateNickname: (payload: IUpdateNicknameActionPayload) => Promise<INicknameUpdateResponse>
-  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IPasswordUpdateResponse>
-  updateEmail: (payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ) => 
+  updatePassword: (payload: IUpdatePasswordActionPayload) => Promise<IUpdateResponseStatus>
+  updateEmail: (payload:  IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload) => 
     Promise<IEmailUpdateResponse>
   changeUserNotification: (payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse ) => 
-    Promise<IUserNotificationDecamelizedResponse>
+  Promise<IUserNotificationDecamelizedResponse>
+  uploadNewAvatar: (payload: IUpdateAvatarActionPayload) => Promise<IUpdateAvatarResponse>
 }
 
 interface INicknameUpdateResponse {
   nickname: string
 }
 
-interface IPasswordUpdateResponse {
+interface IUpdateResponseStatus {
   status: string
+}
+
+interface IUpdateAvatarResponse extends IUpdateResponseStatus {
+  uploaded_avatar_url: string
 }
 
 interface IEmailUpdateResponse {
@@ -45,17 +51,23 @@ export class OperateUserData implements IUserPreferenceOperateData {
     }
     
     async updatePassword(payload: IUpdatePasswordActionPayload | IUpdatePasswordActionPayloadSnakeCase): 
-      Promise<IPasswordUpdateResponse > {
+      Promise<IUpdateResponseStatus > {
       return await this.client.post('change_password', payload) 
     }
 
     async updateEmail(payload: IUpdateEmailActionCamelizedPayload | IUpdateEmailActionDecamelizedPayload ): 
-      Promise<IEmailUpdateResponse  > {
-      return await this.client.post('user/change_email', payload) 
-    }
+    Promise<IEmailUpdateResponse  > {
+    return await this.client.post('user/change_email', payload) 
+  }
 
     async changeUserNotification(payload: IUserNotificationDecamelizedResponse | IUserNotificationResponse): 
       Promise<IUserNotificationDecamelizedResponse> {
       return await this.client.patch('preferences', payload)
+    }
+
+    async uploadNewAvatar(payload: IUpdateAvatarActionPayload): Promise<IUpdateAvatarResponse> {
+      const data = new FormData()
+      data.append('avatar', payload.avatarBlob)
+      return await this.client.postFile('preferences/profile_image', data)
     }
 }

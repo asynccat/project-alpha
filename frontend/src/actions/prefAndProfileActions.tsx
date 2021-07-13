@@ -16,7 +16,8 @@ export enum PrefActionType {
   CHANGE_PASSWORD = 'pref/CHANGE_PASSWORD',
   SET_USER_PREFERENCES = 'pref/SET_USER_PREFERENCES',
   REQUEST_FAILED = 'pref/REQUEST_FAILED',
-  REQUEST_INITIATED = 'pref/REQUEST_INITIATED'
+  REQUEST_INITIATED = 'pref/REQUEST_INITIATED',
+  CHANGE_AVATAR = 'pref/CHANGE_AVATAR',
 }
 
 // Define actions
@@ -27,6 +28,7 @@ export type UpdateNicknameAction = Action<PrefActionType.CHANGE_NICK, string>
 export type UserPreferencesRequestFailedAction = Action<PrefActionType.REQUEST_FAILED, string>
 export type UpdatePasswordAction = Action<PrefActionType.CHANGE_PASSWORD, string>
 export type UpdateEmailAction = Action<PrefActionType.CHANGE_EMAIL, string>
+export type UpdateAvatarAction = Action<PrefActionType.CHANGE_AVATAR, string>
 
 export type PrefActions =
   | UserPreferencesRequestInitiatedAction
@@ -35,7 +37,7 @@ export type PrefActions =
   | UserPreferencesSetAction
   | UpdatePasswordAction
   | UpdateEmailAction
-
+  | UpdateAvatarAction
 
 // Define action creators for init/fail
 
@@ -50,6 +52,7 @@ export const userPreferencesRequestFailed =
 export interface IUserPreferencesResponse extends IUserNotificationResponse {
   nickname: string
   email: string
+  avatar: string
 }
 
 export const setUserPreferences =
@@ -184,6 +187,37 @@ export const updateUserEmail =
       const message = (messageArrayFromDestructuredError[0].message).toString()
       dispatch(userPreferencesRequestFailed(message))
       toast.error(message)
+    } else {
+      dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
+      toast.error(errorMessage.errorUnknown)
+    }
+  }
+}
+
+export interface IUpdateAvatarActionPayload {
+  avatarBlob: string
+}
+
+export const changeUserAvatarSuccessfull =
+  actionCreator<PrefActionType.CHANGE_AVATAR, string>(PrefActionType.CHANGE_AVATAR)
+
+export const updateUserAvatar =
+  (payload: IUpdateAvatarActionPayload ) => 
+  async (dispatch:Dispatch): Promise<void> => {
+  dispatch(userPreferencesRequestInitiated())
+  try {
+    const result = await operateUserDataRequest.uploadNewAvatar(payload)
+    dispatch(changeUserAvatarSuccessfull(result.uploaded_avatar_url))
+    toast.success(successMessage.successAvatarChange)
+  } catch (error) {
+    const destructuredError = {error}
+    const destructuredMessage = JSON.parse(destructuredError.error.message)
+    if (destructuredMessage) {
+      const messageArrayFromDestructuredError = destructuredMessage.errors
+      const [message] = messageArrayFromDestructuredError
+      console.log(message.message)
+      dispatch(userPreferencesRequestFailed(message.message))
+      message.message.map((item: string) => toast.error(item))
     } else {
       dispatch(userPreferencesRequestFailed(errorMessage.errorUnknown))
       toast.error(errorMessage.errorUnknown)

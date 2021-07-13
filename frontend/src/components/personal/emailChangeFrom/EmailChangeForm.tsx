@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import { useFormik } from 'formik'
 import { CardActions, Button, TextField} from '@material-ui/core'
 import {useSelector, useDispatch} from 'react-redux'
@@ -19,7 +19,7 @@ export default function EmailChangeForm (): React.ReactElement {
   const classes = useStyles()
   const modalClass = useStyleModal()
   
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleOpen = useCallback(() => {
     setOpen(true)

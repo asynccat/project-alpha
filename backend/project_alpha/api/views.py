@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.contrib.auth.backends import ModelBackend, UserModel
 from django.contrib.auth.models import AbstractBaseUser
 
@@ -15,6 +16,7 @@ from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
+from project_alpha.web.utils.avatar_validator import ValidateUsersAvatar
 
 from .permissions import IsOwner, NicknameUpdateAllowed
 from .serializers import (
@@ -106,7 +108,7 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         user = self.get_object()
         user_data = {
             'nickname': user.nickname,
-            'avatar': '/path/to/avatar.png',
+            'avatar': settings.MEDIA_URL + str(user.usersettings.avatar),
         }
         if user.usersettings.show_email:
             user_data['email'] = user.email
@@ -125,7 +127,7 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         user_data = {
             'nickname': user.nickname,
             'email': user.email,
-            'avatar': '/path/to/avatar.png',
+            'avatar': settings.MEDIA_URL + str(user.usersettings.avatar),
             'nickname_updated': user.usersettings.nickname_updated,
             'show_email': user.usersettings.show_email,
             'send_emails_with_news': user.usersettings.send_emails_with_news,
@@ -144,6 +146,27 @@ class UserPreferencesAPIView(generics.GenericAPIView):
         serializer.update(instance=request.user.usersettings, validated_data=serializer.validated_data)
         return Response(self.request.data)
 
+class UploadUserAvatarAPIView(generics.GenericAPIView):
+    # pylint: disable=unused-argument
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = self.request.user
+        user_data = {'avatar': settings.MEDIA_URL + str(user.usersettings.avatar)}
+        return Response(user_data)
+
+    def post(self, request):
+        user = self.request.user
+        validator = ValidateUsersAvatar()
+        user_avatar_file = self.request.FILES['avatar']
+        try:
+            validator.validate(user_avatar_file)
+        except ValidationError as err:
+            raise DRFValidationError(detail={'avatar': err.messages}) from err
+
+        user.usersettings.avatar = user_avatar_file
+        user.usersettings.save()
+        return Response({'status': 'success', 'uploaded_avatar_url': user.usersettings.avatar.url})
 
 class ChangeUserPassword(APIView):
     permission_classes = (IsAuthenticated,)

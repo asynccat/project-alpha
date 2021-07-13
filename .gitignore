@@ -14,3 +14,5 @@ db.sqlite3
 */setup.cfg
 
 .vscode
+backend/media/
+backend/tmp_for_test/

@@ -6,17 +6,12 @@ describe('use of OperateUserData client', () => {
     jest.resetModules()  // reset modules after each test
   })
 
-  it('OperateUserData is truthy', () => {
-    expect(operateUserDataRequest).toBeTruthy()
-  })
-
   it('test fetch user information', () => {
     // eslint-disable-next-line max-nested-callbacks
     OperateUserData.prototype.fetchUserPreferences = jest.fn().mockImplementation(() => ({ nickname: 'kate' }))
     operateUserDataRequest.fetchUserPreferences()
   })
 })
-
 describe ('use of updateNickname method', () => {
   it('test usage of updateNickname method of OperateUserData class', () => {
     const spy = jest.spyOn(operateUserDataRequest, 'updateNickname')
@@ -26,8 +21,6 @@ describe ('use of updateNickname method', () => {
     expect(operateUserDataRequest.updateNickname).toHaveBeenCalled()
     spy.mockRestore()
   })
-
-
   describe ('test use of post user customization', () => {
     it('test usage of postcustomization method of CustomizeRequest class', () => {
       const changeUserNotificationSpy = jest.spyOn(operateUserDataRequest, 'changeUserNotification')
@@ -39,5 +32,25 @@ describe ('use of updateNickname method', () => {
       expect(operateUserDataRequest.changeUserNotification).toHaveBeenCalled()
       changeUserNotificationSpy.mockRestore()
     })
+  })
+})
+
+export type FormData = {
+  avatar: string
+}
+
+describe ('test use of change avatar', () => {
+  it('test usage of upload new avatar method of OperateUserData class', () => {
+    const data = new FormData()
+    data.append('avatar', 'hello.png')
+    
+    const avatarUploadSpy = jest.spyOn(operateUserDataRequest, 'uploadNewAvatar')
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+    operateUserDataRequest.uploadNewAvatar(data)
+  
+    expect(avatarUploadSpy).toHaveBeenCalled()
+    expect(operateUserDataRequest.uploadNewAvatar).toHaveBeenCalled()
+    avatarUploadSpy.mockRestore()
   })
 })

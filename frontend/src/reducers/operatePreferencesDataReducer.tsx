@@ -5,11 +5,13 @@ import RemoteSource from '../types/RemoteSource'
 interface IUserPreferencesState extends RemoteSource {
     nickname: string
     email: string
+    avatar: string
 }
 
 export const initialState = {
     nickname: '',
     email: '',
+    avatar: '',
     error: '',
     init: false,
     isLoading: false,
@@ -39,6 +41,7 @@ IUserPreferencesState => {
                 isLoading: false,
                 nickname: action.payload.nickname,
                 email: action.payload.email,
+                avatar: action.payload.avatar,
             }
 
         case PrefActionType.CHANGE_NICK:
@@ -65,6 +68,13 @@ IUserPreferencesState => {
                 error: ''
                 }   
                 
+        case PrefActionType.CHANGE_AVATAR:
+            return {
+                ...state,
+                isLoading: false,
+                avatar: action.payload,
+                error: ''
+                }   
         default: return state
     }
 }
