@@ -10,8 +10,18 @@ describe('Password strength', () => {
     const result = validateMinimalLength(longPassword) 
     expect(result).toBe(true) 
   })
-  test('returns true if password length is less than 6', () => {
+  test('returns false if password length is less than 6', () => {
     const longPassword = '1xzvc' 
+    const result = validateMinimalLength(longPassword) 
+    expect(result).toBe(false) 
+  })
+  test('returns true if password length is greater than 12', () => {
+    const longPassword = '1xzvczq121уу' 
+    const result = validateMinimalLength(longPassword) 
+    expect(result).toBe(true) 
+  })
+  test('returns false if password length is less than 12', () => {
+    const longPassword = '1xzvcsd' 
     const result = validateMinimalLength(longPassword) 
     expect(result).toBe(false) 
   })
@@ -88,7 +98,7 @@ describe('testing hasPasswordDigits', () => {
     describe('does createLenghtValidator get number and change config.MIN_PASSWORD_LEN', () => {
 
       test('returns true if createLenghtValidator get number and change config.MIN_PASSWORD_LEN', () => {
-        const numberIncreateLenghtValidator = 10;
+        const numberIncreateLenghtValidator = 13;
         const result = createLenghtValidator(numberIncreateLenghtValidator) === config.MIN_PASSWORD_LEN;
         expect(result).toBe(true)
       })
