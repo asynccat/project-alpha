@@ -12,7 +12,7 @@ export const rootReducer = (history) => combineReducers({
     router: connectRouter(history),
     userReducer,
     operatePreferencesDataReducer,
-    notificationReducer,
+    notificationReducer
 })
 
 export type RootState = ReturnType<typeof store.getState>

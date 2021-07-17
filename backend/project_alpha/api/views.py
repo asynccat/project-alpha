@@ -15,6 +15,8 @@ from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from project_alpha.web.models import UserSettings
 from project_alpha.web.utils.nickname_generator import generate_unique_nickname
+from project_alpha.web.utils.send_email_utils import send_recovery_email
+from project_alpha.web.utils.user_utils import get_user_by_email
 
 from .permissions import IsOwner, NicknameUpdateAllowed
 from .serializers import (
@@ -25,7 +27,6 @@ from .serializers import (
     ChangeUserPasswordSerializer,
     ChangeEmailSerializer,
 )
-
 
 User = get_user_model()
 
@@ -76,6 +77,19 @@ class UpdateNicknameAPIView(generics.UpdateAPIView):
         UserSettings.objects.filter(user=user).update(nickname_updated=timezone.now())
         serializer.save()
 
+
+class UserRecoverAPIView(generics.RetrieveAPIView):
+    def post(self, request) -> Response:
+        email = request.data['email']
+        recovery_message = '''An e-mail with instructions for resetting your password is on its way
+        to {address}. If haven't received the e-mail, make sure the address you entered is correct or
+        check your spam folder.'''.format(address = email)
+        user = get_user_by_email(email)
+        if user:
+            send_recovery_email(user)
+        return Response({'message': recovery_message, 'error': False}, status=status.HTTP_200_OK)
+
+
 class ChangeEmailAPIView(generics.UpdateAPIView):
     serializer_class = ChangeEmailSerializer
     permission_classes = (IsOwner, IsAuthenticated,)
@@ -91,7 +105,6 @@ class ChangeEmailAPIView(generics.UpdateAPIView):
         user.email = request.data.get('email')
         user.save()
         return Response(self.request.data)
-
 
 class UserProfileAPIView(generics.RetrieveAPIView):
     """

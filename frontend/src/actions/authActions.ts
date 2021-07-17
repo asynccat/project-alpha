@@ -36,13 +36,19 @@ export interface IUserAuthApiLoginResponse {
     id: number
 }
 
+export type UserEmail = string
+
+export interface IMessageResponse {
+  message: string
+  error: boolean
+}
+
 export type fetchUserAction = Action<AuthActionType.SET_USER, IUser>
 export type logoutUserAction = Action<AuthActionType.LOG_OUT>
 
 export type AuthActions = fetchUserAction | logoutUserAction
 
 export const setUserAction = actionCreator<AuthActionType.SET_USER, IUser>(AuthActionType.SET_USER)
-
 export const logoutAction = actionCreator<AuthActionType.LOG_OUT>(AuthActionType.LOG_OUT)
 
 export const signUserUp = (payload: IUserDetails) => 
@@ -65,21 +71,13 @@ export const signUserUp = (payload: IUserDetails) =>
       dispatch(push('/welcome'))
       toast.info(achievementMessage.register)
     } catch (error) {
-      const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+      handleError(error)
     }
   }
 
 export const login = (payload: IUserDetails) => 
   async (dispatch:Dispatch<fetchUserAction | CallHistoryMethodAction >): Promise<void> => {
     const authApiClient = new AuthApiClient()
-
     try {
       const result = await authApiClient.login(payload)
       const tokenStorage = new TokenStorage()
@@ -95,32 +93,28 @@ export const login = (payload: IUserDetails) =>
       dispatch(setUserAction(user))
       dispatch(push('/welcome'))
     } catch (error) {
-      const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
+      handleError(error)
     }
 }
 
 export const userLogOut = () => (dispatch: Dispatch<logoutUserAction | CallHistoryMethodAction>): void => {
-
   try {
     const tokenStorage = new TokenStorage()
     tokenStorage.removeToken()
     dispatch(logoutAction())
     dispatch(push('/login'))
   } catch (error) {
-    const destructuredMessage = JSON.parse(error.message)
-      if (destructuredMessage) {
-        const [messageArrayFromDestructuredError] = destructuredMessage.errors
-        const errorText = (messageArrayFromDestructuredError.message).toString()
-        toast.error(errorText)
-      } else {
-        toast.error(errorMessage.errorUnknown)
-      }
-    }
+    handleError(error)
   }
+}
+
+const handleError = (error: { message: string }) => {
+  const destructuredMessage = JSON.parse(error.message)
+  if (destructuredMessage) {
+    const [messageArrayFromDestructuredError] = destructuredMessage.errors
+    const errorText = (messageArrayFromDestructuredError.message).toString()
+    toast.error(errorText)
+  } else {
+    toast.error(errorMessage.errorUnknown)
+  }
+}
