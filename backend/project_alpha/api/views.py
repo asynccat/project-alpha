@@ -80,8 +80,7 @@ class UpdateNicknameAPIView(generics.UpdateAPIView):
 
 class UserRecoverAPIView(generics.RetrieveAPIView):
     def post(self, request) -> Response:
-        self.request = request
-        email = self.request.data['email']
+        email = request.data['email']
         recovery_message = '''An e-mail with instructions for resetting your password is on its way
         to {address}. If haven't received the e-mail, make sure the address you entered is correct or
         check your spam folder.'''.format(address = email)
