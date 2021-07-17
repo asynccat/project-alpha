@@ -77,21 +77,6 @@ class UpdateNicknameAPIView(generics.UpdateAPIView):
         UserSettings.objects.filter(user=user).update(nickname_updated=timezone.now())
         serializer.save()
 
-class ChangeEmailAPIView(generics.UpdateAPIView):
-    serializer_class = ChangeEmailSerializer
-    permission_classes = (IsOwner, IsAuthenticated,)
-
-    def post(self, request):
-        user = self.request.user
-        serializer = self.get_serializer(data=self.request.data)
-        confirm_password = request.data.get('confirm_password')
-        if not user.check_password(confirm_password):
-            return Response({'errors':[{'field':'confirm_password', 'message':['Invalid password']}]},
-                            status=status.HTTP_400_BAD_REQUEST)
-        serializer.is_valid(raise_exception=True)
-        user.email = request.data.get('email')
-        user.save()
-        return Response(self.request.data)
 
 class UserRecoverAPIView(generics.RetrieveAPIView):
     def post(self, request) -> Response:
@@ -105,25 +90,6 @@ class UserRecoverAPIView(generics.RetrieveAPIView):
         return Response({'message': recovery_message, 'error': False}, status=status.HTTP_200_OK)
 
 
-def get_user_by_email(email):
-    '''
-    Returns user if he exists in the database.
-    Error otherwise.
-    P.S. We need user's data to personnalize the password recovery e-mail.
-    '''
-    users = User.objects.all()
-    for user in users:
-        if user.email == email:
-            return user
-    return None
-
-def send_recovery_email(user):
-    '''
-    Sends personnalized password recovery e-mail to user.
-    P.S. Should be async.
-    TODO
-    '''
-    print("Send e-mail to " + str(user.email))
 class ChangeEmailAPIView(generics.UpdateAPIView):
     serializer_class = ChangeEmailSerializer
     permission_classes = (IsOwner, IsAuthenticated,)
