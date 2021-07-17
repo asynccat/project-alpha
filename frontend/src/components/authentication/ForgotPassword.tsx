@@ -13,36 +13,35 @@ export default function ForgotPasswordSide(): React.ReactElement {
 
   const classes = useStyles()
 
-  const initialState = {
-    email: '',
-    message: '',
-    error: false
-  }
-
-  const [state, setState] = useState(initialState)
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState(false)
   
   const onChangeEmail = useCallback((e) => {
-    setState({...state, email: e.target.value})
-  }, [setState, state])
+    setEmail(e.target.value)
+  }, [])
   
-  const recoverPassword = useCallback((e) => {
+  const recoverPassword = useCallback(async (e) => {
     e.preventDefault()
-    if (emailFormatIsValid(state.email)) {
-      const authApiClient = new AuthApiClient()
-      authApiClient.recover(state.email).then((res) => {
-        setState({...state, message: res.message, error: res.error})
-      })
-      .catch((err) => {
-        setState({...state, message: err.message, error: true})
-      })
-    } else {
-      setState({...state, message: 'Invalid e-mail format.', error: true})
+    try{
+      if (emailFormatIsValid(email)) {
+        const authApiClient = new AuthApiClient()
+        const {message, error} = await authApiClient.recover(email)
+        setMessage(message)
+        setError(error)
+      } else {
+        setMessage('Invalid e-mail format.')
+        setError(true)
+      }
+    } catch(err) {
+      setMessage(err.message)
+      setError(true)
     }
-  }, [setState, state])
+  }, [email])
   
   const showMessage = () => {
-    const color = state.error ? 'error.main' : 'info.main'
-    return (<Box color={color}>{state.message}</Box>)
+    const color = error ? 'error.main' : 'info.main'
+    return (<Box color={color}>{message}</Box>)
   }
 
   return (
@@ -78,7 +77,7 @@ export default function ForgotPasswordSide(): React.ReactElement {
                   name="email"
                   onChange={onChangeEmail}
                   required
-                  value={state.email}
+                  value={email}
                   variant="outlined"
                 />
               </Grid>
